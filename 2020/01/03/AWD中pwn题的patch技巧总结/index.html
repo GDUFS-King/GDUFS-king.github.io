@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AWD中的patch技巧总结 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、栈题的patch技巧1、修改read的大小：
+
+这里很明显栈大小是0x30，但是可以输入的大小是0x12C，所以绝对的栈溢出，这里改size为0x30就不会溢出了：记住是改汇编
+
+
+
+
+2、第二,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">AWD中的patch技巧总结</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/AWD%E4%B8%ADpwn%E9%A2%98%E7%9A%84patch%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/" title="AWD中的patch技巧总结" class="">AWD中的patch技巧总结</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    5.4k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    5 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/patch/" rel="tag">patch</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="一、栈题的patch技巧"><a href="#一、栈题的patch技巧" class="headerlink" title="一、栈题的patch技巧"></a>一、栈题的patch技巧</h3><p>1、修改read的大小：</p>
+<p><img src="/blog_img/1574146088093.png" alt="57414473770"></p>
+<p>这里很明显栈大小是0x30，但是可以输入的大小是0x12C，所以绝对的栈溢出，这里改size为0x30就不会溢出了：记住是改汇编</p>
+<a id="more"></a>
+
+<p><img src="/blog_img/1574146155462.png" alt="57414615546"></p>
+<p><img src="/blog_img/1574146130890.png" alt="57414613089"></p>
+<p>2、第二种改法是改leave_ret为ret_ret：</p>
+<p><img src="/blog_img/1574144977854.png" alt="57414497785"></p>
+<p>修改后：</p>
+<p><img src="/blog_img/1574144945761.png" alt="57414494576"></p>
+<p>方法二只适用于只有main函数的，没有子函数调用的栈溢出类型题目。</p>
+<p>3、当遇到gets函数时，改成read函数：</p>
+<p><img src="/blog_img/1574147908573.png" alt="57414790857"></p>
+<p>这里改到我们的en_frame段中去执行那个read函数：</p>
+<p><img src="/blog_img/1574148187000.png" alt="57414818700"></p>
+<p>将size大小改成了0x18，就不会栈溢出啦~</p>
+<p><img src="/blog_img/1574148206467.png" alt="57414820646"></p>
+<h3 id="二、格式化字符串的patch技巧："><a href="#二、格式化字符串的patch技巧：" class="headerlink" title="二、格式化字符串的patch技巧："></a>二、格式化字符串的patch技巧：</h3><p>1、将printf函数改为puts函数：</p>
+<p><img src="/blog_img/1574148422691.png" alt="57414842269"></p>
+<p>这里通过2种方法去改成puts，一种是改机器码：</p>
+<p><img src="/blog_img/1574148544810.png" alt="57414854481"></p>
+<p>这里看到0x601030-0x400576=0x200ABA,所以我们看下puts的jmp地址：</p>
+<p><img src="/blog_img/1574148621399.png" alt="57414862139"></p>
+<p>看到是0x601018，接着计算出机器码：0x601018-0x400576=0x200AA2，所以我们改printf的那个jmp的偏移即可：</p>
+<p><img src="/blog_img/1574148891980.png" alt="57414889198"></p>
+<p>第二种改法，利用lief库去改(先装个库即可)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lief</span><br><span class="line">binary = lief.parse(sys.argv[<span class="number">1</span>])</span><br><span class="line">puts_sym = filter(<span class="keyword">lambda</span> e: e.name == <span class="string">"printf"</span>, binary.dynamic_symbols)[<span class="number">0</span>]</span><br><span class="line">puts_sym.name = <span class="string">"puts"</span></span><br><span class="line">binary.write(<span class="string">"format_patch"</span>);</span><br><span class="line"><span class="comment">#编译命令：</span></span><br><span class="line"><span class="comment">#python test.py format</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1574149094706.png" alt="57414909470"></p>
+<p>如果说没有puts函数，同时printf不止一个，有漏洞的，没有漏洞的printf都有，这时比较棘手，就可以在en_frame那里写，改成write函数，再写个计算buf里面字符串数目的循环即可：</p>
+<p><img src="/blog_img/1574149732870.png" alt="57414973287"></p>
+<p>我们改写汇编：</p>
+<p>第一步，改call为jmp到的地址：</p>
+<p><img src="/blog_img/1574150410560.png" alt="57415037795"></p>
+<p>第二步，自己写个循环，判断输入有多少位，换行作为结束符：</p>
+<p><img src="/blog_img/1574150420996.png" alt="57415042099"></p>
+<p>3、跳回去看看：</p>
+<p><img src="/blog_img/1574150322307.png" alt="57415032230"></p>
+<p>成功将printf函数改成了系统调用的write函数，如果要完全一致就自己再inc rdx就行了，多个换行符</p>
+<h3 id="三-、堆的patch技巧："><a href="#三-、堆的patch技巧：" class="headerlink" title="三 、堆的patch技巧："></a>三 、堆的patch技巧：</h3><p>1、UAF漏洞：</p>
+<p><img src="/blog_img/1574151289838.png" alt="57415128983"></p>
+<p>现在就在en_frame那里开个位置将其置为0：</p>
+<p><img src="/blog_img/1574151870801.png" alt="57415187080"></p>
+<p><img src="/blog_img/1574151882167.png" alt="57415188216"></p>
+<p>跳回去：</p>
+<p><img src="/blog_img/1574151858466.png" alt="57415185846"></p>
+<p>这里记住一个点就是</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov qword ptr chunk[rax*<span class="number">8</span>], <span class="number">0</span>    <span class="comment">//UAF的敌人</span></span><br></pre></td></tr></table></figure>
+
+<p>2、offbyone和offbynull</p>
+<p>如果是单独加在末尾的，直接把这行给nop掉即可~</p>
+<p>如果是在while循环里面的，改跳转条件即可：</p>
+<p><img src="/blog_img/1574153739941.png" alt="57415373994"></p>
+<p><img src="/blog_img/1574153095778.png" alt="57415309577"></p>
+<p>这里很明显是多了一个字节，我们改汇编：jg改成jge</p>
+<p><img src="/blog_img/1574153137286.png" alt="57415313728"></p>
+<p><img src="/blog_img/1574153150857.png" alt="57415315085"></p>
+<p><img src="/blog_img/1574153161440.png" alt="57415316144"></p>
+<p>offbyone和offbynull都没了</p>
+<p>3、edit时有溢出</p>
+<p>直接改read的size即可，如果有漏洞是通过scanf触发的，那就改成read(在en_frame段改)</p>
+<p>4、如果是由realloc触发的漏洞，改成calloc(跑脚本，改符号名)</p>
+<p>5、删除后门函数</p>
+<p>6、实在没招时，最后才nop掉free函数</p>
+<p>这篇文章会持续更新~(等我遇到新的题目再说嘻嘻)</p>
+<h5 id="如果做不出来题目，又不会patch，可以上bin-waf抓一波流量，虽然会down，但是可以赚到一波："><a href="#如果做不出来题目，又不会patch，可以上bin-waf抓一波流量，虽然会down，但是可以赚到一波：" class="headerlink" title="*如果做不出来题目，又不会patch，可以上bin_waf抓一波流量，虽然会down，但是可以赚到一波："></a>*如果做不出来题目，又不会patch，可以上bin_waf抓一波流量，虽然会down，但是可以赚到一波：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1、waf程序上传，给权限777</span></span><br><span class="line"><span class="comment">//2、mv我们的waf名字为题目名字</span></span><br><span class="line"><span class="comment">//3、mv我们的题目名字为dummy</span></span><br><span class="line"><span class="comment">//4、查看waf_log既可知道别人的流量情况</span></span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、栈题的patch技巧"><span class="toc-number">1.</span> <span class="toc-text">一、栈题的patch技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、格式化字符串的patch技巧："><span class="toc-number">2.</span> <span class="toc-text">二、格式化字符串的patch技巧：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三-、堆的patch技巧："><span class="toc-number">3.</span> <span class="toc-text">三 、堆的patch技巧：</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

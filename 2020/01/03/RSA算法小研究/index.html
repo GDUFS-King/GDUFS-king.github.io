@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RSA算法体系研究 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="在打0CTF时看到了RSA的那题，但是不会做，于是先学习一波RSA吧，算做入门，自己也喜欢数学，正好积累下，RSA是非对称加密，相对于DES对称加密而言的，下面进去正题。
+一、欧拉定理：如果两个正整,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">RSA算法体系研究</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/密码学"><b>「
+                    </b>密码学<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/RSA%E7%AE%97%E6%B3%95%E5%B0%8F%E7%A0%94%E7%A9%B6/" title="RSA算法体系研究" class="">RSA算法体系研究</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    19k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    17 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/rsa/" rel="tag">rsa</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%85%A8%E5%AE%B6%E6%A1%B6/" rel="tag">全家桶</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>在打0CTF时看到了RSA的那题，但是不会做，于是先学习一波RSA吧，算做入门，自己也喜欢数学，正好积累下，RSA是非对称加密，相对于DES对称加密而言的，下面进去正题。<a id="more"></a></p>
+<h3 id="一、欧拉定理："><a href="#一、欧拉定理：" class="headerlink" title="一、欧拉定理："></a>一、欧拉定理：</h3><p>如果两个正整数a和n互质，则n的欧拉函数 φ(n) 可以让下面的等式成立：</p>
+<p><img src="/blog_img/1575187462081.png" alt="image.png"></p>
+<p>这是个很重要的公式，先来理解下，首先n = p<em>q（q和p互为质数），欧拉函数 φ(p) = p-1（表示与p互质的数的个数为p-1个，下同）， φ(q) = q-1，所以 得到</em></p>
+<h5 id="推理1：φ-n-φ-p-φ-q-p-1-q-1"><a href="#推理1：φ-n-φ-p-φ-q-p-1-q-1" class="headerlink" title="推理1：φ(n)  =   φ(p)φ(q) = (p-1)(q-1)"></a>推理1：φ(n)  =   φ(p)<em>φ(q) = (p-1)</em>(q-1)</h5><p>上式可以转成</p>
+<p>a^φ(n)%n = 1，也就是说a的φ(n)次幂对n求余为1，设φ(n)=k=(p-1)*(q-1)， 也就是a^k%n=1，那么可以知道a^kt%n=1也成立~</p>
+<h3 id="二、密钥的计算获取过程"><a href="#二、密钥的计算获取过程" class="headerlink" title="二、密钥的计算获取过程"></a>二、密钥的计算获取过程</h3><p>密钥的计算过程为：首先选择两个质数p和q，令n=p*q。</p>
+<p>令k=ϕ(n)=(p−1)(q−1)，上面讲过了，这里再给一个推理：</p>
+<h5 id="推理2：ab-n-a-nb-n-乘积的余数等于余数的乘积"><a href="#推理2：ab-n-a-nb-n-乘积的余数等于余数的乘积" class="headerlink" title="推理2：ab%n=a%nb%n(乘积的余数等于余数的乘积)"></a>推理2：a<em>b%n=a%n</em>b%n(乘积的余数等于余数的乘积)</h5><p>证明：假设a和b除以n的余数为c1,c2。a和b可以写成a=nt1+c1,b=nt2+c2。那么，ab=n2t1t2+nt1c2+nt2c1+c1c2=n(nt1t2+t1c2+t2c1)+c1c2=nt3+c1c2。因此ab除以n的余数为c1c2。即a<em>b%n=a%n</em>b%n</p>
+<p>选择任意整数d，保证其与k互质，</p>
+<p>取整数e，使得de%k=1。也就是说de=kt+1，t为某一整数，这样私钥d和公钥e就生成了，这里d就是e相对于k的逆元，（这里知道了e就可以求d，或者知道了d就可以求e），那么逆元怎么求呢？有很多方法，这里推荐个最好用的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d = gmpy2.invert(e,k)</span><br></pre></td></tr></table></figure>
+
+<p>接着看一下一个重要的推理：</p>
+<p>z为小于n的任意一个数，z^(de)%n=z^(kt+1)%n=(z^(kt)z)%n=((z^kt)%n*z%n)%n= z%n=z （z%n&lt;n，所以再求一次余还是z）  ，解释下，因为(z^k)%n = 1，所以(z^kt)%n=1，得到</p>
+<h5 id="推理3：z-de-n-z-n-z"><a href="#推理3：z-de-n-z-n-z" class="headerlink" title="推理3：z^(de)%n=z%n=z"></a>推理3：z^(de)%n=z%n=z</h5><h3 id="三、加密与解密过程"><a href="#三、加密与解密过程" class="headerlink" title="三、加密与解密过程"></a>三、加密与解密过程</h3><p>A发送信息m给B，利用公钥e加密成密文c，B利用私钥d解密出明文信息m</p>
+<h5 id="1、加密"><a href="#1、加密" class="headerlink" title="1、加密"></a>1、加密</h5><p>设明文为m，密文为c，首先把用户A发送的信息字符m转成整数，找到一个与m互为质数的n，</p>
+<p>随机地选择一个正整数e，1&lt;e&lt;ф(n)且gcd(e，ф(n))=1，将e公开，根据ed=1 mod ф(n)，求出d，并对d保密。</p>
+<p>即可生成公钥对(n，e)和私钥对(n，d)，加密公式：m^e%n = c，加密结束。</p>
+<h5 id="2、解密"><a href="#2、解密" class="headerlink" title="2、解密"></a>2、解密</h5><p>解密公式：c^d%n=m，解密结束。</p>
+<h5 id="3、证明解密过程的正确性："><a href="#3、证明解密过程的正确性：" class="headerlink" title="3、证明解密过程的正确性："></a>3、证明解密过程的正确性：</h5><h5 id="推理4：-m-e-n-d-m-ed-n-m-n"><a href="#推理4：-m-e-n-d-m-ed-n-m-n" class="headerlink" title="推理4：(m^e%n)^d=m^ed%n=m%n"></a>推理4：(m^e%n)^d=m^ed%n=m%n</h5><p>证明：设[m^e/n]表示求余，[m^e/n]^d = [m^ed/n^d]，可以看成[[m^ed/n]/n]…/n]，这里有d个n，因为算出第一个余数x，一定有x&lt;n，后面恒有[x/n]=x，所以可以知道，(m^e%n)^d=m^ed%n（余数的幂等于被除数的幂的余数）</p>
+<p>因为m^e%n = c，</p>
+<p>所以c^d%n = (m^e%n)^d%n = (m^ed%n)%n =m%n=m（m&lt;n）</p>
+<h5 id="得证合理性！"><a href="#得证合理性！" class="headerlink" title="得证合理性！"></a>得证合理性！</h5><h3 id="四、做一波题目巩固下"><a href="#四、做一波题目巩固下" class="headerlink" title="四、做一波题目巩固下"></a>四、做一波题目巩固下</h3><p>1、模数分解型：</p>
+<p><img src="/blog_img/1575187547702.png" alt="57518754770"></p>
+<p>给了c、n和e，要求m，最简单的题型，把n写入我们的pcat.txt，这里直接先雅虎分解n：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./yafu-x64 <span class="string">"factor(@)"</span> -batchfile pcat.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1575187799737.png" alt="57518779973"></p>
+<p>得到了p和q就好办了，直接求逆元得到d，最后解密即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="comment">#openssl rsa -pubin -in pubkey.pem -text -modulus</span></span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> libnum</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">n=<span class="number">3161262255255421133292506694323988711204792818702640666084331634444148712428915950639954540974469931426618702044672318134908678730641981414037034058320359158246813987154679178159391832232990193738454116371045928434239936027006539348488316754611586659587677659791620481200732564068367148541242426533823626586574915275209508300120574819113851895932912208783915652764568319771482309338434364094681579135086703127977870534715039005822312878739611630155714313119545610939253355808742646891815442758660278514976431521933763272615653261044607041876212998883732724662410197038419721773290601109065965674129599626151139566369</span></span><br><span class="line">e=<span class="number">65537</span></span><br><span class="line">c=<span class="number">631583911592660652215412683088688785438938386403323323131247534561958531288570612134139288090533619548876156447498627938626419617968918299212863936839701943643735437264304062828205809984533592547599060829451668240569384130130080928292082888526567902695707215660020201392640388518379063244487204881439591813398495285025704285781072987024698133147354238702861803146548057736756003294248791827782280722670457157385205787259979804892966529536902959813675537028879407802365439024711942091123058305460856676910458268097798532901040050506906141547909766093323197363034959926900440420805768716029052885452560625308314284406</span></span><br><span class="line">p = <span class="number">56225103425920179745019828423382255030086226600783237398582720244250840205090747144995470046432814267877822949968612053620215667790366338413979256357713975498764498045710766375614107934719809398451422359883451257033337168560937824719275885709824193760523306327217910106187213556299122895037021898556005848927</span></span><br><span class="line">q = <span class="number">56225103425920179745019828423382255030086226600783237398582720244250840205090747144995470046432814267877822949968612053620215667790366338413979256357713975498764498045710766375614107934719809398451422359883451257033337168560937824719275885709824193760523306327217910106187213556299122895037021898556005848447</span></span><br><span class="line"></span><br><span class="line">d = invert(e,(p<span class="number">-1</span>)*(q<span class="number">-1</span>))</span><br><span class="line">m = pow(c,d,n)</span><br><span class="line"><span class="keyword">print</span> long_to_bytes(m)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1575187900527.png" alt="57518790052"></p>
+<p>*公约数模数分解，c1，e1，n1和c2，e2，n2，这里先测试下gcd(n1,n2)!=1,那么我们就可以尝试分解n1和n2，就可以得到想要的q和p值。</p>
+<p>2、共模攻击型：</p>
+<p>由原理部分我们可以知道，e的范围是1&lt;e&lt;ϕ(n)，也就是说e是可以随机选取的，这时候，就可以使用不同的e对相同的m加密，得到2个不同的密文，而共模体现在使用的模数n不变，画个图：</p>
+<p><img src="/blog_img/1575188097173.png" alt="57518809717"></p>
+<p>演示共模攻击，重点是找到r和s，因为n比较难分解，如果满足下面的条件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> = gcd(e1,e2)</span><br><span class="line">r*e1 + s*e2 = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>这里计算r和s要用到扩展欧几里得算法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = gcdext(e1,e2)</span><br><span class="line">s = a[<span class="number">1</span>]</span><br><span class="line">r = a[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1575189116573.png" alt="57518911657"></p>
+<p>这里可以知道m&gt;n：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(c1**s)*(c2**r) = m%n</span><br></pre></td></tr></table></figure>
+
+<p>通过变换可以知道：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m = (c1**s)*(c2**r)%n</span><br></pre></td></tr></table></figure>
+
+<p>讲完了原理，下面开始做题：</p>
+<p><img src="/blog_img/1575196789481.png" alt="57519678948"></p>
+<p>这里给出了2组的信息，n，e1，e2，c1，c2，这题直接yafu是跑不出n的分解情况的，所以是共模攻击类型：</p>
+<p>按照我们前面所说的解题顺序，可以知道结果。</p>
+<p>那么我们的脚本就如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="comment">#openssl rsa -pubin -in pubkey.pem -text -modulus</span></span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> libnum</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">n = <span class="number">21660190931013270559487983141966347279666044468572000325628282578595119101840917794617733535995976710097702806131277006786522442555607842485975616689297559583352413160087163656851019769465637856967511819803473940154712516380580146620018921406354668604523723340895843009899397618067679200188650754096242296166060735958270930743173912010852467114047301529983496669250671342730804149428700280401481421735184899965468191802844285699985370238528163505674350380528600143880619512293622576854525700785474101747293316814980311297382429844950643977825771268757304088259531258222093667847468898823367251824316888563269155865061</span></span><br><span class="line">e1 = <span class="number">65537</span></span><br><span class="line">c1 = <span class="number">11623242520063564721509699039034210329314238234068836130756457335142671659158578379060500554276831657322012285562047706736377103534543565179660863796496071187533860896148153856845638989384429658963134915230898572173720454271369543435708994457280819363318783413033774014447450648051500214508699056865320506104733203716242071136228269326451412159760818676814129428252523248822316633339393821052614033884661649376604245744651142959498917235138077366818109892738298251161767344501687113868331134288984466294415889635863660753717476594011236542159800099371872396181448655448842148998667568104710807411358117939831241620315</span></span><br><span class="line"></span><br><span class="line">e2 = <span class="number">70001</span></span><br><span class="line">c2 = <span class="number">8180690717251057689732022736872836938270075717486355807317876695012318283159440935866297644561407238807004565510263413544530421072353735781284166685919420305808123063907272925594909852212249704923889776430284878600408776341129645414000647100303326242514023325498519509077311907161849407990649396330146146728447312754091670139159346316264091798623764434932753276554781692238428057951593104821823029665203821775755835076337570281155689527215367647821372680421305939449511621244288104229290161484649056505784641486376741409443450331991557221540050574024894427139331416236263783977068315294198184169154352536388685040531</span></span><br><span class="line"></span><br><span class="line">a = gcdext(e1,e2)</span><br><span class="line"><span class="comment">#扩展欧几里得算法求s和r</span></span><br><span class="line"><span class="keyword">if</span> a[<span class="number">1</span>]&lt;<span class="number">0</span>:</span><br><span class="line">	s = -a[<span class="number">1</span>]</span><br><span class="line">	r = a[<span class="number">2</span>]</span><br><span class="line">	c1 = invert(c1, n)</span><br><span class="line"><span class="keyword">if</span> a[<span class="number">2</span>]&lt;<span class="number">0</span>:</span><br><span class="line">	s = a[<span class="number">1</span>]</span><br><span class="line">	r = -a[<span class="number">2</span>]</span><br><span class="line">	c2 = invert(c2, n)</span><br><span class="line"><span class="comment">#这里一个数的负数次幂求解，用中国剩余定理去求出对应的逆元再运算</span></span><br><span class="line">m = (pow(c1,s,n)*pow(c2,r,n))%n</span><br><span class="line"><span class="keyword">print</span> long_to_bytes(m)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1575197024103.png" alt="57519702410"></p>
+<p>3、小指数明文爆破攻击</p>
+<p>这里如果使用的e太小的话，比如e=3，而且m也比较小的情况下，就有这种可能：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c+k*n&lt;m^<span class="number">3</span>&lt;(k+<span class="number">1</span>)*n+c</span><br></pre></td></tr></table></figure>
+
+<p>那么我们可以通过爆破的方式直接开3次根，解得m值，来一道题看看：</p>
+<p><img src="/blog_img/1575205534369.png" alt="57520553436"></p>
+<p>小指数的e，所以我们直接尝试着使用小指数明文爆破的方式去做这题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="comment">#openssl rsa -pubin -in pubkey.pem -text -modulus</span></span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> libnum</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">n = <span class="number">47966708183289639962501363163761864399454241691014467172805658518368423135168025285144721028476297179341434450931955275325060173656301959484440112740411109153032840150659</span></span><br><span class="line">e = <span class="number">3</span></span><br><span class="line">c = <span class="number">10968126341413081941567552025256642365567988931403833266852196599058668508079150528128483441934584299102782386592369069626088211004467782012298322278772376088171342152839</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">	m = iroot(c+i*n,<span class="number">3</span>)</span><br><span class="line">	<span class="keyword">if</span> m[<span class="number">1</span>]==<span class="number">1</span>:</span><br><span class="line">		<span class="keyword">print</span> long_to_bytes(m[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">	i += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1575205614845.png" alt="57520561484"></p>
+<h4 id="4、选择密文攻击"><a href="#4、选择密文攻击" class="headerlink" title="4、选择密文攻击"></a>4、选择密文攻击</h4><p>这里相当于给了一个orancle，攻击者拥有了加密和解密的服务，但是无法直接获得想要的n和e，我们只知道c，这时如果我们选择了一个r，满足r&lt;n，可以知道：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">若x = r^e mod n</span><br><span class="line">则r = x^d mod n</span><br><span class="line">得到y = x*c mod n</span><br><span class="line">选择t = r^(<span class="number">-1</span>) mod n</span><br><span class="line">选择u = y^d mod n</span><br><span class="line">那么我们有：</span><br><span class="line">t*u mod n = ((r^(<span class="number">-1</span>) mod n)*(y^d mod n)) mod n</span><br><span class="line">=(r^(<span class="number">-1</span>)*(x^d)*(c^d)) mod n</span><br><span class="line">=(r^(<span class="number">-1</span>)*r*c^d) mod n</span><br><span class="line">=c^d mod n</span><br><span class="line">=m</span><br></pre></td></tr></table></figure>
+
+<p>由此通过选择密文攻击的方式，我们可以解密出明文。</p>
+<h4 id="5、广播攻击"><a href="#5、广播攻击" class="headerlink" title="5、广播攻击"></a>5、广播攻击</h4><p>广播攻击是低指数攻击的一种，通常情况下，是利用相同的e对不同的n进行加密，这样我们就可以得到很多组同余的方程式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c1≡m^e mod n1</span><br><span class="line">c2≡m^e mod n2</span><br><span class="line">c3≡m^e mod n3</span><br><span class="line">对上述等式运用中国剩余定理，可以得到：</span><br><span class="line">cx≡m^e mod n1n2n3</span><br><span class="line">这里的e一般是小指数，比如<span class="number">3</span>或者<span class="number">9</span></span><br><span class="line">可以知道m^e = cx mod n1n2n3</span><br></pre></td></tr></table></figure>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、欧拉定理："><span class="toc-number">1.</span> <span class="toc-text">一、欧拉定理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、密钥的计算获取过程"><span class="toc-number">2.</span> <span class="toc-text">二、密钥的计算获取过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、加密与解密过程"><span class="toc-number">3.</span> <span class="toc-text">三、加密与解密过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、做一波题目巩固下"><span class="toc-number">4.</span> <span class="toc-text">四、做一波题目巩固下</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

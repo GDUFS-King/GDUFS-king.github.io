@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MD5加密和Hash函数分析 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、MD5加密算法的原理分析​        md5的输入是512位的倍数，输出是128位，首先填充消息，使其长度为与448 mod 512同余，即长度是512的倍数减去64，填充的消息第一位是1，,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">MD5加密和Hash函数分析</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/密码学"><b>「
+                    </b>密码学<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/MD5%E5%8A%A0%E5%AF%86%E5%92%8CHash%E5%87%BD%E6%95%B0%E5%88%86%E6%9E%90/" title="MD5加密和Hash函数分析" class="">MD5加密和Hash函数分析</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    36k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    32 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/hash/" rel="tag">hash</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/md5/" rel="tag">md5</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h4 id="一、MD5加密算法的原理分析"><a href="#一、MD5加密算法的原理分析" class="headerlink" title="一、MD5加密算法的原理分析"></a>一、MD5加密算法的原理分析</h4><p>​        md5的输入是512位的倍数，输出是128位，首先填充消息，使其长度为与448 mod 512同余，即长度是512的倍数减去64，填充的消息第一位是1，后面全部都是0，即使原来的消息长度刚好与448 mod 512同余(64)，仍然需要填充，即使原来的消息长度刚好是512的整数倍，仍需要填充。</p>
+<a id="more"></a>
+
+<p>​        再将这剩余的64位填充为原来消息的长度(二进制)，如果原来的消息长度大于64位，则只填充低64位，之后的序列长度就是512的倍数了，这里每一个512位称为一个分组，又将每一个512分为16个32位，称为一个子分组(M0-M15)，之后进行4轮运算，每一轮进行16次操作，分别针对这16个子分组。</p>
+<p>原消息有几个分组就进行几次循环，循环这4轮运算，每一次循环需要一个128位序列当“种子”（A=0x67452301；B=0xefcdab89；C=0x98badcfe；D=0x10325476，很明显是小端序存储），之后输出一个128位的序列，这个序列与下一分组继续作用产生下一次的128位的输出。</p>
+<p><img src="/blog_img/1576400628944.png" alt="57640062894"></p>
+<p>下面说说具体的每次循环的4轮运算是怎么样的：</p>
+<p>这4轮运算需要用到一个常数表T[i] (i = 1-64),等于4294967296*abs(sin(i))所得结果的整数部分，其中i用弧度表示，这样做是为了通过正弦函数和幂函数来进一步消除变换中的线性，这也是不可逆的一个原因。</p>
+<p><img src="/blog_img/1576401403826.png" alt="57640140382"></p>
+<p>下面利用这个常数表进行运算：</p>
+<p>首先将我们的初始输入ABCD存起来:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">INPUT_A = A</span><br><span class="line"></span><br><span class="line">INPUT_B = B</span><br><span class="line"></span><br><span class="line">INPUT_C = C</span><br><span class="line"></span><br><span class="line">INPUT_D = D</span><br></pre></td></tr></table></figure>
+
+<p>用到的函数：F(X,Y,Z) =(X&amp;Y)|((~X)&amp;Z)，很明显这又是一个不可逆向的操作，下面进行运算：</p>
+<p>循环左移：7,12,17,22，每4个为1组，一共16个数，所以进行4组</p>
+<p>第一轮：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">A = B+((A+F(B,C,D)+M[<span class="number">0</span>]+T[<span class="number">1</span>])&lt;&lt;&lt;<span class="number">7</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+F(A,B,C)+M[<span class="number">1</span>]+T[<span class="number">2</span>])&lt;&lt;&lt;<span class="number">12</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+F(D,A,B)+M[<span class="number">2</span>]+T[<span class="number">3</span>])&lt;&lt;&lt;<span class="number">17</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+F(C,D,A)+M[<span class="number">3</span>]+T[<span class="number">4</span>])&lt;&lt;&lt;<span class="number">22</span>) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">A = B+((A+F(B,C,D)+M[<span class="number">4</span>]+T[<span class="number">5</span>])&lt;&lt;&lt;<span class="number">7</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+F(A,B,C)+M[<span class="number">5</span>]+T[<span class="number">6</span>])&lt;&lt;&lt;<span class="number">12</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+F(D,A,B)+M[<span class="number">6</span>]+T[<span class="number">7</span>])&lt;&lt;&lt;<span class="number">17</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+F(C,D,A)+M[<span class="number">7</span>]+T[<span class="number">8</span>])&lt;&lt;&lt;<span class="number">22</span>) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">A = B+((A+F(B,C,D)+M[<span class="number">8</span>]+T[<span class="number">9</span>])&lt;&lt;&lt;<span class="number">7</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+F(A,B,C)+M[<span class="number">9</span>]+T[<span class="number">10</span>])&lt;&lt;&lt;<span class="number">12</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+F(D,A,B)+M[<span class="number">10</span>]+T[<span class="number">11</span>])&lt;&lt;&lt;<span class="number">17</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+F(C,D,A)+M[<span class="number">11</span>]+T[<span class="number">12</span>])&lt;&lt;&lt;<span class="number">22</span>) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">A = B+((A+F(B,C,D)+M[<span class="number">12</span>]+T[<span class="number">13</span>])&lt;&lt;&lt;<span class="number">7</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+F(A,B,C)+M[<span class="number">13</span>]+T[<span class="number">14</span>])&lt;&lt;&lt;<span class="number">12</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+F(D,A,B)+M[<span class="number">14</span>]+T[<span class="number">15</span>])&lt;&lt;&lt;<span class="number">17</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+F(C,D,A)+M[<span class="number">15</span>]+T[<span class="number">16</span>])&lt;&lt;&lt;<span class="number">22</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这里进行了移位操作和迭代操作，也是不可逆的，后面的道理是一样的。</p>
+<p>第二轮：用到的移位是5,9,14,20，间隔为递增的4,5,6</p>
+<p>用到的函数：G(X,Y,Z) =(X&amp;Z)|(Y&amp;(~Z))</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">A = B+((A+G(B,C,D)+M[<span class="number">1</span>]+T[<span class="number">17</span>])&lt;&lt;&lt;<span class="number">5</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+G(A,B,C)+M[<span class="number">6</span>]+T[<span class="number">18</span>])&lt;&lt;&lt;<span class="number">9</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+G(D,A,B)+M[<span class="number">11</span>]+T[<span class="number">19</span>])&lt;&lt;&lt;<span class="number">14</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+G(C,D,A)+M[<span class="number">0</span>]+T[<span class="number">20</span>])&lt;&lt;&lt;<span class="number">20</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+G(B,C,D)+M[<span class="number">5</span>]+T[<span class="number">21</span>])&lt;&lt;&lt;<span class="number">5</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+G(A,B,C)+M[<span class="number">10</span>]+T[<span class="number">22</span>])&lt;&lt;&lt;<span class="number">9</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+G(D,A,B)+M[<span class="number">15</span>]+T[<span class="number">23</span>])&lt;&lt;&lt;<span class="number">14</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+G(C,D,A)+M[<span class="number">4</span>]+T[<span class="number">24</span>])&lt;&lt;&lt;<span class="number">20</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+G(B,C,D)+M[<span class="number">9</span>]+T[<span class="number">25</span>])&lt;&lt;&lt;<span class="number">5</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+G(A,B,C)+M[<span class="number">14</span>]+T[<span class="number">26</span>])&lt;&lt;&lt;<span class="number">9</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+G(D,A,B)+M[<span class="number">3</span>]+T[<span class="number">27</span>])&lt;&lt;&lt;<span class="number">14</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+G(C,D,A)+M[<span class="number">8</span>]+T[<span class="number">28</span>])&lt;&lt;&lt;<span class="number">20</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+G(B,C,D)+M[<span class="number">13</span>]+T[<span class="number">29</span>])&lt;&lt;&lt;<span class="number">5</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+G(A,B,C)+M[<span class="number">2</span>]+T[<span class="number">30</span>])&lt;&lt;&lt;<span class="number">9</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+G(D,A,B)+M[<span class="number">7</span>]+T[<span class="number">31</span>])&lt;&lt;&lt;<span class="number">14</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+G(C,D,A)+M[<span class="number">12</span>]+T[<span class="number">32</span>])&lt;&lt;&lt;<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+
+<p>第三轮：</p>
+<p>用到的函数：H(X,Y,Z) =X^Y^Z</p>
+<p>移位规则为7，5，7</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">A = B+((A+H(B,C,D)+M[<span class="number">5</span>]+T[<span class="number">33</span>])&lt;&lt;&lt;<span class="number">4</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+H(A,B,C)+M[<span class="number">8</span>]+T[<span class="number">34</span>])&lt;&lt;&lt;<span class="number">11</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+H(D,A,B)+M[<span class="number">11</span>]+T[<span class="number">35</span>])&lt;&lt;&lt;<span class="number">16</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+H(C,D,A)+M[<span class="number">14</span>]+T[<span class="number">36</span>])&lt;&lt;&lt;<span class="number">23</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+H(B,C,D)+M[<span class="number">1</span>]+T[<span class="number">37</span>])&lt;&lt;&lt;<span class="number">4</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+H(A,B,C)+M[<span class="number">4</span>]+T[<span class="number">38</span>])&lt;&lt;&lt;<span class="number">11</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+H(D,A,B)+M[<span class="number">7</span>]+T[<span class="number">39</span>])&lt;&lt;&lt;<span class="number">16</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+H(C,D,A)+M[<span class="number">10</span>]+T[<span class="number">40</span>])&lt;&lt;&lt;<span class="number">23</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+H(B,C,D)+M[<span class="number">13</span>]+T[<span class="number">41</span>])&lt;&lt;&lt;<span class="number">4</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+H(A,B,C)+M[<span class="number">0</span>]+T[<span class="number">42</span>])&lt;&lt;&lt;<span class="number">11</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+H(D,A,B)+M[<span class="number">3</span>]+T[<span class="number">43</span>])&lt;&lt;&lt;<span class="number">16</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+H(C,D,A)+M[<span class="number">6</span>]+T[<span class="number">44</span>])&lt;&lt;&lt;<span class="number">23</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+H(B,C,D)+M[<span class="number">9</span>]+T[<span class="number">45</span>])&lt;&lt;&lt;<span class="number">4</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+H(A,B,C)+M[<span class="number">12</span>]+T[<span class="number">46</span>])&lt;&lt;&lt;<span class="number">11</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+H(D,A,B)+M[<span class="number">15</span>]+T[<span class="number">47</span>])&lt;&lt;&lt;<span class="number">16</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+H(C,D,A)+M[<span class="number">2</span>]+T[<span class="number">48</span>])&lt;&lt;&lt;<span class="number">23</span>)</span><br></pre></td></tr></table></figure>
+
+<p>第四轮：移位规则为4,5,6</p>
+<p>用到的函数：I(X,Y,Z)=Y^(X|(~Z))</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">A = B+((A+I(B,C,D)+M[<span class="number">0</span>]+T[<span class="number">49</span>])&lt;&lt;&lt;<span class="number">6</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+I(A,B,C)+M[<span class="number">7</span>]+T[<span class="number">50</span>])&lt;&lt;&lt;<span class="number">10</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+I(D,A,B)+M[<span class="number">14</span>]+T[<span class="number">51</span>])&lt;&lt;&lt;<span class="number">15</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+I(C,D,A)+M[<span class="number">5</span>]+T[<span class="number">52</span>])&lt;&lt;&lt;<span class="number">21</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+I(B,C,D)+M[<span class="number">12</span>]+T[<span class="number">53</span>])&lt;&lt;&lt;<span class="number">6</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+I(A,B,C)+M[<span class="number">3</span>]+T[<span class="number">54</span>])&lt;&lt;&lt;<span class="number">10</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+I(D,A,B)+M[<span class="number">10</span>]+T[<span class="number">55</span>])&lt;&lt;&lt;<span class="number">15</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+I(C,D,A)+M[<span class="number">1</span>]+T[<span class="number">56</span>])&lt;&lt;&lt;<span class="number">21</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+I(B,C,D)+M[<span class="number">8</span>]+T[<span class="number">57</span>])&lt;&lt;&lt;<span class="number">6</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+I(A,B,C)+M[<span class="number">15</span>]+T[<span class="number">58</span>])&lt;&lt;&lt;<span class="number">10</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+I(D,A,B)+M[<span class="number">6</span>]+T[<span class="number">59</span>])&lt;&lt;&lt;<span class="number">15</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+I(C,D,A)+M[<span class="number">13</span>]+T[<span class="number">60</span>])&lt;&lt;&lt;<span class="number">21</span>) </span><br><span class="line"></span><br><span class="line">A = B+((A+I(B,C,D)+M[<span class="number">4</span>]+T[<span class="number">61</span>])&lt;&lt;&lt;<span class="number">6</span>) </span><br><span class="line"></span><br><span class="line">D = A+((D+I(A,B,C)+M[<span class="number">11</span>]+T[<span class="number">62</span>])&lt;&lt;&lt;<span class="number">10</span>) </span><br><span class="line"></span><br><span class="line">C = D+((C+I(D,A,B)+M[<span class="number">2</span>]+T[<span class="number">63</span>])&lt;&lt;&lt;<span class="number">15</span>) </span><br><span class="line"></span><br><span class="line">B = C+((B+I(C,D,A)+M[<span class="number">9</span>]+T[<span class="number">64</span>])&lt;&lt;&lt;<span class="number">21</span>)</span><br></pre></td></tr></table></figure>
+
+<p>至此，一个512位分组，分为M[16]，每个是32位，然后种子为A,B,C,D，常数表是T[64]，一共4大轮，每一个大轮进行了16次不同的操作，得到最新的A,B,C,D，然后我们加上之前的ABCD。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A = A + INPUT_A</span><br><span class="line"></span><br><span class="line">B = B + INPUT_B</span><br><span class="line"></span><br><span class="line">C = C + INPUT_C</span><br><span class="line"></span><br><span class="line">D = D + INPUT_D</span><br></pre></td></tr></table></figure>
+
+<p>最终输出了A,B,C,D作为新一轮的种子序列，依次列推，最后全部输出完成，就会得到最新的ABCD作为最终的输出，也就是我们的密文，这里我个人理解，输入感觉更像是参与了加密过程，像是其中的一个key一般。</p>
+<p>在python中已经集成了md5的算法模块，可以直接使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">str1 = <span class="string">'this is a md5 test.'</span></span><br><span class="line">hl = hashlib.md5()</span><br><span class="line">hl.update(str1.encode(encoding=<span class="string">'utf-8'</span>))</span><br><span class="line">print(<span class="string">'MD5加密前为 ：'</span> + str1)</span><br><span class="line">print(<span class="string">'MD5加密后为 ：'</span> + hl.hexdigest())</span><br></pre></td></tr></table></figure>
+
+<p>*要是想要强行碰撞的话，概率是很低的，只有1/2^64。</p>
+<p>md5加密算法的c实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">md5</span><span class="params">(<span class="keyword">const</span> <span class="keyword">uint8_t</span> *initial_msg, <span class="keyword">size_t</span> initial_len, <span class="keyword">uint8_t</span> *digest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// These vars will contain the hash</span></span><br><span class="line">	<span class="keyword">uint32_t</span> h0, h1, h2, h3;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Message (to prepare)</span></span><br><span class="line">	<span class="keyword">uint8_t</span> *msg = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">size_t</span> new_len, offset;</span><br><span class="line">	<span class="keyword">uint32_t</span> w[<span class="number">16</span>];</span><br><span class="line">	<span class="keyword">uint32_t</span> a, b, c, d, i, f, g, temp;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Initialize variables - simple count in nibbles:</span></span><br><span class="line">	h0 = <span class="number">0x67452301</span>;</span><br><span class="line">	h1 = <span class="number">0xefcdab89</span>;</span><br><span class="line">	h2 = <span class="number">0x98badcfe</span>;</span><br><span class="line">	h3 = <span class="number">0x10325476</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Pre-processing:</span></span><br><span class="line">	<span class="comment">//append "1" bit to message</span></span><br><span class="line">	<span class="comment">//append "0" bits until message length in bits ≡ 448 (mod 512)</span></span><br><span class="line">	<span class="comment">//append length mod (2^64) to message</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (new_len = initial_len + <span class="number">1</span>; new_len % (<span class="number">512</span> / <span class="number">8</span>) != <span class="number">448</span> / <span class="number">8</span>; new_len++)</span><br><span class="line">		;</span><br><span class="line"></span><br><span class="line">	msg = (<span class="keyword">uint8_t</span> *)<span class="built_in">malloc</span>(new_len + <span class="number">8</span>);</span><br><span class="line">	<span class="built_in">memcpy</span>(msg, initial_msg, initial_len);</span><br><span class="line">	msg[initial_len] = <span class="number">0x80</span>; <span class="comment">// append the "1" bit; most significant bit is "first"</span></span><br><span class="line">	<span class="keyword">for</span> (offset = initial_len + <span class="number">1</span>; offset &lt; new_len; offset++)</span><br><span class="line">		msg[offset] = <span class="number">0</span>; <span class="comment">// append "0" bits</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// append the len in bits at the end of the buffer.</span></span><br><span class="line">	to_bytes(initial_len * <span class="number">8</span>, msg + new_len);</span><br><span class="line">	<span class="comment">// initial_len&gt;&gt;29 == initial_len*8&gt;&gt;32, but avoids overflow.</span></span><br><span class="line">	to_bytes(initial_len &gt;&gt; <span class="number">29</span>, msg + new_len + <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Process the message in successive 512-bit chunks:</span></span><br><span class="line">	<span class="comment">//for each 512-bit chunk of message:</span></span><br><span class="line">	<span class="keyword">for</span> (offset = <span class="number">0</span>; offset &lt; new_len; offset += (<span class="number">512</span> / <span class="number">8</span>))</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// break chunk into sixteen 32-bit words w[j], 0 ≤ j ≤ 15</span></span><br><span class="line">		<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">16</span>; i++)</span><br><span class="line">			w[i] = to_int32(msg + offset + i * <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Initialize hash value for this chunk:</span></span><br><span class="line">		a = h0;</span><br><span class="line">		b = h1;</span><br><span class="line">		c = h2;</span><br><span class="line">		d = h3;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Main loop:</span></span><br><span class="line">		<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">64</span>; i++)</span><br><span class="line">		&#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (i &lt; <span class="number">16</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				f = (b &amp; c) | ((~b) &amp; d);</span><br><span class="line">				g = i;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (i &lt; <span class="number">32</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				f = (d &amp; b) | ((~d) &amp; c);</span><br><span class="line">				g = (<span class="number">5</span> * i + <span class="number">1</span>) % <span class="number">16</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (i &lt; <span class="number">48</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				f = b ^ c ^ d;</span><br><span class="line">				g = (<span class="number">3</span> * i + <span class="number">5</span>) % <span class="number">16</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				f = c ^ (b | (~d));</span><br><span class="line">				g = (<span class="number">7</span> * i) % <span class="number">16</span>;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			temp = d;</span><br><span class="line">			d = c;</span><br><span class="line">			c = b;</span><br><span class="line">			b = b + LEFTROTATE((a + f + k[i] + w[g]), r[i]);</span><br><span class="line">			a = temp;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Add this chunk's hash to result so far:</span></span><br><span class="line">		h0 += a;</span><br><span class="line">		h1 += b;</span><br><span class="line">		h2 += c;</span><br><span class="line">		h3 += d;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// cleanup</span></span><br><span class="line">	<span class="built_in">free</span>(msg);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//var char digest[16] := h0 append h1 append h2 append h3 //(Output is in little-endian)</span></span><br><span class="line">	to_bytes(h0, digest);</span><br><span class="line">	to_bytes(h1, digest + <span class="number">4</span>);</span><br><span class="line">	to_bytes(h2, digest + <span class="number">8</span>);</span><br><span class="line">	to_bytes(h3, digest + <span class="number">12</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="二、Hash函数研究"><a href="#二、Hash函数研究" class="headerlink" title="二、Hash函数研究"></a>二、Hash函数研究</h4><p>hash函数又称为散列函数，其主要目的是将不定长度的消息转成固定长度的消息，一般存在着一种映射关系，有个映射表，一般有2个特点需要记住的是：</p>
+<h5 id="1、抗碰撞能力："><a href="#1、抗碰撞能力：" class="headerlink" title="1、抗碰撞能力："></a>1、抗碰撞能力：</h5><p>对于任意两个不同的数据块，其hash值相同的可能性极小；对于一个给定的数据块，找到和它hash值相同的数据块极为困难。</p>
+<p>但是并不是说没有，可以举个MD5的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="comment">#  两段HEX字节串，注意它们有细微差别</span></span><br><span class="line">a = bytearray.fromhex(<span class="string">"0e306561559aa787d00bc6f70bbdfe3404cf03659e704f8534c00ffb659c4c8740cc942feb2da115a3f4155cbb8607497386656d7d1f34a42059d78f5a8dd1ef"</span>)</span><br><span class="line"></span><br><span class="line">b = bytearray.fromhex(<span class="string">"0e306561559aa787d00bc6f70bbdfe3404cf03659e744f8534c00ffb659c4c8740cc942feb2da115a3f415dcbb8607497386656d7d1f34a42059d78f5a8dd1ef"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#  输出MD5，它们的结果一致</span></span><br><span class="line">print(hashlib.md5(a).hexdigest())</span><br><span class="line">print(hashlib.md5(b).hexdigest())</span><br><span class="line"></span><br><span class="line"><span class="comment">### a和b输出结果都为：</span></span><br><span class="line">cee9a457e790cf20d4bdaa6d69f01e41</span><br><span class="line">cee9a457e790cf20d4bdaa6d69f01e41</span><br></pre></td></tr></table></figure>
+
+<h5 id="2、抗篡改能力："><a href="#2、抗篡改能力：" class="headerlink" title="2、抗篡改能力："></a>2、抗篡改能力：</h5><p>对于一个数据块，哪怕只改动其一个比特位，其hash值的改动也会很大</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MD5(<span class="string">"version1"</span>) = <span class="string">"966634ebf2fc135707d6753692bf4b1e"</span>;</span><br><span class="line">MD5(<span class="string">"version2"</span>) = <span class="string">"2e0e95285f08a07dea17e7ee111b21c8"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>经常使用的构造散列函数的方法<br>散列函数能使对一个数据序列的訪问过程更加迅速有效，通过散列函数，数据元素将被更快地定位：</p>
+<ol>
+<li><p>直接寻址法：取keyword或keyword的某个线性函数值为散列地址。即H(key)=key或H(key) = a•key + b，当中a和b为常数（这样的散列函数叫做自身函数）</p>
+</li>
+<li><p>数字分析法：分析一组数据，比方一组员工的出生年月日，这时我们发现出生年月日的前几位数字大体同样，这种话，出现冲突的几率就会非常大，可是我们发现年月日的后几位表示月份和详细日期的数字区别非常大，假设用后面的数字来构成散列地址，则冲突的几率会明显减少。因此数字分析法就是找出数字的规律，尽可能利用这些数据来构造冲突几率较低的散列地址。</p>
+</li>
+<li><p>平方取中法：取keyword平方后的中间几位作为散列地址。</p>
+</li>
+<li><p>折叠法：将keyword切割成位数同样的几部分，最后一部分位数能够不同，然后取这几部分的叠加和（去除进位）作为散列地址。</p>
+</li>
+<li><p>随机数法：选择一随机函数，取keyword的随机值作为散列地址，通经常使用于keyword长度不同的场合。</p>
+</li>
+<li><p>除留余数法：取keyword被某个不大于散列表表长m的数p除后所得的余数为散列地址。即 H(key) = key MOD p, p&lt;=m。不仅能够对keyword直接取模，也可在折叠、平方取中等运算之后取模。对p的选择非常重要，一般取素数或m，若p选的不好，容易产生同义词。</p>
+</li>
+</ol>
+<p>目前流行的 Hash 算法包括 MD5、SHA-1 和 SHA-2。</p>
+<ul>
+<li>MD4（RFC 1320）是 MIT 的 Ronald L. Rivest 在 1990 年设计的，MD 是 Message Digest 的缩写。其输出为 128 位。MD4 已证明不够安全。</li>
+<li>MD5（RFC 1321）是 Rivest 于1991年对 MD4 的改进版本。它对输入仍以 512 位分组，其输出是 128 位。MD5 比 MD4 复杂，并且计算速度要慢一点，更安全一些。MD5 已被证明不具备”强抗碰撞性”。</li>
+<li>SHA （Secure Hash Algorithm）是一个 Hash 函数族，由 NIST（National Institute of Standards and Technology）于 1993 年发布第一个算法。目前知名的 SHA-1 在 1995 年面世，它的输出为长度 160 位的 hash 值，因此抗穷举性更好。SHA-1 设计时基于和 MD4 相同原理，并且模仿了该算法。SHA-1 已被证明不具”强抗碰撞性”。</li>
+<li>为了提高安全性，NIST 还设计出了 SHA-224、SHA-256、SHA-384，和 SHA-512 算法（统称为 SHA-2），跟 SHA-1 算法原理类似。SHA-3 相关算法也已被提出。</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

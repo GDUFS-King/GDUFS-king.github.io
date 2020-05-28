@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Base64加密算法小研究 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="1、先了解一波什么是Base64编码的加密与解密：1、Base64使用A–Z,a–z,0–9,+,/ 这64个字符.
+2、编码原理:将3个字节转换成4个字节( (3 X 8) = 24 = (4 X,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Base64加密算法小研究</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/密码学"><b>「
+                    </b>密码学<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Base64%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%B0%8F%E7%A0%94%E7%A9%B6/" title="Base64加密算法小研究" class="">Base64加密算法小研究</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    30k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    28 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/base64/" rel="tag">base64</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h4 id="1、先了解一波什么是Base64编码的加密与解密："><a href="#1、先了解一波什么是Base64编码的加密与解密：" class="headerlink" title="1、先了解一波什么是Base64编码的加密与解密："></a>1、先了解一波什么是Base64编码的加密与解密：</h4><p>1、Base64使用A–Z,a–z,0–9,+,/ 这64个字符.</p>
+<p>2、编码原理:将3个字节转换成4个字节( (3 X 8) = 24 = (4 X 6) )先读入3个字节,每读一个字节,左移8位,再右移四次,每次6位,这样就有4个字节了.</p>
+<p>3、解码原理:将4个字节转换成3个字节.先读入4个6位(用或运算),每次左移6位,再右移3次,每次8位.这样就还原了.<a id="more"></a></p>
+<p> Base64是一种很常见的编码规范，其作用是将二进制序列转换为人类可读的ASCII字符序列，常用在需用通过文本协议（比如HTTP和SMTP）来传输二进制数据的情况下。</p>
+<p>先来看看base64的表:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-48f050db5d6d6adc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>由于base64编码是将编码前的3*8位数据，分解成4个6位的数据，所以经过base64编码后的字符串长度是4的倍数。但往往我们进行编码的数据长度并不是3的倍数，这就造成了“编码”后的位数不为4的倍数，比如Brisk共5×8=40位，以6位为一组可以分为7组，这样“编码”后就有7个字符，但base64编码后的字符长度应该是4的倍数，显然这里就出问题了，那么怎么办呢？前面的不可以抛弃掉，所以就只有“追加”了，所以Brisk经过base64编码后的长度应该是8个字符，而第8个编码后的字符是’=’，再比如对单个字符a进行base64编码，由于它的长度不是3的倍数，以3个字节为一组它只能分一组，再以6位为一位它只能分两组，所以经过“编码”后它的长度是2，但base64编码后的个数应该是4的倍数，所以它的长度应该是4，所以在后面补上两个‘=’,由于一个数求余3后有三个不同的结果，0、1、2，所以在对一个数据进行base64进行编码后它的长度为：</p>
+<p>接着我们以brisk为例子进行一次演算去还原这个过程：</p>
+<p>（1）当进行编码的数据长度是3的倍数时，len=strlen(str_in)/3<em>4;<br>（2）当进行编码的数据长度不是3的倍数时，len=(strlen(str_in)/3+1)</em>4;</p>
+<p>我们以Brisk这个例子来说明一下base64编码的过程。首先我们以3个字符为一组将Brisk进行分组，Brisk被氛围两组：Bri 和 sk；然后我们取出这两个分组中每个字节的ASCII码：</p>
+<p>B:66 r:114 i:105 s:115 k:107。它们对应的二进制数为  </p>
+<p>B:01000010 r:01110010 i:01101001 s:01110011 k:01101011；</p>
+<p>​       第一组，我们以6位为一组对每一个3字节分组进行再分组就变成了010000 100111 001001 101001。所对应的十进制数是16 39 9 41，对应base64表中的结果是 Q n J p；</p>
+<p>​       第二组，011100 110110 101100(不够补0)，所以对应的十进制数是 28 54 44，对应base64表中的结果是 c 2 s，最终结果为QnJpc2s=（因为第二组“编码”后只有三个字节）。</p>
+<p>​      解码的过程是一个逆过程，我们将经过编码后的字符按4个字符为一组，然后对照base64表得到相应的十进制数，再将其通过拆分和组合，组成3个8位数据，这个数据就是解码后的数据。</p>
+<p>Q: 16 n:39 J:9 p:41  ——&gt; 010000 100111 001001 101001  </p>
+<p>6转8：01000010  01110010  01101001  —–&gt;Bri</p>
+<p>c: 28 2:54 s:44 —–&gt; 011100 110110 101100 </p>
+<p>6转8：01110011  01101011 —–&gt;sk（末尾的0本来就是用来补足的，所以可省略）</p>
+<p>所以如果有=，在逆运算时是可以忽略=的。</p>
+<h4 id="2、好了接下来搞个C的源代码分析："><a href="#2、好了接下来搞个C的源代码分析：" class="headerlink" title="2、好了接下来搞个C的源代码分析："></a>2、好了接下来搞个C的源代码分析：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*base64.h*/</span>  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _BASE64_H  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _BASE64_H  </span></span><br><span class="line">  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;  </span></span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">char</span> *<span class="title">base64_encode</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *str)</span></span>;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">char</span> *<span class="title">bae64_decode</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *code)</span></span>;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*base64.c*/</span>  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"base64.h"</span>  </span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">char</span> *<span class="title">base64_encode</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *str)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">long</span> len;  </span><br><span class="line">    <span class="keyword">long</span> str_len;  </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *res;  </span><br><span class="line">    <span class="keyword">int</span> i,j;  </span><br><span class="line"><span class="comment">//定义base64编码表  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *base64_table=<span class="string">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"</span>;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//计算经过base64编码后的字符串长度  </span></span><br><span class="line">    str_len=<span class="built_in">strlen</span>(str);  </span><br><span class="line">    <span class="keyword">if</span>(str_len % <span class="number">3</span> == <span class="number">0</span>)  </span><br><span class="line">        len=str_len/<span class="number">3</span>*<span class="number">4</span>;  </span><br><span class="line">    <span class="keyword">else</span>  </span><br><span class="line">        len=(str_len/<span class="number">3</span>+<span class="number">1</span>)*<span class="number">4</span>;  </span><br><span class="line">  </span><br><span class="line">    res=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">char</span>)*len+<span class="number">1</span>);  </span><br><span class="line">    res[len]=<span class="string">'\0'</span>;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//以3个8位字符为一组进行编码  </span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>,j=<span class="number">0</span>;i&lt;len<span class="number">-2</span>;j+=<span class="number">3</span>,i+=<span class="number">4</span>)  </span><br><span class="line">    &#123;  </span><br><span class="line">        res[i]=base64_table[str[j]&gt;&gt;<span class="number">2</span>]; <span class="comment">//取出第一个字符的前6位并找出对应的结果字符  </span></span><br><span class="line">        res[i+<span class="number">1</span>]=base64_table[(str[j]&amp;<span class="number">0x3</span>)&lt;&lt;<span class="number">4</span> | (str[j+<span class="number">1</span>]&gt;&gt;<span class="number">4</span>)]; <span class="comment">//将第一个字符的后位与第二个字符的前4位进行组合并找到对应的结果字符  </span></span><br><span class="line">        res[i+<span class="number">2</span>]=base64_table[(str[j+<span class="number">1</span>]&amp;<span class="number">0xf</span>)&lt;&lt;<span class="number">2</span> | (str[j+<span class="number">2</span>]&gt;&gt;<span class="number">6</span>)]; <span class="comment">//将第二个字符的后4位与第三个字符的前2位组合并找出对应的结果字符  </span></span><br><span class="line">        res[i+<span class="number">3</span>]=base64_table[str[j+<span class="number">2</span>]&amp;<span class="number">0x3f</span>]; <span class="comment">//取出第三个字符的后6位并找出结果字符  </span></span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">switch</span>(str_len % <span class="number">3</span>)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:  </span><br><span class="line">            res[i<span class="number">-2</span>]=<span class="string">'='</span>;  </span><br><span class="line">            res[i<span class="number">-1</span>]=<span class="string">'='</span>;  </span><br><span class="line">            <span class="keyword">break</span>;  </span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:  </span><br><span class="line">            res[i<span class="number">-1</span>]=<span class="string">'='</span>;  </span><br><span class="line">            <span class="keyword">break</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> res;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">char</span> *<span class="title">base64_decode</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *code)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line"><span class="comment">//根据base64表，以字符找到对应的十进制数据  </span></span><br><span class="line">    <span class="keyword">int</span> table[]=&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    		 <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    		 <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    		 <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">62</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    		 <span class="number">63</span>,<span class="number">52</span>,<span class="number">53</span>,<span class="number">54</span>,<span class="number">55</span>,<span class="number">56</span>,<span class="number">57</span>,<span class="number">58</span>,</span><br><span class="line">    		 <span class="number">59</span>,<span class="number">60</span>,<span class="number">61</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    		 <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,</span><br><span class="line">    		 <span class="number">13</span>,<span class="number">14</span>,<span class="number">15</span>,<span class="number">16</span>,<span class="number">17</span>,<span class="number">18</span>,<span class="number">19</span>,<span class="number">20</span>,<span class="number">21</span>,</span><br><span class="line">    		 <span class="number">22</span>,<span class="number">23</span>,<span class="number">24</span>,<span class="number">25</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">26</span>,</span><br><span class="line">    		 <span class="number">27</span>,<span class="number">28</span>,<span class="number">29</span>,<span class="number">30</span>,<span class="number">31</span>,<span class="number">32</span>,<span class="number">33</span>,<span class="number">34</span>,<span class="number">35</span>,</span><br><span class="line">    		 <span class="number">36</span>,<span class="number">37</span>,<span class="number">38</span>,<span class="number">39</span>,<span class="number">40</span>,<span class="number">41</span>,<span class="number">42</span>,<span class="number">43</span>,<span class="number">44</span>,</span><br><span class="line">    		 <span class="number">45</span>,<span class="number">46</span>,<span class="number">47</span>,<span class="number">48</span>,<span class="number">49</span>,<span class="number">50</span>,<span class="number">51</span></span><br><span class="line">    	       &#125;;  </span><br><span class="line">    <span class="keyword">long</span> len;  </span><br><span class="line">    <span class="keyword">long</span> str_len;  </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *res;  </span><br><span class="line">    <span class="keyword">int</span> i,j;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//计算解码后的字符串长度  </span></span><br><span class="line">    len=<span class="built_in">strlen</span>(code);  </span><br><span class="line"><span class="comment">//判断编码后的字符串后是否有=  </span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">strstr</span>(code,<span class="string">"=="</span>))  </span><br><span class="line">        str_len=len/<span class="number">4</span>*<span class="number">3</span><span class="number">-2</span>;  </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">strstr</span>(code,<span class="string">"="</span>))  </span><br><span class="line">        str_len=len/<span class="number">4</span>*<span class="number">3</span><span class="number">-1</span>;  </span><br><span class="line">    <span class="keyword">else</span>  </span><br><span class="line">        str_len=len/<span class="number">4</span>*<span class="number">3</span>;  </span><br><span class="line">  </span><br><span class="line">    res=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">char</span>)*str_len+<span class="number">1</span>);  </span><br><span class="line">    res[str_len]=<span class="string">'\0'</span>;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//以4个字符为一位进行解码  </span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>,j=<span class="number">0</span>;i &lt; len<span class="number">-2</span>;j+=<span class="number">3</span>,i+=<span class="number">4</span>)  </span><br><span class="line">    &#123;  </span><br><span class="line">        res[j]=((<span class="keyword">unsigned</span> <span class="keyword">char</span>)table[code[i]])&lt;&lt;<span class="number">2</span> | (((<span class="keyword">unsigned</span> <span class="keyword">char</span>)table[code[i+<span class="number">1</span>]])&gt;&gt;<span class="number">4</span>); <span class="comment">//取出第一个字符对应base64表的十进制数的前6位与第二个字符对应base64表的十进制数的后2位进行组合  </span></span><br><span class="line">        res[j+<span class="number">1</span>]=(((<span class="keyword">unsigned</span> <span class="keyword">char</span>)table[code[i+<span class="number">1</span>]]&amp;<span class="number">0xf</span>)&lt;&lt;<span class="number">4</span>) | (((<span class="keyword">unsigned</span> <span class="keyword">char</span>)table[code[i+<span class="number">2</span>]])&gt;&gt;<span class="number">2</span>); <span class="comment">//取出第二个字符对应base64表的十进制数的后4位与第三个字符对应bas464表的十进制数的后4位进行组合  </span></span><br><span class="line">        res[j+<span class="number">2</span>]=(((<span class="keyword">unsigned</span> <span class="keyword">char</span>)table[code[i+<span class="number">2</span>]]&amp;<span class="number">0x3</span>)&lt;&lt;<span class="number">6</span>) | ((<span class="keyword">unsigned</span> <span class="keyword">char</span>)table[code[i+<span class="number">3</span>]]); <span class="comment">//取出第三个字符对应base64表的十进制数的后2位与第4个字符进行组合  </span></span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> res;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这就是Base64加密和解密的全过程，明白了原理，接下来就是做题啦~</p>
+<p>记住万变不离其宗，就算是Base64的表变了，它还是它~</p>
+<p>写一个解密脚本？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">char</span> b[<span class="number">100</span>] = &#123;<span class="string">"RVYtG85NQ9OPHU4uQ8AuFM+MHVVrFMJMR8FuF8WJQ8Y="</span>&#125;;</span><br><span class="line">   <span class="keyword">int</span> code[<span class="number">100</span>] = &#123;&#125;;</span><br><span class="line">   <span class="built_in">cout</span>&lt;&lt;<span class="string">"hex:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; <span class="number">44</span>; i++)</span><br><span class="line">   &#123; </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"0x"</span>&lt;&lt;hex&lt;&lt;(b[i])&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    code[i] = (b[i]); </span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">int</span> table[<span class="number">64</span>] = &#123;</span><br><span class="line">   <span class="number">0x49</span>, <span class="number">0x4A</span>, <span class="number">0x4C</span>, <span class="number">0x4D</span>, <span class="number">0x4E</span>, <span class="number">0x4F</span>, <span class="number">0x50</span>, <span class="number">0x4B</span>,</span><br><span class="line">    <span class="number">0x41</span>, <span class="number">0x42</span>, <span class="number">0x44</span>, <span class="number">0x45</span>, <span class="number">0x46</span>, <span class="number">0x47</span>, <span class="number">0x48</span>, <span class="number">0x43</span>, </span><br><span class="line">	<span class="number">0x51</span>, <span class="number">0x52</span>, <span class="number">0x54</span>, <span class="number">0x55</span>, <span class="number">0x56</span>, <span class="number">0x57</span>, <span class="number">0x58</span>, <span class="number">0x53</span>, </span><br><span class="line">	<span class="number">0x59</span>, <span class="number">0x5A</span>, <span class="number">0x62</span>, <span class="number">0x63</span>, <span class="number">0x64</span>, <span class="number">0x65</span>, <span class="number">0x66</span>, <span class="number">0x61</span>,</span><br><span class="line">	 <span class="number">0x34</span>, <span class="number">0x35</span>, <span class="number">0x37</span>, <span class="number">0x38</span>, <span class="number">0x39</span>, <span class="number">0x2B</span>, <span class="number">0x2F</span>, <span class="number">0x36</span>, </span><br><span class="line">	 <span class="number">0x67</span>, <span class="number">0x68</span>, <span class="number">0x6A</span>, <span class="number">0x6B</span>, <span class="number">0x6C</span>, <span class="number">0x6D</span>, <span class="number">0x6E</span>, <span class="number">0x69</span>, </span><br><span class="line">	 <span class="number">0x6F</span>, <span class="number">0x70</span>, <span class="number">0x72</span>, <span class="number">0x73</span>, <span class="number">0x74</span>, <span class="number">0x75</span>, <span class="number">0x76</span>, <span class="number">0x71</span>,</span><br><span class="line">	  <span class="number">0x77</span>, <span class="number">0x78</span>, <span class="number">0x7A</span>, <span class="number">0x30</span>, <span class="number">0x31</span>, <span class="number">0x32</span>, <span class="number">0x33</span> ,<span class="number">0x79</span>&#125;;</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   <span class="keyword">int</span> a[<span class="number">100</span>] = &#123;&#125;;<span class="comment">//下标 </span></span><br><span class="line">   <span class="built_in">cout</span>&lt;&lt;<span class="string">"下标值："</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   <span class="keyword">int</span> p = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">44</span>;j++)</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">64</span>;i++)</span><br><span class="line">      &#123;</span><br><span class="line">   	     <span class="keyword">if</span>(table[i]==code[j])</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">cout</span>&lt;&lt;dec&lt;&lt;i&lt;&lt;<span class="string">" "</span>&lt;&lt;hex&lt;&lt;i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">				a[p++] = i;</span><br><span class="line">			&#125; </span><br><span class="line">      &#125;</span><br><span class="line">  </span><br><span class="line">   <span class="keyword">int</span> len = <span class="number">44</span>;</span><br><span class="line">   <span class="keyword">int</span> code3[<span class="number">33</span>]; </span><br><span class="line">   <span class="keyword">int</span> j=<span class="number">0</span>;</span><br><span class="line">   <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">   <span class="keyword">do</span></span><br><span class="line">    &#123;  </span><br><span class="line">        code3[j] = (a[i]&lt;&lt;<span class="number">2</span>) | (a[i+<span class="number">1</span>]&gt;&gt;<span class="number">4</span>); <span class="comment">//取出第一个的前6位与第二个后2位进行组合  </span></span><br><span class="line">        code3[j+<span class="number">1</span>] = ((a[i+<span class="number">1</span>] &amp; <span class="number">0xf</span>)&lt;&lt;<span class="number">4</span>) | (a[i+<span class="number">2</span>]&gt;&gt;<span class="number">2</span>); <span class="comment">//取出第二个的后4位与第三个的后4位进行组合  </span></span><br><span class="line">        code3[j+<span class="number">2</span>] = ((a[i+<span class="number">2</span>] &amp; <span class="number">0x3</span>)&lt;&lt;<span class="number">6</span>) | (a[i+<span class="number">3</span>]);<span class="comment">//取出第三个字符的后2位与第4个字符进行组合  </span></span><br><span class="line">		j+=<span class="number">3</span>;</span><br><span class="line">		i+=<span class="number">4</span>;</span><br><span class="line">	&#125;  </span><br><span class="line">	<span class="keyword">while</span>(i&lt;len<span class="number">-2</span>);<span class="comment">//8/4*3=6</span></span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"V8:"</span>&lt;&lt;<span class="built_in">endl</span>; </span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">33</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;<span class="keyword">char</span>(code3[i]); </span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="comment">//EF468DBAF985B2509C9E200CF3525AB6     </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">62 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">59 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>
