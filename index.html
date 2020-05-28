@@ -376,10 +376,10 @@
             
                 <h4 id="一、RC4算法原理"><a href="#一、RC4算法原理" class="headerlink" title="一、RC4算法原理"></a>一、RC4算法原理</h4><p>1、概念</p>
 <p>rc4是一种基于密钥流的加密算法，它的密钥长度可变，密钥长度在1-256字节范围，主要是因为这个算法的非线性度良好，因为加解密使用的是相同的密钥，所以也是对称加密算法。</p>
-<a id="more"></a>
-
 <p>2、原理</p>
 <p>最关键的点就是明文x和密钥经过动态的s盒生成的密钥流进行了一一异或加密，得到了密文，这里rc4是对明文进行一个个加密的，密钥流的长度和要加密的明文长度一致。</p>
+<a id="more"></a>
+
 <p>3、代码</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35...</span></pre></td></tr></table></figure>
             
