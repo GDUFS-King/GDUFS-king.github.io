@@ -135,44 +135,41 @@
     <div id="post0" class="else">
         <p class="animated fadeInDown">
             
-            <a href="/categories/PWN"><b>「
-                </b>PWN<b> 」</b></a>
+            <a href="/categories/密码学"><b>「
+                </b>密码学<b> 」</b></a>
             
             January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/offbyone%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E8%BF%9E%E4%B8%B2%E9%97%AE%E9%A2%98/" title="offbyone引发的一连串问题" class="posttitle">offbyone引发的一连串问题</a></h3>
+            <a href="/2020/01/03/Tea%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%8F%98%E7%A7%8D%E7%A0%94%E7%A9%B6/" title="tea、xtea、xxtea算法研究" class="posttitle">tea、xtea、xxtea算法研究</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                61k
+                47k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                56 mins.
+                43 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%8D%95%E5%AD%97%E8%8A%82%E6%BA%A2%E5%87%BA/" rel="tag">单字节溢出</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%A0%86/" rel="tag">堆</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/tea%E5%AE%B6%E6%97%8F/" rel="tag">tea家族</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h3 id="一、题目：Book"><a href="#一、题目：Book" class="headerlink" title="一、题目：Book"></a>一、题目：Book</h3><p>先来看看保护机制：</p>
-<p></p>
-<p>栈溢出保护没开(这是一道堆题。。)，其他保护全开</p>
+            <h4 id="一、Tea"><a href="#一、Tea" class="headerlink" title="一、Tea"></a>一、Tea</h4><p>先来看一波C语言实现的代码，通过代码学习更快理解原理：</p>
 <a id="more"></a>
 
-<p>ida清晰地分析一波：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26...</span></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38...</span></pre></td></tr></table></figure>
             
-            <span class="read-more"><a href="/2020/01/03/offbyone%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E8%BF%9E%E4%B8%B2%E9%97%AE%E9%A2%98/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/Tea%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%8F%98%E7%A7%8D%E7%A0%94%E7%A9%B6/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -193,6 +190,106 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/密码学">
+                  <b>「 </b>密码学<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Tea%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%8F%98%E7%A7%8D%E7%A0%94%E7%A9%B6/" title="tea、xtea、xxtea算法研究" class="posttitle">tea、xtea、xxtea算法研究</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        47k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        43 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/tea%E5%AE%B6%E6%97%8F/" rel="tag">tea家族</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h4 id="一、Tea"><a href="#一、Tea" class="headerlink" title="一、Tea"></a>一、Tea</h4><p>先来看一波C语言实现的代码，通过代码学习更快理解原理：</p>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;  </span></span></span><br><span class="line">  </span><br><span class="line"><span class="comment">//加密函数  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">encrypt</span> <span class="params">(<span class="keyword">uint32_t</span>* v, <span class="keyword">uint32_t</span>* k)</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">uint32_t</span> v0=v[<span class="number">0</span>], v1=v[<span class="number">1</span>], sum=<span class="number">0</span>, i;           <span class="comment">/...</span></span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/Tea%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%8F%98%E7%A7%8D%E7%A0%94%E7%A9%B6/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/mmap%E4%B8%8B%E7%9A%84offbynull/" title="mmap下的offbynull" class="posttitle">mmap下的offbynull</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        40k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        36 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/mmap/" rel="tag">mmap</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/offbynull/" rel="tag">offbynull</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h4 id="一、题目：pwn1"><a href="#一、题目：pwn1" class="headerlink" title="一、题目：pwn1"></a>一、题目：pwn1</h4><p>先checksec下:</p>
+<p></p>
+<p>保护全开，ida分析一波：</p>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> __fastcall __noreturn <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> choice; <span class="comment">// eax</span></span><br><span class="line"></span><br><span class="line">  init_0();</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      choice = menu(...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/mmap%E4%B8%8B%E7%9A%84offbynull/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -408,56 +505,6 @@
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/32%E4%BD%8D%E3%80%8164%E4%BD%8D%E4%B8%8B%E7%9A%84arm_pwn/" title="32位、64位下arm_pwn学习" class="posttitle">32位、64位下arm_pwn学习</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        25k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        22 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/arm/" rel="tag">arm</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>pwn的学习之路一直在进行，今天看了arm_pwn，搞环境就搞了半天，琢磨工具使用到做题，这里总结下，希望能帮助到大家，少走一点弯路。</p>
-<h4 id="一、环境配置："><a href="#一、环境配置：" class="headerlink" title="一、环境配置："></a>一、环境配置：</h4><p>环境是一大玄学问题，这里仅仅是 我Ubuntu16.04下的环境配置，亲测有效，但是遇到玄学的问题时，也请留言，努力帮大家解决。</p>
-<a id="more"></a>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装qemu</span></span><br><span class="line">apt-get install qemu</span><br><span class="line"><span class="comment">#更新一下</span></span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="comment">#安装32位的依赖库</span></span><br><span class="line">sudo apt...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/32%E4%BD%8D%E3%80%8164%E4%BD%8D%E4%B8%8B%E7%9A%84arm_pwn/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
                 <a href="/categories/感悟">
                   <b>「 </b>感悟<b> 」</b>
                 </a>
@@ -568,6 +615,56 @@
             
             January 03, 2020
         </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/32%E4%BD%8D%E3%80%8164%E4%BD%8D%E4%B8%8B%E7%9A%84arm_pwn/" title="32位、64位下arm_pwn学习" class="posttitle">32位、64位下arm_pwn学习</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        25k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        22 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/arm/" rel="tag">arm</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>pwn的学习之路一直在进行，今天看了arm_pwn，搞环境就搞了半天，琢磨工具使用到做题，这里总结下，希望能帮助到大家，少走一点弯路。</p>
+<h4 id="一、环境配置："><a href="#一、环境配置：" class="headerlink" title="一、环境配置："></a>一、环境配置：</h4><p>环境是一大玄学问题，这里仅仅是 我Ubuntu16.04下的环境配置，亲测有效，但是遇到玄学的问题时，也请留言，努力帮大家解决。</p>
+<a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装qemu</span></span><br><span class="line">apt-get install qemu</span><br><span class="line"><span class="comment">#更新一下</span></span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="comment">#安装32位的依赖库</span></span><br><span class="line">sudo apt...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/32%E4%BD%8D%E3%80%8164%E4%BD%8D%E4%B8%8B%E7%9A%84arm_pwn/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/4%E5%A4%A9%E6%AF%94%E8%B5%9B%E6%89%80%E5%AD%A6/" title="堆进阶学习之4大利器" class="posttitle">堆进阶学习之4大利器</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -598,108 +695,6 @@
 <h4 id="1、重点需要理解的2个函数："><a href="#1、重点需要理解的2个函数：" class="headerlink" title="1、重点需要理解的2个函数："></a>1、重点需要理解的2个函数：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#堆块<span class="built_in">free</span>后放入tcache</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">tcache_put...</span></pre></td></tr></table></figure>
             
             <span class="read-more"><a href="/2020/01/03/4%E5%A4%A9%E6%AF%94%E8%B5%9B%E6%89%80%E5%AD%A6/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/密码学">
-                  <b>「 </b>密码学<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Diffie-Hellman%E7%AE%97%E6%B3%95/" title="Diffie-Hellman算法" class="posttitle">Diffie-Hellman算法</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        4.2k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        4 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/dh%E7%AE%97%E6%B3%95/" rel="tag">dh算法</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、原理分析"><a href="#一、原理分析" class="headerlink" title="一、原理分析"></a>一、原理分析</h3><h4 id="离散对数问题"><a href="#离散对数问题" class="headerlink" title="离散对数问题"></a>离散对数问题</h4><p>假定 a, p 均是素数，下面两个集合相等，证明过程请参考 <a href="http://www.amazon.com/Cryptography-Network-Security-Principles-Practice/dp/0133354695" target="_blank" rel="noopener">Cryptography and Network Security</a> 第八章：</p>
-<a id="more"></a>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; a^<span class="number">1</span> mod p, a^<span class="number">2</span> mod p, ..., a^(p<span class="number">-1</span>) mod p &#125; = &#123;<span class="number">1</span>, <span class="number">2</span>, ... , p<span class="number">-1</span> &#125;   &#123;&#125; 表示集合</span><br></pre></td></tr></table></figure>
-
-<p>上述式子可概括成以下三点，对于 1 &lt;= x,y &lt;= p - 1，有：</p>
-<ul>
-<li>a^x mod p 一定属于 {1, ...</li></ul>
-            
-            <span class="read-more"><a href="/2020/01/03/Diffie-Hellman%E7%AE%97%E6%B3%95/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/密码学">
-                  <b>「 </b>密码学<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Base64%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%B0%8F%E7%A0%94%E7%A9%B6/" title="Base64加密算法小研究" class="posttitle">Base64加密算法小研究</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        30k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        28 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/base64/" rel="tag">base64</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h4 id="1、先了解一波什么是Base64编码的加密与解密："><a href="#1、先了解一波什么是Base64编码的加密与解密：" class="headerlink" title="1、先了解一波什么是Base64编码的加密与解密："></a>1、先了解一波什么是Base64编码的加密与解密：</h4><p>1、Base64使用A–Z,a–z,0–9,+,/ 这64个字符.</p>
-<p>2、编码原理:将3个字节转换成4个字节( (3 X 8) = 24 = (4 X 6) )先读入3个字节,每读一个字节,左移8位,再右移四次,每次6位,这样就有4个字节了.</p>
-<p>3、解码原理:将4个字节转换成3个字节.先读入4个6位(用或运算),每次左移6位,再右移3次,每次8位.这样就还原了.<a id="more"></a></p>
-<p> Base64是一种很常见的编码规范，其作用是将二进制序列转换为人类可读的ASCII字符...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/Base64%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%B0%8F%E7%A0%94%E7%A9%B6/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

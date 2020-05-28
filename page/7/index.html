@@ -138,36 +138,39 @@
             <a href="/categories/PWN"><b>「
                 </b>PWN<b> 」</b></a>
             
-            October 08, 2019
+            January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2019/10/08/Largebin-attack-%E5%88%9D%E6%8E%A2/" title="Largebin attack从原理到做题" class="posttitle">Largebin attack从原理到做题</a></h3>
+            <a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="0CTF复现zero" class="posttitle">0CTF复现zero</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                208k
+                53k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                3:09
+                48 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%A0%86/" rel="tag">堆</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/unsorted-bin-attack/" rel="tag">unsorted bin attack</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h3 id="一、largebin的原理学习"><a href="#一、largebin的原理学习" class="headerlink" title="一、largebin的原理学习"></a>一、largebin的原理学习</h3><p>大于512（1024）字节(0x400)的chunk称之为large chunk，large bin就是用于管理这些large chunk的</p>
-<p>Large bins 中一共...</p>
+            <h3 id="zerostorage"><a href="#zerostorage" class="headerlink" title="zerostorage"></a>zerostorage</h3><p>前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。</p>
+<p>1、分析保护机制<br></p>
+<p>保护全开，ida搞一波：<a id="more"></a></p>
+<p></p>
+<p>初始化时有个随机数生...</p>
             
-            <span class="read-more"><a href="/2019/10/08/Largebin-attack-%E5%88%9D%E6%8E%A2/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -188,6 +191,114 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="0CTF复现zero" class="posttitle">0CTF复现zero</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        53k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        48 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/unsorted-bin-attack/" rel="tag">unsorted bin attack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="zerostorage"><a href="#zerostorage" class="headerlink" title="zerostorage"></a>zerostorage</h3><p>前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。</p>
+<p>1、分析保护机制<br></p>
+<p>保护全开，ida搞一波：<a id="more"></a></p>
+<p></p>
+<p>初始化时有个随机数生成的函数，为后面的堆地址进行异或加密。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char...</span></span></span></span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/RE">
+                  <b>「 </b>RE<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/0CTF%E9%80%86%E5%90%91writeup/" title="0CTF逆向writeup" class="posttitle">0CTF逆向writeup</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        4.6k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        4 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/z3/" rel="tag">z3</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E8%A7%A3%E6%96%B9%E7%A8%8B/" rel="tag">解方程</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、Elemnet"><a href="#一、Elemnet" class="headerlink" title="一、Elemnet"></a>一、Elemnet</h3><p>这题当时在算时，解出来的精度不够，所以一直提交writeup不正确，当时觉得很可惜哎，工具没找对~后来看了大佬的writeup，果然时精度的问题，他说手动调试那个值，直到精确为止，于是开始了复现之旅…..<a id="more"></a></p>
+<p>看看ida：</p>
+<p></p>
+<p></p>
+<p></p>
+<p>一开始，从上往下分析逻辑，。接下来看看为何是这样：</p>
+<p></p>
+<p>这个函数将输入的大写转成小写（上网查），继续</p>
+<p></p>
+<p>输入44个字节，以-为分隔符号，切割出12个字符，那么flag{a-b-c}，其中a和b和c都是16进制的数。</p>
+<p></p>
+<p>这堆东西，一开始看不懂，v12是一个数组...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/0CTF%E9%80%86%E5%90%91writeup/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:

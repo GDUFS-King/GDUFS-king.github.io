@@ -141,38 +141,37 @@
             January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/offbyone%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E8%BF%9E%E4%B8%B2%E9%97%AE%E9%A2%98/" title="offbyone引发的一连串问题" class="posttitle">offbyone引发的一连串问题</a></h3>
+            <a href="/2020/01/03/TAMUCTF%E7%9A%84pwn1%E5%88%B0pwn5/" title="TAMUCTF-pwn1到pwn5" class="posttitle">TAMUCTF-pwn1到pwn5</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                61k
+                24k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                56 mins.
+                22 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%8D%95%E5%AD%97%E8%8A%82%E6%BA%A2%E5%87%BA/" rel="tag">单字节溢出</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%A0%86/" rel="tag">堆</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h3 id="一、题目：Book"><a href="#一、题目：Book" class="headerlink" title="一、题目：Book"></a>一、题目：Book</h3><p>先来看看保护机制：</p>
-<p></p>
-<p>栈溢出保护没开(这是一道堆题。。)，其他保护全开</p>
+            <p>师傅们说去做做TAMUCTF的题目，积累经验，于是去尝试了一波，才发现真的是有些地方自己不懂的知识盲区，也作为一个积累吧，在这里记录</p>
 <a id="more"></a>
 
-<p>ida清晰地分析一波：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26...</span></pre></td></tr></table></figure>
+<h3 id="题目：pwn1"><a href="#题目：pwn1" class="headerlink" title="题目：pwn1"></a>题目：pwn1</h3><p>首先看看题目先</p>
+<p></p>
+<p>有栈溢出的漏洞，其他的保护全开，...</p>
             
-            <span class="read-more"><a href="/2020/01/03/offbyone%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E8%BF%9E%E4%B8%B2%E9%97%AE%E9%A2%98/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/TAMUCTF%E7%9A%84pwn1%E5%88%B0pwn5/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -193,6 +192,111 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/TAMUCTF%E7%9A%84pwn1%E5%88%B0pwn5/" title="TAMUCTF-pwn1到pwn5" class="posttitle">TAMUCTF-pwn1到pwn5</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        24k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        22 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>师傅们说去做做TAMUCTF的题目，积累经验，于是去尝试了一波，才发现真的是有些地方自己不懂的知识盲区，也作为一个积累吧，在这里记录</p>
+<a id="more"></a>
+
+<h3 id="题目：pwn1"><a href="#题目：pwn1" class="headerlink" title="题目：pwn1"></a>题目：pwn1</h3><p>首先看看题目先</p>
+<p></p>
+<p>有栈溢出的漏洞，其他的保护全开，拖进ida分析一波：</p>
+<p></p>
+<p>逻辑很清晰了，前面的几个strcmp可以直接逆向思维，把正确的答案写到payload中，最后一步直接覆盖那个数v5为目标值即可：于是可以写出payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/TAMUCTF%E7%9A%84pwn1%E5%88%B0pwn5/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/mmap%E4%B8%8B%E7%9A%84offbynull/" title="mmap下的offbynull" class="posttitle">mmap下的offbynull</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        40k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        36 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/mmap/" rel="tag">mmap</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/offbynull/" rel="tag">offbynull</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h4 id="一、题目：pwn1"><a href="#一、题目：pwn1" class="headerlink" title="一、题目：pwn1"></a>一、题目：pwn1</h4><p>先checksec下:</p>
+<p></p>
+<p>保护全开，ida分析一波：</p>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> __fastcall __noreturn <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char</span> **a3)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">signed</span> <span class="keyword">int</span> choice; <span class="comment">// eax</span></span><br><span class="line"></span><br><span class="line">  init_0();</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      choice = menu(...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/mmap%E4%B8%8B%E7%9A%84offbynull/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -526,58 +630,6 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Einherjar/" title="House of Einherjar" class="posttitle">House of Einherjar</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        39k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        36 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h4 id="一、原理："><a href="#一、原理：" class="headerlink" title="一、原理："></a>一、原理：</h4><p>那个的是unlink中的向前合并：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">       <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">           prevsize = prev_size(p);</span><br><span class="line">           <span class="built_in">size</span> += prevsize;</span><br><span class="line">           p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize));</span><br><span class="line">           unlink(av, p, bck, fwd);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<p>这个和unlink的操作其实差不多，但是呢填入的fd和bk不一样:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;fd =...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-Einherjar/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Hackme%E9%A2%98%E7%9B%AE%E5%A4%8D%E7%8E%B0/" title="Hackme复现" class="posttitle">Hackme复现</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -627,90 +679,38 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/dl_runtime_resolve%E6%80%BB%E7%BB%93/" title="dl_runtime_resolve总结" class="posttitle">dl_runtime_resolve总结</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Einherjar/" title="House of Einherjar" class="posttitle">House of Einherjar</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        43k
+                        39k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        40 mins.
+                        36 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">高级栈溢出</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h5 id="一、前置知识："><a href="#一、前置知识：" class="headerlink" title="一、前置知识："></a>一、前置知识：</h5><p>程序：hhh</p>
-<p>常规思路，先检查再分析逻辑：</p>
-<p><a id="more"></a></p>
-<p></p>
-<p></p>
-<p>很简单，就只有堆栈不可执行的保护，一个write函数，还有一个read函数栈溢出（0x24,0x80）。</p>
-<p>一想到这里，思路就是栈迁移用write先泄露libc_start_main的真实地址，再onegadget即可getshell，但是今天要学习的是不用泄露就可getshell的做法：dl_runtime_resolve</p>
-<p>做题前先了解下前置知识：随便找个程序：666分析，看到第一次调用puts函数。</p>
-<p></p>
-<p>查看内存可知，就是push ...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/dl_runtime_resolve%E6%80%BB%E7%BB%93/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
+                <h4 id="一、原理："><a href="#一、原理：" class="headerlink" title="一、原理："></a>一、原理：</h4><p>那个的是unlink中的向前合并：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">       <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">           prevsize = prev_size(p);</span><br><span class="line">           <span class="built_in">size</span> += prevsize;</span><br><span class="line">           p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize));</span><br><span class="line">           unlink(av, p, bck, fwd);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
 
+<a id="more"></a>
 
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
+<p>这个和unlink的操作其实差不多，但是呢填入的fd和bk不一样:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;fd =...</span></pre></td></tr></table></figure>
             
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/" title="canary崩坏技巧" class="posttitle">canary崩坏技巧</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        62k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        56 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/canary/" rel="tag">canary</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="题目1：bin"><a href="#题目1：bin" class="headerlink" title="题目1：bin"></a>题目1：bin</h3><h4 id="方法介绍：leak-canary"><a href="#方法介绍：leak-canary" class="headerlink" title="方法介绍：leak canary"></a>方法介绍：leak canary</h4><p>利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。</p>
-<h4 id="开始分析："><a href="#开始分析：" class="headerlink" title="开始分析："></a>开始分析：</h4><p>常规操作，先checksec下，再ida静态分析</p>
-<p><a id="more"></a><br><br><br>很明显有格式化字符串漏洞和栈溢出漏洞，但是开了栈溢出保护，程序有2个输入，第一次输入可以先泄露cananry，第二次直接覆盖canary就可以栈溢出了，简单明了，gdb动态调试，可以看到canary在格式化字符串的偏移为7，<br></p>
-<p>在第二个次输入中，我们需要输入到canary进行覆盖工作，这是可以...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/House-of-Einherjar/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
