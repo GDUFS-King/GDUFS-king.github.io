@@ -141,40 +141,32 @@
             January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="星盟AWD的pwn题" class="posttitle">星盟AWD的pwn题</a></h3>
+            <a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="数组下标越界专题" class="posttitle">数组下标越界专题</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                16k
+                56k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                14 mins.
+                51 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/awd/" rel="tag">awd</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C/" rel="tag">下标越界</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h4 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h4><p>pwn1:</p>
-<p>64位保护全开，ida分析一波：</p>
-<a id="more"></a>
-
-<p></p>
-<p>会发现常规菜单题，然后有3个函数，一个个看吧：</p>
-<p>malloc：</p>
-<p></p>
-<p>这里可以看到最多7个堆块，而且堆块大小限定在0x90到0x2333，当堆块量...</p>
+            <h4 id="一、数组下标越界简介："><a href="#一、数组下标越界简介：" class="headerlink" title="一、数组下标越界简介："></a>一、数组下标越界简介：</h4><p>栈是由高往低增长的，而数组的存储是由低位往高位存的，如果越界的话，会把当前函数的ebp和下一跳的指令地址覆盖掉，如果覆盖了当前函数的ebp，那么在恢复的时候esp就不能指向正确的...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -210,45 +202,34 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="星盟AWD的pwn题" class="posttitle">星盟AWD的pwn题</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="数组下标越界专题" class="posttitle">数组下标越界专题</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        16k
+                        56k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        14 mins.
+                        51 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/awd/" rel="tag">awd</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C/" rel="tag">下标越界</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h4 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h4><p>pwn1:</p>
-<p>64位保护全开，ida分析一波：</p>
-<a id="more"></a>
-
+                <h4 id="一、数组下标越界简介："><a href="#一、数组下标越界简介：" class="headerlink" title="一、数组下标越界简介："></a>一、数组下标越界简介：</h4><p>栈是由高往低增长的，而数组的存储是由低位往高位存的，如果越界的话，会把当前函数的ebp和下一跳的指令地址覆盖掉，如果覆盖了当前函数的ebp，那么在恢复的时候esp就不能指向正确的地方，从而导致未可知的情况，如果下一跳的地址也被覆盖掉，那么肯定会导致crash，看一张图：<a id="more"></a></p>
 <p></p>
-<p>会发现常规菜单题，然后有3个函数，一个个看吧：</p>
-<p>malloc：</p>
-<p></p>
-<p>这里可以看到最多7个堆块，而且堆块大小限定在0x90到0x2333，当堆块量等于7时，貌似有UAF的free，但是其实没有什么用，因为bss上并不会存储chunk的地址，所以正常的malloc，同时可以打印地址，这里直接打印出了堆地址和libc地址</p>
-<p></p>
-<p>简单的free函数，正常没有漏洞</p>
-<p>edit：</p>
-<p></p>
-<p>这是漏洞点所在，会发现这里有个任意地址写，8字节的数字，0xcafebabe...</p>
+<p>这样一下看就很明显了，当你把数组的下标越过了最大索引值的时候，所指向的指针就会指向更高地址的栈空间段，所以我们就能够实现任意改写栈空间上的内容，同理，当下标为负数的时候指针会指向更低地址的栈空间段。但是这...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -425,6 +406,54 @@
             
             January 03, 2020
         </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Rabbit/" title="House of Rabbit" class="posttitle">House of Rabbit</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        21k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        19 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>一、原理介绍：</p>
+<p>1、修改size：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"string.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk1=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602000</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk2=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602050</span></span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"><span class="built_in">free</span>(chunk1);</span><br><span class="line"><span class="built_in">free</span>(chunk2);</span><br><span class="line">chunk1[<span class="number">-1</span>]=<span class="number">0xa1</span>; </span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">&...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/House-of-Rabbit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Lore/" title="House of Lor" class="posttitle">House of Lor</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -455,54 +484,6 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (in_smallbin_range(nb)) &#123;</span><br><span class="line">       <span class="comment">// 获取 small bin 的索引</span></span><br><span class="line">       idx = smallbin_index(nb);</span><br><span class="line">       <span class="comment">// 获取对应 small bin 中的 chunk 指针</span></span><br><span class="line">       bin = bin_at(av, idx);</span><br><span class="line">       <span class="comment">// 先执行 victim= last(bin...</span></span></pre></td></tr></table></figure>
             
             <span class="read-more"><a href="/2020/01/03/House-of-Lore/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Rabbit/" title="House of Rabbit" class="posttitle">House of Rabbit</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        21k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        19 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、原理介绍：</p>
-<p>1、修改size：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"string.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk1=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602000</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk2=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602050</span></span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"><span class="built_in">free</span>(chunk1);</span><br><span class="line"><span class="built_in">free</span>(chunk2);</span><br><span class="line">chunk1[<span class="number">-1</span>]=<span class="number">0xa1</span>; </span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">&...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-Rabbit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
