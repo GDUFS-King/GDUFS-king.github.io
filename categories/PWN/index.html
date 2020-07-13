@@ -260,13 +260,13 @@
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        28k
+                        29k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        25 mins.
+                        26 mins.
                     </span>
                 
                 
@@ -417,6 +417,56 @@
             
             January 03, 2020
         </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="栈溢出从入门到放弃3" class="posttitle">栈溢出从入门到放弃3</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        61k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        56 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、初级栈溢出系列"><a href="#一、初级栈溢出系列" class="headerlink" title="一、初级栈溢出系列"></a>一、初级栈溢出系列</h3><p>从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。</p>
+<p>一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被覆盖，我们的最终目标都是实现调用system(“/bin/sh”)函数去getshell，过程花样可以千奇百怪，但是总有规律可以寻找~</p>
+<h4 id="1、第一步找危险函数。"><a href="#1、第一步找危险函数。" class="headerlink" title="1、第一步找危险函数。"></a>1、第一步找危险函数。</h4><p>输入函数：</p>
+<p>gets(&amp;buf) 直接读取一行，忽略’\x00’ ，一看没有字符数的限制，那肯定是200%的溢出~</p>
+<p>read(0，&amp...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="栈溢出入门到放弃4" class="posttitle">栈溢出入门到放弃4</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -449,56 +499,6 @@
 <p>首先先读懂这段汇编的意思：首先执行抬一次栈的操作，接着要pop6个参数到相应的寄存器中，然后是ret，接着看到上面mov那里，很清...</p>
             
             <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="栈溢出从入门到放弃3" class="posttitle">栈溢出从入门到放弃3</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        61k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        56 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、初级栈溢出系列"><a href="#一、初级栈溢出系列" class="headerlink" title="一、初级栈溢出系列"></a>一、初级栈溢出系列</h3><p>从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。</p>
-<p>一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被覆盖，我们的最终目标都是实现调用system(“/bin/sh”)函数去getshell，过程花样可以千奇百怪，但是总有规律可以寻找~</p>
-<h4 id="1、第一步找危险函数。"><a href="#1、第一步找危险函数。" class="headerlink" title="1、第一步找危险函数。"></a>1、第一步找危险函数。</h4><p>输入函数：</p>
-<p>gets(&amp;buf) 直接读取一行，忽略’\x00’ ，一看没有字符数的限制，那肯定是200%的溢出~</p>
-<p>read(0，&amp...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -626,45 +626,34 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="星盟AWD的pwn题" class="posttitle">星盟AWD的pwn题</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="数组下标越界专题" class="posttitle">数组下标越界专题</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        16k
+                        56k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        14 mins.
+                        51 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/awd/" rel="tag">awd</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C/" rel="tag">下标越界</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h4 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h4><p>pwn1:</p>
-<p>64位保护全开，ida分析一波：</p>
-<a id="more"></a>
-
+                <h4 id="一、数组下标越界简介："><a href="#一、数组下标越界简介：" class="headerlink" title="一、数组下标越界简介："></a>一、数组下标越界简介：</h4><p>栈是由高往低增长的，而数组的存储是由低位往高位存的，如果越界的话，会把当前函数的ebp和下一跳的指令地址覆盖掉，如果覆盖了当前函数的ebp，那么在恢复的时候esp就不能指向正确的地方，从而导致未可知的情况，如果下一跳的地址也被覆盖掉，那么肯定会导致crash，看一张图：<a id="more"></a></p>
 <p></p>
-<p>会发现常规菜单题，然后有3个函数，一个个看吧：</p>
-<p>malloc：</p>
-<p></p>
-<p>这里可以看到最多7个堆块，而且堆块大小限定在0x90到0x2333，当堆块量等于7时，貌似有UAF的free，但是其实没有什么用，因为bss上并不会存储chunk的地址，所以正常的malloc，同时可以打印地址，这里直接打印出了堆地址和libc地址</p>
-<p></p>
-<p>简单的free函数，正常没有漏洞</p>
-<p>edit：</p>
-<p></p>
-<p>这是漏洞点所在，会发现这里有个任意地址写，8字节的数字，0xcafebabe...</p>
+<p>这样一下看就很明显了，当你把数组的下标越过了最大索引值的时候，所指向的指针就会指向更高地址的栈空间段，所以我们就能够实现任意改写栈空间上的内容，同理，当下标为负数的时候指针会指向更低地址的栈空间段。但是这...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
