@@ -261,6 +261,110 @@
             
             January 03, 2020
         </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/" title="栈溢出入门到放弃2" class="posttitle">栈溢出入门到放弃2</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        9.3k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        8 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、对保护机制的探索："><a href="#一、对保护机制的探索：" class="headerlink" title="一、对保护机制的探索："></a>一、对保护机制的探索：</h3><p>本文针对刷过的题目，介绍一些常见的保护机制以及破解方法，这里一个个介绍。</p>
+<h4 id="1、checksec"><a href="#1、checksec" class="headerlink" title="1、checksec"></a>1、checksec</h4><p>工欲善其事必先利其器，这个指令用于检查题目的保护机制以及判断是32位还是64位的程序，专业地讲是用来检查可执行文件属性，例如PIE, RELRO, PaX, Canaries, ASLR, Fortify Source等等属性。 举个栗子：</p>
+<p>checksec + 文件名，可实现检查功能：</p>
+<p></p>
+<a id="more"></a>
+
+<h4 id="2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little："><a href="#2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little：" class="headerlink" title="2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little："></a>2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386...</h4>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="栈溢出入门到放弃4" class="posttitle">栈溢出入门到放弃4</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        15k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        13 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、中级栈溢出总结："><a href="#一、中级栈溢出总结：" class="headerlink" title="一、中级栈溢出总结："></a>一、中级栈溢出总结：</h3><p>来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：</p>
+<p>重点介绍一个64位的很好用的ROP链子，这个链子是根据</p>
+<p></p>
+<p>这两个函数的汇编写出来的，我们可以去看看：</p>
+<p></p>
+<p>就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？</p>
+<p>首先先读懂这段汇编的意思：首先执行抬一次栈的操作，接着要pop6个参数到相应的寄存器中，然后是ret，接着看到上面mov那里，很清...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%831/" title="栈溢出入门到放弃1" class="posttitle">栈溢出入门到放弃1</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -317,58 +421,6 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/" title="栈溢出入门到放弃2" class="posttitle">栈溢出入门到放弃2</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        9.3k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        8 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、对保护机制的探索："><a href="#一、对保护机制的探索：" class="headerlink" title="一、对保护机制的探索："></a>一、对保护机制的探索：</h3><p>本文针对刷过的题目，介绍一些常见的保护机制以及破解方法，这里一个个介绍。</p>
-<h4 id="1、checksec"><a href="#1、checksec" class="headerlink" title="1、checksec"></a>1、checksec</h4><p>工欲善其事必先利其器，这个指令用于检查题目的保护机制以及判断是32位还是64位的程序，专业地讲是用来检查可执行文件属性，例如PIE, RELRO, PaX, Canaries, ASLR, Fortify Source等等属性。 举个栗子：</p>
-<p>checksec + 文件名，可实现检查功能：</p>
-<p></p>
-<a id="more"></a>
-
-<h4 id="2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little："><a href="#2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little：" class="headerlink" title="2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little："></a>2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386...</h4>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="栈溢出从入门到放弃3" class="posttitle">栈溢出从入门到放弃3</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -399,58 +451,6 @@
 <p>read(0，&amp...</p>
             
             <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="栈溢出入门到放弃4" class="posttitle">栈溢出入门到放弃4</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        15k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        13 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、中级栈溢出总结："><a href="#一、中级栈溢出总结：" class="headerlink" title="一、中级栈溢出总结："></a>一、中级栈溢出总结：</h3><p>来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：</p>
-<p>重点介绍一个64位的很好用的ROP链子，这个链子是根据</p>
-<p></p>
-<p>这两个函数的汇编写出来的，我们可以去看看：</p>
-<p></p>
-<p>就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？</p>
-<p>首先先读懂这段汇编的意思：首先执行抬一次栈的操作，接着要pop6个参数到相应的寄存器中，然后是ret，接着看到上面mov那里，很清...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -578,64 +578,6 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%BC%BA%E7%BD%91%E6%9D%AF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="强网杯二进制部分wp" class="posttitle">强网杯二进制部分wp</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        68k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1:02
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/re/" rel="tag">re</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>1、task_main（强网先锋）</p>
-<p>分析算法可知是base64加密：</p>
-<p>提取字符，’ZmxhZ3ttYWZha3VhaWxhaXFpYW5kYW9ifQ==’</p>
-<p>直接在线解密：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;mafakuailaiqiandaob&#125;</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<p>2、JustRe:</p>
-<p>进入主逻辑，分析程序：</p>
-<p></p>
-<p>这里可知道有2关，先看第一关：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/%E5%BC%BA%E7%BD%91%E6%9D%AF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/ctf比赛">
-                  <b>「 </b>CTF比赛<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%95%B0%E5%AD%97%E7%BB%8F%E6%B5%8E3pwn%E9%A2%98/" title="数字经济3pwn题" class="posttitle">数字经济3pwn题</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -674,6 +616,64 @@
 <p>3、...</p>
             
             <span class="read-more"><a href="/2020/01/03/%E6%95%B0%E5%AD%97%E7%BB%8F%E6%B5%8E3pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/ctf比赛">
+                  <b>「 </b>CTF比赛<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%BC%BA%E7%BD%91%E6%9D%AF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="强网杯二进制部分wp" class="posttitle">强网杯二进制部分wp</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        68k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        1:02
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/re/" rel="tag">re</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>1、task_main（强网先锋）</p>
+<p>分析算法可知是base64加密：</p>
+<p>提取字符，’ZmxhZ3ttYWZha3VhaWxhaXFpYW5kYW9ifQ==’</p>
+<p>直接在线解密：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;mafakuailaiqiandaob&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>2、JustRe:</p>
+<p>进入主逻辑，分析程序：</p>
+<p></p>
+<p>这里可知道有2关，先看第一关：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/%E5%BC%BA%E7%BD%91%E6%9D%AF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -729,7 +729,7 @@
 
     </div>
     
-    <div id="pager"><a href="/page/3/" class="more" data-loading="加载中..." data-load-more="Load more">Load more</a></div>
+    <div id="pager"><a href="/page/3/" class="more" data-loading="Loading..." data-load-more="Load more">Load more</a></div>
     
 </div>
 <div id="preview"></div>

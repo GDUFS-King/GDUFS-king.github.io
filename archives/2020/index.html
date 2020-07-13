@@ -302,6 +302,42 @@ arena的个数是跟系统中处理器核心个数相关的：
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/">栈溢出入门到放弃2</a>
+                                        <p>
+                                            一、对保护机制的探索：本文针对刷过的题目，介绍一些常见的保护机制以及破解方法，这里一个个介绍。
+1、checksec工欲善其事必先利其器，这个指令用于检查题目的保护机制以及判断是32位还是64位的程序，专业地讲是用来检查可执行文件属性，例如PIE, RELRO, PaX, Canaries, ASLR, Fortify Source等等属性。 举个栗子：
+checksec + 文件名，可实现...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/">栈溢出入门到放弃4</a>
+                                        <p>
+                                            一、中级栈溢出总结：来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：
+重点介绍一个64位的很好用的ROP链子，这个链子是根据
+
+这两个函数的汇编写出来的，我们可以去看看：
+
+就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？
+首先先读懂这段汇编的意思...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%831/">栈溢出入门到放弃1</a>
                                         <p>
                                             一、缓冲区溢出原理介绍：缓冲区：stack、heap
@@ -326,48 +362,12 @@ arena的个数是跟系统中处理器核心个数相关的：
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/">栈溢出入门到放弃2</a>
-                                        <p>
-                                            一、对保护机制的探索：本文针对刷过的题目，介绍一些常见的保护机制以及破解方法，这里一个个介绍。
-1、checksec工欲善其事必先利其器，这个指令用于检查题目的保护机制以及判断是32位还是64位的程序，专业地讲是用来检查可执行文件属性，例如PIE, RELRO, PaX, Canaries, ASLR, Fortify Source等等属性。 举个栗子：
-checksec + 文件名，可实现...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/">栈溢出从入门到放弃3</a>
                                         <p>
                                             一、初级栈溢出系列从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。
 一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被覆盖，我们的最终目标都是实现调用system(“/bin/sh”)函数去getshell，过程花样可以千奇百怪，但是总有规律可以寻找~
 1、第一步找危险函数。输入函数：
 gets(&amp;buf...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/">栈溢出入门到放弃4</a>
-                                        <p>
-                                            一、中级栈溢出总结：来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：
-重点介绍一个64位的很好用的ROP链子，这个链子是根据
-
-这两个函数的汇编写出来的，我们可以去看看：
-
-就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？
-首先先读懂这段汇编的意思...
                                         </p>
                                     </div>
                                 </li>
@@ -421,6 +421,30 @@ gets(&amp;buf...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%95%B0%E5%AD%97%E7%BB%8F%E6%B5%8E3pwn%E9%A2%98/">数字经济3pwn题</a>
+                                        <p>
+                                            一、前言​      这次的pwn题做的不是很理想，现在复现下，发现当时没出确实挺可惜的哎，以下复现过程。
+二、题目2、fkroman
+这题保护全开(习惯了，不全开反而不好玩了hhhhh)，先来查看一波漏洞点：
+
+
+
+free时，有UAF漏洞
+
+edit时没有对size检查，随便溢出。
+这里我们可以一步步逆推思路：
+1、UAF可以实现改FD指针为fake_chunk，改malloc_hook...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/%E5%BC%BA%E7%BD%91%E6%9D%AF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/">强网杯二进制部分wp</a>
                                         <p>
                                             一、逆向：1、task_main（强网先锋）
@@ -436,30 +460,6 @@ gets(&amp;buf...
 
 这里可知道有2关，先看第一关：
 12345678910111213141516171...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%95%B0%E5%AD%97%E7%BB%8F%E6%B5%8E3pwn%E9%A2%98/">数字经济3pwn题</a>
-                                        <p>
-                                            一、前言​      这次的pwn题做的不是很理想，现在复现下，发现当时没出确实挺可惜的哎，以下复现过程。
-二、题目2、fkroman
-这题保护全开(习惯了，不全开反而不好玩了hhhhh)，先来查看一波漏洞点：
-
-
-
-free时，有UAF漏洞
-
-edit时没有对size检查，随便溢出。
-这里我们可以一步步逆推思路：
-1、UAF可以实现改FD指针为fake_chunk，改malloc_hook...
                                         </p>
                                     </div>
                                 </li>
@@ -605,12 +605,14 @@ no_leak...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E7%BA%A2%E5%B8%BD%E6%9D%AFCTF%E7%BA%BF%E4%B8%8A%E8%B5%9B/">红帽杯CTF线上赛二进制部分wp</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91%E9%83%A8%E5%88%86wp/">西湖论剑部分wp</a>
                                         <p>
-                                            一、Pwn1、three | solved    
+                                            Pwn题目：story
+![image.png](https://upload-images.jianshu.io/upload_images/9085575-5c9429d71ed20cb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-  这题看到程序输入3字节后有个call指令，可以执行命令：              所以填入机器码，利用mov指令跳转到ecx寄存器(rcx正好有我们后面的输入的bss的地址)，就可跳到bss地址执行我们的静态ropchain，直接getshell~
-123456789101112131415161718192021222324252...
+
+
+这题一看除了没开内存地址随机化，其他都开了，分析逻辑发现漏洞点，格式化字符串漏洞，...
                                         </p>
                                     </div>
                                 </li>
@@ -641,14 +643,12 @@ no_leak...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91%E9%83%A8%E5%88%86wp/">西湖论剑部分wp</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E7%BA%A2%E5%B8%BD%E6%9D%AFCTF%E7%BA%BF%E4%B8%8A%E8%B5%9B/">红帽杯CTF线上赛二进制部分wp</a>
                                         <p>
-                                            Pwn题目：story
-![image.png](https://upload-images.jianshu.io/upload_images/9085575-5c9429d71ed20cb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+                                            一、Pwn1、three | solved    
 
-
-
-这题一看除了没开内存地址随机化，其他都开了，分析逻辑发现漏洞点，格式化字符串漏洞，...
+  这题看到程序输入3字节后有个call指令，可以执行命令：              所以填入机器码，利用mov指令跳转到ecx寄存器(rcx正好有我们后面的输入的bss的地址)，就可跳到bss地址执行我们的静态ropchain，直接getshell~
+123456789101112131415161718192021222324252...
                                         </p>
                                     </div>
                                 </li>
@@ -976,6 +976,24 @@ ida清晰地分析一波：
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/32%E4%BD%8D%E3%80%8164%E4%BD%8D%E4%B8%8B%E7%9A%84arm_pwn/">32位、64位下arm_pwn学习</a>
+                                        <p>
+                                            前言：pwn的学习之路一直在进行，今天看了arm_pwn，搞环境就搞了半天，琢磨工具使用到做题，这里总结下，希望能帮助到大家，少走一点弯路。
+一、环境配置：环境是一大玄学问题，这里仅仅是 我Ubuntu16.04下的环境配置，亲测有效，但是遇到玄学的问题时，也请留言，努力帮大家解决。
+
+
+123456789101112131415161718192021222324#安装qemuapt-ge...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/2019-03-02-%E7%AC%AC%E4%B8%80%E7%AF%87github%E5%8D%9A%E5%AE%A2/">第一篇github博客</a>
                                         <p>
                                             搭建之路第一次搭建自己的个人github博客，前前后后用了大概有2天的时间吧，
@@ -984,44 +1002,6 @@ ida清晰地分析一波：
 
 
 配置推荐关于博客的搭建，网上有一大把教程，这里就不多说了，这里分享一个大佬的基本主题配置，很受用：https://www.jiansh...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/2019roarCTF/">2019roarCTF二进制部分题解</a>
-                                        <p>
-                                            一、PWN1、easy_pwn
-这题是简单题，漏洞点在edit函数：
-
-
-
-当我们edit时输入的size大于malloc申请时输入的size，多出10即可实现offbyone，这里malloc时只能小于0x100，所以很明显直接extend我们的chunk，先扩大然后free再malloc回来即可实现下溢出修改，大概思路如下：
-1、extend the chunk，切割放真实地址到我们的u...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/32%E4%BD%8D%E3%80%8164%E4%BD%8D%E4%B8%8B%E7%9A%84arm_pwn/">32位、64位下arm_pwn学习</a>
-                                        <p>
-                                            前言：pwn的学习之路一直在进行，今天看了arm_pwn，搞环境就搞了半天，琢磨工具使用到做题，这里总结下，希望能帮助到大家，少走一点弯路。
-一、环境配置：环境是一大玄学问题，这里仅仅是 我Ubuntu16.04下的环境配置，亲测有效，但是遇到玄学的问题时，也请留言，努力帮大家解决。
-
-
-123456789101112131415161718192021222324#安装qemuapt-ge...
                                         </p>
                                     </div>
                                 </li>
@@ -1061,6 +1041,26 @@ ida清晰地分析一波：
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/2019roarCTF/">2019roarCTF二进制部分题解</a>
+                                        <p>
+                                            一、PWN1、easy_pwn
+这题是简单题，漏洞点在edit函数：
+
+
+
+当我们edit时输入的size大于malloc申请时输入的size，多出10即可实现offbyone，这里malloc时只能小于0x100，所以很明显直接extend我们的chunk，先扩大然后free再malloc回来即可实现下溢出修改，大概思路如下：
+1、extend the chunk，切割放真实地址到我们的u...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/4%E5%A4%A9%E6%AF%94%E8%B5%9B%E6%89%80%E5%AD%A6/">堆进阶学习之4大利器</a>
                                         <p>
                                             一、Tcache攻击前言：​        之前打比赛一直都是做ubuntu16.04的，很少做ubuntu18下的（有tcache机制），护网杯有道题是libc-2.27.so，我一开始不会做tcache，学了一晚上，理解了基础的原理和攻击方式，这里做个小小的总结。
@@ -1068,6 +1068,25 @@ ida清晰地分析一波：
 
 
 1、重点需要理解的2个函数：1234567...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/Diffie-Hellman%E7%AE%97%E6%B3%95/">Diffie-Hellman算法</a>
+                                        <p>
+                                            一、原理分析离散对数问题假定 a, p 均是素数，下面两个集合相等，证明过程请参考 Cryptography and Network Security 第八章：
+
+
+1&#123; a^1 mod p, a^2 mod p, ..., a^(p-1) mod p &#125; = &#123;1, 2, ... , p-1 &#125;   &#123;&#125; 表示集合
+
+上述式子可概...
                                         </p>
                                     </div>
                                 </li>
@@ -1115,45 +1134,6 @@ mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/Diffie-Hellman%E7%AE%97%E6%B3%95/">Diffie-Hellman算法</a>
-                                        <p>
-                                            一、原理分析离散对数问题假定 a, p 均是素数，下面两个集合相等，证明过程请参考 Cryptography and Network Security 第八章：
-
-
-1&#123; a^1 mod p, a^2 mod p, ..., a^(p-1) mod p &#125; = &#123;1, 2, ... , p-1 &#125;   &#123;&#125; 表示集合
-
-上述式子可概...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/House%20of%20spirit/">House of spirit系列</a>
-                                        <p>
-                                            一、原理分析：House of spirit思想：
-
-这是fastbin的一种attack的方式，就是我们想要控制的区域是不可控的，但是我们能通过伪造fake_chunk来释放它再申请从而得到目标区域，但是有前提：
-（1）获取目标区域地址（堆、栈、bss….）
-（2）伪造堆块（找到那两个可控区域）
-（3）有能覆盖堆指针的漏洞存在（覆盖堆指针为我们的目标区域地址）
-（4）调用free函数将伪堆...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/Hackme%E9%A2%98%E7%9B%AE%E5%A4%8D%E7%8E%B0/">Hackme复现</a>
                                         <p>
                                             开启刷题模式：学了栈溢出和格式化字符串漏洞，现在是练手的时候，打完题目总结好准备开坑堆，师傅说Hackme的题目还不错，于是果断去刚一波~下面对所有题目进行复现，也检验自己的学习情况，查缺补漏。
@@ -1186,11 +1166,32 @@ mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/">canary崩坏技巧</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/House%20of%20spirit/">House of spirit系列</a>
                                         <p>
-                                            题目1：bin方法介绍：leak canary利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。
-开始分析：常规操作，先checksec下，再ida静态分析
-很明显有格式化字符串漏洞和栈溢出漏洞，但是开了栈溢出保护，程序有2个输入，第一次输入可以先泄露cananry，第二次直接覆盖canary就可以栈溢出了，简单明了，gdb动态调试，可以看到...
+                                            一、原理分析：House of spirit思想：
+
+这是fastbin的一种attack的方式，就是我们想要控制的区域是不可控的，但是我们能通过伪造fake_chunk来释放它再申请从而得到目标区域，但是有前提：
+（1）获取目标区域地址（堆、栈、bss….）
+（2）伪造堆块（找到那两个可控区域）
+（3）有能覆盖堆指针的漏洞存在（覆盖堆指针为我们的目标区域地址）
+（4）调用free函数将伪堆...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/house-of-force%E5%88%9D%E6%8E%A2/">house of force初探</a>
+                                        <p>
+                                            house of force介绍：通俗的讲就是通过修改topchunk的size字节来控制malloc的返回地址，从而达到修改任意地址内容的目的：
+具体原理分析：
+因为从topchunk的切割是这样的：
+12345678910111213p = av-&gt;top;size = chunksize (p);/* check that one of the above allocation ...
                                         </p>
                                     </div>
                                 </li>
@@ -1223,31 +1224,11 @@ mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/house-of-force%E5%88%9D%E6%8E%A2/">house of force初探</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/">canary崩坏技巧</a>
                                         <p>
-                                            house of force介绍：通俗的讲就是通过修改topchunk的size字节来控制malloc的返回地址，从而达到修改任意地址内容的目的：
-具体原理分析：
-因为从topchunk的切割是这样的：
-12345678910111213p = av-&gt;top;size = chunksize (p);/* check that one of the above allocation ...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/">0CTF复现zero</a>
-                                        <p>
-                                            一、题目zerostorage前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。
-1、分析保护机制
-保护全开，ida搞一波：
-
-初始化时有个随机数生成的函数，为后面的堆地址进行异或加密。
-1234567891011121314151617181920212223242526272829303132333435363738394041...
+                                            题目1：bin方法介绍：leak canary利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。
+开始分析：常规操作，先checksec下，再ida静态分析
+很明显有格式化字符串漏洞和栈溢出漏洞，但是开了栈溢出保护，程序有2个输入，第一次输入可以先泄露cananry，第二次直接覆盖canary就可以栈溢出了，简单明了，gdb动态调试，可以看到...
                                         </p>
                                     </div>
                                 </li>
@@ -1271,6 +1252,25 @@ mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
 这个函数将输入的大写转成小写（上网查），继续
 
 输入44个字节，以-为分隔符号，切割出12个字符...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/">0CTF复现zero</a>
+                                        <p>
+                                            一、题目zerostorage前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。
+1、分析保护机制
+保护全开，ida搞一波：
+
+初始化时有个随机数生成的函数，为后面的堆地址进行异或加密。
+1234567891011121314151617181920212223242526272829303132333435363738394041...
                                         </p>
                                     </div>
                                 </li>

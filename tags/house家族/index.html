@@ -300,6 +300,58 @@
             
             January 03, 2020
         </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Einherjar/" title="House of Einherjar" class="posttitle">House of Einherjar</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        39k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        36 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h4 id="一、原理："><a href="#一、原理：" class="headerlink" title="一、原理："></a>一、原理：</h4><p>那个的是unlink中的向前合并：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">       <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">           prevsize = prev_size(p);</span><br><span class="line">           <span class="built_in">size</span> += prevsize;</span><br><span class="line">           p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize));</span><br><span class="line">           unlink(av, p, bck, fwd);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>这个和unlink的操作其实差不多，但是呢填入的fd和bk不一样:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;fd =...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/House-of-Einherjar/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House%20of%20spirit/" title="House of spirit系列" class="posttitle">House of spirit系列</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -335,58 +387,6 @@
 ...
             
             <span class="read-more"><a href="/2020/01/03/House%20of%20spirit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Einherjar/" title="House of Einherjar" class="posttitle">House of Einherjar</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        39k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        36 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h4 id="一、原理："><a href="#一、原理：" class="headerlink" title="一、原理："></a>一、原理：</h4><p>那个的是unlink中的向前合并：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">       <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">           prevsize = prev_size(p);</span><br><span class="line">           <span class="built_in">size</span> += prevsize;</span><br><span class="line">           p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize));</span><br><span class="line">           unlink(av, p, bck, fwd);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<p>这个和unlink的操作其实差不多，但是呢填入的fd和bk不一样:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;fd =...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-Einherjar/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
