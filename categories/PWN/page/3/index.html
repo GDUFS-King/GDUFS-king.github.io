@@ -141,37 +141,34 @@
             January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/TAMUCTF%E7%9A%84pwn1%E5%88%B0pwn5/" title="TAMUCTF-pwn1到pwn5" class="posttitle">TAMUCTF-pwn1到pwn5</a></h3>
+            <a href="/2020/01/03/Pwnable.tw%E7%9A%84shellcode%E7%B3%BB%E5%88%97/" title="Pwnable.tw的shellcode系列" class="posttitle">Pwnable.tw的shellcode系列</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                24k
+                34k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                22 mins.
+                31 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/shellcode%E4%B8%93%E9%A2%98/" rel="tag">shellcode专题</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <p>师傅们说去做做TAMUCTF的题目，积累经验，于是去尝试了一波，才发现真的是有些地方自己不懂的知识盲区，也作为一个积累吧，在这里记录</p>
-<a id="more"></a>
-
-<h3 id="题目：pwn1"><a href="#题目：pwn1" class="headerlink" title="题目：pwn1"></a>题目：pwn1</h3><p>首先看看题目先</p>
-<p></p>
-<p>有栈溢出的漏洞，其他的保护全开，...</p>
+            <p>这篇博客专门讲shellcode的系列，也作为一个复习内容吧，主要针对的是，各种情况下的绕过shellcode检测：</p>
+<p>首先是shellcode的生成，一般2种途径：工具+手撕</p>
+<p>这里优先推荐手撕，不然你...</p>
             
-            <span class="read-more"><a href="/2020/01/03/TAMUCTF%E7%9A%84pwn1%E5%88%B0pwn5/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/Pwnable.tw%E7%9A%84shellcode%E7%B3%BB%E5%88%97/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -192,6 +189,61 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Pwnable.tw%E7%9A%84shellcode%E7%B3%BB%E5%88%97/" title="Pwnable.tw的shellcode系列" class="posttitle">Pwnable.tw的shellcode系列</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        34k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        31 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/shellcode%E4%B8%93%E9%A2%98/" rel="tag">shellcode专题</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>这篇博客专门讲shellcode的系列，也作为一个复习内容吧，主要针对的是，各种情况下的绕过shellcode检测：</p>
+<p>首先是shellcode的生成，一般2种途径：工具+手撕</p>
+<p>这里优先推荐手撕，不然你就是脚本小子，遇到难一点的检测机制，还是会绕不过，从最简单的开始：</p>
+<h4 id="一、一般的getshell或者orw出flag"><a href="#一、一般的getshell或者orw出flag" class="headerlink" title="一、一般的getshell或者orw出flag"></a>一、一般的getshell或者orw出flag</h4><a id="more"></a>
+
+<p>32位下：</p>
+<p>1、找准寄存器，确定系统调用的对应值</p>
+<p>eax、ebx、ecx、edx  (对应的是系统调用号+3个参数)</p>
+<p>2、execve(“/bin/sh”，0,  0)的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/Pwnable.tw%E7%9A%84shellcode%E7%B3%BB%E5%88%97/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -417,13 +469,13 @@
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        25k
+                        26k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        22 mins.
+                        24 mins.
                     </span>
                 
                 
@@ -575,35 +627,41 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Hackme%E9%A2%98%E7%9B%AE%E5%A4%8D%E7%8E%B0/" title="Hackme复现" class="posttitle">Hackme复现</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House%20of%20spirit/" title="House of spirit系列" class="posttitle">House of spirit系列</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        133k
+                        49k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        2:01
+                        44 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="开启刷题模式："><a href="#开启刷题模式：" class="headerlink" title="开启刷题模式："></a>开启刷题模式：</h3><p>学了栈溢出和格式化字符串漏洞，现在是练手的时候，打完题目总结好准备开坑堆，师傅说Hackme的题目还不错，于是果断去刚一波~下面对所有题目进行复现，也检验自己的学习情况，查缺补漏。</p>
-<h3 id="1、bash"><a href="#1、bash" class="headerlink" title="1、bash"></a>1、bash</h3><p>一波常规操作：</p>
-<p>这题是最简单的pwn了，题目疯狂暗示cat flag，猜想应该是直接连接远程，ls再cat flag，没什么好讲的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">'debug'</span></span><br><span class="line">context.terminal...</span></pre></td></tr></table></figure>
+                <h3 id="一、原理分析："><a href="#一、原理分析：" class="headerlink" title="一、原理分析："></a>一、原理分析：</h3><p>House of spirit思想：</p>
+<p></p>
+<p>这是fastbin的一种attack的方式，就是我们想要控制的区域是不可控的，但是我们能通过伪造fake_chunk来释放它再申请从而得到目标区域，但是有前提：</p>
+<p>（1）获取目标区域地址（堆、栈、bss….）</p>
+<p>（2）伪造堆块（找到那两个可控区域）</p>
+<p>（3）有能覆盖堆指针的漏洞存在（覆盖堆指针为我们的目标区域地址）</p>
+<p>（4）调用free函数将伪堆块释放到fastbin中</p>
+<p>（5）申请堆块，将刚刚的伪堆块申请出来</p>
+<p>（6）输入数据，即可修改目标区域的内容</p>
+...
             
-            <span class="read-more"><a href="/2020/01/03/Hackme%E9%A2%98%E7%9B%AE%E5%A4%8D%E7%8E%B0/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/House%20of%20spirit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -656,61 +714,6 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;fd =...</span></pre></td></tr></table></figure>
             
             <span class="read-more"><a href="/2020/01/03/House-of-Einherjar/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House%20of%20spirit/" title="House of spirit系列" class="posttitle">House of spirit系列</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        49k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        44 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、原理分析："><a href="#一、原理分析：" class="headerlink" title="一、原理分析："></a>一、原理分析：</h3><p>House of spirit思想：</p>
-<p></p>
-<p>这是fastbin的一种attack的方式，就是我们想要控制的区域是不可控的，但是我们能通过伪造fake_chunk来释放它再申请从而得到目标区域，但是有前提：</p>
-<p>（1）获取目标区域地址（堆、栈、bss….）</p>
-<p>（2）伪造堆块（找到那两个可控区域）</p>
-<p>（3）有能覆盖堆指针的漏洞存在（覆盖堆指针为我们的目标区域地址）</p>
-<p>（4）调用free函数将伪堆块释放到fastbin中</p>
-<p>（5）申请堆块，将刚刚的伪堆块申请出来</p>
-<p>（6）输入数据，即可修改目标区域的内容</p>
-...
-            
-            <span class="read-more"><a href="/2020/01/03/House%20of%20spirit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

@@ -100,7 +100,7 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    30k
+                    31k
                 </span>
                 
                 
@@ -149,17 +149,17 @@
 <p>由于base64编码是将编码前的3*8位数据，分解成4个6位的数据，所以经过base64编码后的字符串长度是4的倍数。但往往我们进行编码的数据长度并不是3的倍数，这就造成了“编码”后的位数不为4的倍数，比如Brisk共5×8=40位，以6位为一组可以分为7组，这样“编码”后就有7个字符，但base64编码后的字符长度应该是4的倍数，显然这里就出问题了，那么怎么办呢？前面的不可以抛弃掉，所以就只有“追加”了，所以Brisk经过base64编码后的长度应该是8个字符，而第8个编码后的字符是’=’，再比如对单个字符a进行base64编码，由于它的长度不是3的倍数，以3个字节为一组它只能分一组，再以6位为一位它只能分两组，所以经过“编码”后它的长度是2，但base64编码后的个数应该是4的倍数，所以它的长度应该是4，所以在后面补上两个‘=’,由于一个数求余3后有三个不同的结果，0、1、2，所以在对一个数据进行base64进行编码后它的长度为：</p>
 <p>接着我们以brisk为例子进行一次演算去还原这个过程：</p>
 <p>（1）当进行编码的数据长度是3的倍数时，len=strlen(str_in)/3<em>4;<br>（2）当进行编码的数据长度不是3的倍数时，len=(strlen(str_in)/3+1)</em>4;</p>
-<p>我们以Brisk这个例子来说明一下base64编码的过程。首先我们以3个字符为一组将Brisk进行分组，Brisk被氛围两组：Bri 和 sk；然后我们取出这两个分组中每个字节的ASCII码：</p>
-<p>B:66 r:114 i:105 s:115 k:107。它们对应的二进制数为  </p>
-<p>B:01000010 r:01110010 i:01101001 s:01110011 k:01101011；</p>
-<p>​       第一组，我们以6位为一组对每一个3字节分组进行再分组就变成了010000 100111 001001 101001。所对应的十进制数是16 39 9 41，对应base64表中的结果是 Q n J p；</p>
-<p>​       第二组，011100 110110 101100(不够补0)，所以对应的十进制数是 28 54 44，对应base64表中的结果是 c 2 s，最终结果为QnJpc2s=（因为第二组“编码”后只有三个字节）。</p>
-<p>​      解码的过程是一个逆过程，我们将经过编码后的字符按4个字符为一组，然后对照base64表得到相应的十进制数，再将其通过拆分和组合，组成3个8位数据，这个数据就是解码后的数据。</p>
-<p>Q: 16 n:39 J:9 p:41  ——&gt; 010000 100111 001001 101001  </p>
-<p>6转8：01000010  01110010  01101001  —–&gt;Bri</p>
-<p>c: 28 2:54 s:44 —–&gt; 011100 110110 101100 </p>
-<p>6转8：01110011  01101011 —–&gt;sk（末尾的0本来就是用来补足的，所以可省略）</p>
-<p>所以如果有=，在逆运算时是可以忽略=的。</p>
+<p><strong>我们以Brisk这个例子来说明一下base64编码的过程。首先我们以3个字符为一组将Brisk进行分组，Brisk被分为两组：Bri 和 sk；然后我们取出这两个分组中每个字节的ASCII码：</strong></p>
+<p><strong>B:66 r:114 i:105 s:115 k:107。它们对应的二进制数为</strong>  </p>
+<p><strong>B:01000010 r:01110010 i:01101001 s:01110011 k:01101011；</strong></p>
+<p>​       <strong>第一组，我们以6位为一组对每一个3字节分组进行再分组就变成了010000 100111 001001 101001。所对应的十进制数是16 39 9 41，对应base64表中的结果是 Q n J p；</strong></p>
+<p>​       <strong>第二组，011100 110110 101100(不够补0)，所以对应的十进制数是 28 54 44，对应base64表中的结果是 c 2 s，最终结果为QnJpc2s=（因为第二组“编码”后只有三个字节）。</strong></p>
+<p>​      <strong>解码的过程是一个逆过程，我们将经过编码后的字符按4个字符为一组，然后对照base64表得到相应的十进制数，再将其通过拆分和组合，组成3个8位数据，这个数据就是解码后的数据。</strong></p>
+<p><strong>Q: 16 n:39 J:9 p:41  ——&gt; 010000 100111 001001 101001</strong>  </p>
+<p><strong>6转8：01000010  01110010  01101001  —–&gt;Bri</strong></p>
+<p><strong>c: 28 2:54 s:44 —–&gt; 011100 110110 101100</strong> </p>
+<p><strong>6转8：01110011  01101011 —–&gt;sk（末尾的0本来就是用来补足的，所以可省略）</strong></p>
+<p><strong>所以如果有=，在逆运算时是可以忽略=的。</strong></p>
 <h4 id="2、好了接下来搞个C的源代码分析："><a href="#2、好了接下来搞个C的源代码分析：" class="headerlink" title="2、好了接下来搞个C的源代码分析："></a>2、好了接下来搞个C的源代码分析：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*base64.h*/</span>  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _BASE64_H  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _BASE64_H  </span></span><br><span class="line">  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;  </span></span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">char</span> *<span class="title">base64_encode</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *str)</span></span>;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">char</span> *<span class="title">bae64_decode</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *code)</span></span>;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
 
@@ -220,7 +220,7 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">64 <p>Articles</p></a></li>
+                    <li><a href="/">65 <p>Articles</p></a></li>
                     <li><a href="/categories">7 <p>Categories</p></a></li>
                     <li><a href="/tags">61 <p>Tags</p></a></li>
                 </ul>

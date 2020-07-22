@@ -100,13 +100,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    25k
+                    26k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    22 mins.
+                    24 mins.
                 </span>
                 
                 
@@ -162,6 +162,29 @@
 <p>​    （2）当异常发生时，异常模式的r14用来保存异常返回地址，将r14如栈可以处理嵌套中断。</p>
 <p>​        程序计数器r15（PC）：PC是有读写限制的。当没有超过读取限制的时候，读取的值是指令的地址加上8个字节，由于ARM指令总是以字对齐的，故bit[1:0]总是00。当用str或stm存储PC的时候，偏移量有可能是8或12等其它值。在V3及以下版本中，写入bit[1:0]的值将被忽略，而在V4及以上版本写入r15的bit[1:0]必须为00，否则后果不可预测。</p>
 <h5 id="如果通俗地理解就是lr-rax，sp-rsp，pc-rip"><a href="#如果通俗地理解就是lr-rax，sp-rsp，pc-rip" class="headerlink" title="如果通俗地理解就是lr=rax，sp=rsp，pc=rip"></a>如果通俗地理解就是lr=rax，sp=rsp，pc=rip</h5><p>相对的，x30是存放ret地址</p>
+<h3 id="arm数据类型与寄存器"><a href="#arm数据类型与寄存器" class="headerlink" title="arm数据类型与寄存器"></a>arm数据类型与寄存器</h3><p><img src="/blog_img/image-20200720160343396.png" alt="image-20200720160343396"></p>
+<p>ldr和str可以看成load和store</p>
+<p>字节序方面同样存在大端序和小端序的问题</p>
+<p>arm32中，前16个寄存器r0-r15可在任何特权模式下访问，分为2组，分别是通用寄存器(r0-r12)和专用寄存器(r13-r15)</p>
+<p>32位寄存器</p>
+<p>​    R0-R12：可在常规操作期间用于存储临时值，指针（到存储器的位置）等，例如：</p>
+<p><strong>●R0在算术操作期间可称为累加器，或用于存储先前调用的函数返回结果</strong></p>
+<p><strong>●R7在处理系统调用时非常有用，因为它存储系统调用号</strong></p>
+<p><strong>●R11帮助我们跟踪用作帧指针的堆栈的边界</strong></p>
+<p><strong>●ARM上的函数调用约定指定函数的前四个参数存储在寄存器r0-r3中，剩下的再存入栈中</strong></p>
+<p><img src="/blog_img/image-20200720162431138.png" alt="image-20200720162431138"></p>
+<p><img src="/blog_img/image-20200720162445588.png" alt="image-20200720162445588"></p>
+<p>R13：SP（堆栈指针）。堆栈指针指向堆栈的顶部。堆栈是用于函数特定存储的内存区域，函数返回时将对其进行回收。因此，通过从堆栈指针中减去我们要分配的值（以字节为单位），堆栈指针可用于在堆栈上分配空间。换句话说，如果我们要分配一个32位值，则从堆栈指针中减去4</p>
+<p>R14：LR（链接寄存器）。进行功能调用时，链接寄存器将使用一个内存地址进行更新，该内存地址引用了从其开始该功能的下一条指令。这样做可以使程序返回到“父”函数，该子函数在“子”函数完成后启动“父”函数调用</p>
+<p>R15：PC（程序计数器）。程序计数器自动增加执行指令的大小。在ARM状态下，此大小始终为4个字节，在THUMB模式下，此大小始终为2个字节。当执行转移指令时，PC保留目标地址。在执行期间，PC在ARM状态下存储当前指令的地址加8（两个ARM指令），在Thumb（v1）状态下存储当前指令的地址加4（两个Thumb指令）。这与x86不同，x86中PC始终指向要执行的下一条指令</p>
+<h4 id="32位寄存器"><a href="#32位寄存器" class="headerlink" title="32位寄存器"></a>32位寄存器</h4><p>1.当参数少于4个时，子程序间通过寄存器R0<del>R3来传递参数；当参数个数多于4个时，将多余的参数通过数据栈进行传递，入栈顺序与参数顺序正好相反，子程序返回前无需恢复R0</del>R3的值</p>
+<p>2.在子程序中，使用R4~R11保存局部变量，若使用需要入栈保存，子程序返回前需要恢复这些寄存器；R12是临时寄存器，使用不需要保存</p>
+<p>3.R13用作数据帧指针，记作SP；R14用作链接寄存器，记作LR，用于保存子程序返回时的地址；R15是程序计数器，记作PC</p>
+<p>4.ATPCS规定堆栈是满递减堆栈FD；</p>
+<p>5.子程序返回32位的整数，使用R0返回；返回64位整数时，使用R0返回低位，R1返回高位</p>
+<h4 id="64位寄存器"><a href="#64位寄存器" class="headerlink" title="64位寄存器"></a>64位寄存器</h4><p>ARM64位参数调用规则遵循AAPCS64，规定堆栈为满递减堆栈。</p>
+<p>寄存器调用规则如下：</p>
+<p><img src="/blog_img/image-20200720174745645.png" alt="image-20200720174745645"></p>
 <h4 id="三、做题实战"><a href="#三、做题实战" class="headerlink" title="三、做题实战"></a>三、做题实战</h4><h5 id="1、64位下的arm程序"><a href="#1、64位下的arm程序" class="headerlink" title="1、64位下的arm程序"></a>1、64位下的arm程序<img src="/blog_img/1573039129553.png" alt="57303912955"></h5><p>可以看到程序除了NX，什么也没有开，ida分析下逻辑：</p>
 <p><img src="/blog_img/1573039511646.png" alt="57303951164"></p>
 <p>先读0x200字节到bss段中，然后再栈溢出，漏洞点相当简单，既然有读到栈上我们就直接填shellcode然后改写下bss权限为7即可，但是这是在arm的环境下，所以实现起来，相对困难一点点</p>
@@ -230,13 +253,20 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">64 <p>Articles</p></a></li>
+                    <li><a href="/">65 <p>Articles</p></a></li>
                     <li><a href="/categories">7 <p>Categories</p></a></li>
                     <li><a href="/tags">61 <p>Tags</p></a></li>
                 </ul>
             </div>
             
             
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#arm数据类型与寄存器"><span class="toc-number">1.</span> <span class="toc-text">arm数据类型与寄存器</span></a></li></ol>
+                </div>
+            </div>
             
             
         </div>

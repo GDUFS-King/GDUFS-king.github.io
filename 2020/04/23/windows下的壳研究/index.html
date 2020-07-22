@@ -160,7 +160,7 @@
 <p>ESP定律的原理在于程序中堆栈平衡的合理利用。由于在程序自解密或者自解压过程中，不少壳会先将当前寄存器内容压栈，如使用pushad，在解压结束后，会将之前的寄存器值出栈，如使用popad。因此在寄存器出栈时，往往程序代码被自动恢复，此时硬件断点触发。然后在程序当前位置，只需要少许单步跟踪，就很容易到达正确的OEP位置。</p>
 <h4 id="二、手动esp定律脱壳"><a href="#二、手动esp定律脱壳" class="headerlink" title="二、手动esp定律脱壳"></a>二、手动esp定律脱壳</h4><p>程序：ddctf一道逆向题</p>
 <p><img src="/blog_img/image-20200423173951632.png" alt="image-20200423173951632"></p>
-<p>发现了upx的壳，然后利用x64dbg去脱壳，这里od试了不行，可能是od插件的问题~</p>
+<p>发现了upx的壳，然后利用x32dbg去脱壳，这里od试了不行，可能是od插件的问题~</p>
 <p>载入到x64dbg：</p>
 <p>先F9到达程序加壳的点，记住pushad和popad是成对的</p>
 <p><img src="/blog_img/image-20200423174309886.png" alt="image-20200423174309886"></p>
@@ -178,7 +178,7 @@
 <p><img src="/blog_img/image-20200423174907868.png" alt="image-20200423174907868"></p>
 <p>这就是没有加壳的程序的入口点了，得到了正确的oep后我们需要进行脱壳操作，选择插件中的scylla，点击dump，然后得到dump出来的程序了，有个dump标志，图中可以看到的：</p>
 <p><img src="/blog_img/image-20200423175059217.png" alt="image-20200423175059217"></p>
-<p>接下来，我们需要修复IAT符号表，这里回到x64dbg中，选择那个misc中的option：</p>
+<p>接下来，我们需要修复IAT符号表，这里回到x32dbg中，选择那个misc中的option：</p>
 <p><img src="/blog_img/image-20200423175234080.png" alt="image-20200423175234080"></p>
 <p>然后accept下：</p>
 <p><img src="/blog_img/image-20200423175306514.png" alt="image-20200423175306514"></p>
@@ -190,7 +190,7 @@
 <p><img src="/blog_img/image-20200423175526204.png" alt="image-20200423175526204"></p>
 <p>这里有syc的那个程序就是我们的脱好壳的程序</p>
 <p><img src="/blog_img/image-20200423175603750.png" alt="image-20200423175603750"></p>
-<p>可以发现从upx1到upx0了，完美，脱壳结束！</p>
+<p>可以发现从upx1到upx0了，完美，脱壳结束！如果程序开了内存地址随机化，记得先关闭随机化即可～</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
@@ -238,7 +238,7 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">64 <p>Articles</p></a></li>
+                    <li><a href="/">65 <p>Articles</p></a></li>
                     <li><a href="/categories">7 <p>Categories</p></a></li>
                     <li><a href="/tags">61 <p>Tags</p></a></li>
                 </ul>
