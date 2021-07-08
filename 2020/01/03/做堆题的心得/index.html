@@ -102,7 +102,7 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    4.2k
+                    4.3k
                 </span>
                 
                 
@@ -149,6 +149,8 @@
 <p>4、如果开了pie，先利用write或者puts函数(覆盖0截断)或者格式化字符串泄露基地址</p>
 <p>5、NX开了的话，一般不管，没开的话直接填shellcode，可以手写也可以工具直接生成</p>
 <p>6、一般的题目都是先栈溢出泄露出真实地址，再次回跳main最后填system去getshell</p>
+<a id="more"></a>
+
 <h3 id="二、做格式化字符串题的心得：-一定是写指针！！！"><a href="#二、做格式化字符串题的心得：-一定是写指针！！！" class="headerlink" title="二、做格式化字符串题的心得：(一定是写指针！！！)"></a>二、做格式化字符串题的心得：(一定是写指针！！！)</h3><p>1、判断漏洞点格式化字符串</p>
 <p>2、判断能写的字符数限制，看下能不能同时泄露出canary和真实地址和基地址(%n$p，n就是写入开始的地方，用int(,16)去接收)</p>
 <p>3、写地址(要么用工具直接写，记得加pause，要么手写，”%128c”+”%12$hhn”)</p>
@@ -199,8 +201,7 @@
 <p>条件竞争：多线程时，可以sleep一下</p>
 <p>沙箱，先看下有没有，禁用了什么函数(可以调用mprotect函数，开辟出空间，再open，read，write去打印出flag)</p>
 <p>free、malloc、edit函数看洞</p>
-<p>打patch技巧：</p>
-<p>1、栈要么改read的size，要么改leave ret 为ret ret</p>
+<h4 id="四、打patch技巧"><a href="#四、打patch技巧" class="headerlink" title="四、打patch技巧"></a>四、打patch技巧</h4><p>1、栈要么改read的size，要么改leave ret 为ret ret</p>
 <p>2、格式化字符串，改printf为puts函数</p>
 <p>3、UAF漏洞，加个0，offbynull或者one的话，直接删掉</p>
 <p>4、溢出的话，改size即可</p>
@@ -253,9 +254,9 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">65 <p>Articles</p></a></li>
-                    <li><a href="/categories">7 <p>Categories</p></a></li>
-                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -283,7 +284,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

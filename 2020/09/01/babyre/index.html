@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>babyre题解 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、babyre这题直接写个魔改的rc4算法计算s_box的值得到smc加密的异或值，然后进行patch操作即可还原出真实的judge加密逻辑：
+
+
+12345s_box = [0x83,0x24,,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">babyre题解</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/RE"><b>「
+                    </b>RE<b> 」</b></a>
+                
+                September 01, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/09/01/babyre/" title="babyre题解" class="">babyre题解</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    28k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    26 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h4 id="一、babyre"><a href="#一、babyre" class="headerlink" title="一、babyre"></a>一、babyre</h4><p>这题直接写个魔改的rc4算法计算s_box的值得到smc加密的异或值，然后进行patch操作即可还原出真实的judge加密逻辑：</p>
+<a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s_box = [<span class="number">0x83</span>,<span class="number">0x24</span>,<span class="number">0x84</span>,<span class="number">0xcf</span>,<span class="number">0x6c</span>,<span class="number">0x8f</span>,<span class="number">0x35</span>,<span class="number">0x80</span>,<span class="number">0x62</span>,<span class="number">0xe6</span>,<span class="number">0x3b</span>,<span class="number">0x0c</span>,<span class="number">0xc4</span>,<span class="number">0x7c</span>,<span class="number">0xad</span>,<span class="number">0x1b</span>,<span class="number">0xbe</span>,<span class="number">0xbc</span>,<span class="number">0x75</span>,<span class="number">0x01</span>,<span class="number">0x91</span>,<span class="number">0x56</span>,<span class="number">0xf5</span>,<span class="number">0xb8</span>,<span class="number">0x03</span>,<span class="number">0xc9</span>,<span class="number">0xcd</span>,<span class="number">0xa8</span>,<span class="number">0x85</span>,<span class="number">0x56</span>,<span class="number">0xdc</span>,<span class="number">0xbb</span>,<span class="number">0x5a</span>,<span class="number">0xd4</span>,<span class="number">0x52</span>,<span class="number">0x09</span>,<span class="number">0xd5</span>,<span class="number">0xeb</span>,<span class="number">0x8b</span>,<span class="number">0x3c</span>,<span class="number">0x24</span>,<span class="number">0xfa</span>,<span class="number">0xda</span>,<span class="number">0x42</span>,<span class="number">0x68</span>,<span class="number">0xb4</span>,<span class="number">0xf9</span>,<span class="number">0x42</span>,<span class="number">0x8a</span>,<span class="number">0xd0</span>,<span class="number">0x13</span>,<span class="number">0x52</span>,<span class="number">0xe4</span>,<span class="number">0x87</span>,<span class="number">0xf3</span>,<span class="number">0x09</span>,<span class="number">0xc2</span>,<span class="number">0xcd</span>,<span class="number">0x7e</span>,<span class="number">0x17</span>,<span class="number">0x53</span>,<span class="number">0x72</span>,<span class="number">0xfc</span>,<span class="number">0x1b</span>,<span class="number">0x53</span>,<span class="number">0x99</span>,<span class="number">0x77</span>,<span class="number">0x86</span>,<span class="number">0x10</span>,<span class="number">0x7b</span>,<span class="number">0x61</span>,<span class="number">0x44</span>,<span class="number">0x94</span>,<span class="number">0xc2</span>,<span class="number">0x00</span>,<span class="number">0x5d</span>,<span class="number">0x18</span>,<span class="number">0x00</span>,<span class="number">0xa9</span>,<span class="number">0xb0</span>,<span class="number">0x38</span>,<span class="number">0xc5</span>,<span class="number">0x12</span>,<span class="number">0x51</span>,<span class="number">0x2d</span>,<span class="number">0xd5</span>,<span class="number">0xa4</span>,<span class="number">0x5e</span>,<span class="number">0x3b</span>,<span class="number">0xae</span>,<span class="number">0xba</span>,<span class="number">0x74</span>,<span class="number">0x17</span>,<span class="number">0xfa</span>,<span class="number">0xc0</span>,<span class="number">0xb4</span>,<span class="number">0xad</span>,<span class="number">0x38</span>,<span class="number">0xd2</span>,<span class="number">0xa2</span>,<span class="number">0xf4</span>,<span class="number">0x0e</span>,<span class="number">0x5e</span>,<span class="number">0xf9</span>,<span class="number">0x2a</span>,<span class="number">0x27</span>,<span class="number">0x23</span>,<span class="number">0x80</span>,<span class="number">0x28</span>,<span class="number">0x86</span>,<span class="number">0x46</span>,<span class="number">0x80</span>,<span class="number">0x04</span>,<span class="number">0x7d</span>,<span class="number">0xb9</span>,<span class="number">0xb6</span>,<span class="number">0xb5</span>,<span class="number">0x42</span>,<span class="number">0xe1</span>,<span class="number">0x38</span>,<span class="number">0x3c</span>,<span class="number">0x99</span>,<span class="number">0xb4</span>,<span class="number">0x14</span>,<span class="number">0xe3</span>,<span class="number">0xb9</span>,<span class="number">0x8e</span>,<span class="number">0x29</span>,<span class="number">0x2c</span>,<span class="number">0x97</span>,<span class="number">0x5c</span>,<span class="number">0x07</span>,<span class="number">0xb9</span>,<span class="number">0xb1</span>,<span class="number">0xda</span>,<span class="number">0xf6</span>,<span class="number">0x3d</span>,<span class="number">0x60</span>,<span class="number">0x43</span>,<span class="number">0x49</span>,<span class="number">0x67</span>,<span class="number">0x04</span>,<span class="number">0x32</span>,<span class="number">0xb5</span>,<span class="number">0x65</span>,<span class="number">0x4e</span>,<span class="number">0x7f</span>,<span class="number">0xa4</span>,<span class="number">0xd4</span>,<span class="number">0xf5</span>,<span class="number">0x29</span>,<span class="number">0x49</span>,<span class="number">0x2e</span>,<span class="number">0x83</span>,<span class="number">0x6a</span>,<span class="number">0x93</span>,<span class="number">0x99</span>,<span class="number">0x10</span>,<span class="number">0xf8</span>,<span class="number">0x96</span>,<span class="number">0xa9</span>,<span class="number">0xdf</span>,<span class="number">0x7d</span>,<span class="number">0xb6</span>,<span class="number">0x1a</span>,<span class="number">0x75</span>,<span class="number">0x7a</span>,<span class="number">0xdc</span>,<span class="number">0xb5</span>,<span class="number">0xec</span>,<span class="number">0xf4</span>,<span class="number">0x64</span>,<span class="number">0x8e</span>,<span class="number">0x09</span>,<span class="number">0xf3</span>,<span class="number">0xef</span>,<span class="number">0x69</span>,<span class="number">0x04</span>,<span class="number">0x48</span>,<span class="number">0xf5</span>,<span class="number">0x35</span>,<span class="number">0x98</span>,<span class="number">0x61</span>,<span class="number">0x0f</span>,<span class="number">0x9b</span>,<span class="number">0xe9</span>,<span class="number">0xb8</span>,<span class="number">0x24</span>,<span class="number">0x57</span>,<span class="number">0xcd</span>,<span class="number">0xac</span>,<span class="number">0xe5</span>,<span class="number">0x1e</span>,<span class="number">0x63</span>,<span class="number">0x7d</span>,<span class="number">0x6e</span>,<span class="number">0x08</span>,<span class="number">0x98</span>,<span class="number">0xf2</span>,<span class="number">0x55</span>,<span class="number">0x78</span>,<span class="number">0x57</span>,<span class="number">0x0c</span>,<span class="number">0xf7</span>,<span class="number">0xac</span>,<span class="number">0x38</span>,<span class="number">0x44</span>,<span class="number">0xfb</span>,<span class="number">0xb7</span>,<span class="number">0x37</span>,<span class="number">0x9e</span>,<span class="number">0x0d</span>,<span class="number">0x5f</span>,<span class="number">0x0c</span>,<span class="number">0xfc</span>,<span class="number">0xc7</span>,<span class="number">0x3d</span>,<span class="number">0xfb</span>,<span class="number">0xf6</span>,<span class="number">0xb4</span>,<span class="number">0xca</span>,<span class="number">0x6a</span>,<span class="number">0xac</span>,<span class="number">0x8c</span>,<span class="number">0xc0</span>,<span class="number">0x48</span>,<span class="number">0xe8</span>,<span class="number">0x9c</span>,<span class="number">0x6e</span>,<span class="number">0x2c</span>,<span class="number">0xa7</span>,<span class="number">0xc2</span>,<span class="number">0x96</span>,<span class="number">0x58</span>,<span class="number">0x6b</span>,<span class="number">0x67</span>,<span class="number">0x34</span>,<span class="number">0xa7</span>,<span class="number">0x2e</span>,<span class="number">0x6f</span>,<span class="number">0xfa</span>,<span class="number">0x7c</span>,<span class="number">0x0a</span>,<span class="number">0x33</span>,<span class="number">0x45</span>,<span class="number">0x05</span>,<span class="number">0xca</span>,<span class="number">0x6f</span>,<span class="number">0x4d</span>,<span class="number">0x9f</span>,<span class="number">0x90</span>,<span class="number">0xc6</span>,<span class="number">0xa1</span>,<span class="number">0xbf</span>,<span class="number">0xc9</span>,<span class="number">0x21</span>,<span class="number">0x68</span>,<span class="number">0x88</span>,<span class="number">0xed</span>,<span class="number">0xce</span>,<span class="number">0xc9</span>,<span class="number">0xf5</span>,<span class="number">0x5b</span>,<span class="number">0xf6</span>,<span class="number">0x1a</span>,<span class="number">0xce</span>,<span class="number">0x4a</span>,<span class="number">0x0e</span>,<span class="number">0xce</span>,<span class="number">0xba</span>,<span class="number">0x6f</span>,<span class="number">0x32</span>,<span class="number">0x65</span>,<span class="number">0x25</span>,<span class="number">0xc5</span>,<span class="number">0x07</span>,<span class="number">0xbe</span>,<span class="number">0x4b</span>,<span class="number">0xd5</span>,<span class="number">0x96</span>,<span class="number">0xcd</span>,<span class="number">0x7e</span>,<span class="number">0x51</span>,<span class="number">0x99</span>,<span class="number">0x6b</span>,<span class="number">0xd0</span>,<span class="number">0xdb</span>,<span class="number">0x7f</span>,<span class="number">0xf8</span>,<span class="number">0x3b</span>,<span class="number">0xf8</span>,<span class="number">0x18</span>,<span class="number">0x57</span>,<span class="number">0xf3</span>,<span class="number">0xa9</span>,<span class="number">0xf6</span>,<span class="number">0x1e</span>,<span class="number">0x1c</span>,<span class="number">0x4a</span>,<span class="number">0xbb</span>,<span class="number">0x15</span>,<span class="number">0xc5</span>,<span class="number">0xc5</span>,<span class="number">0xcd</span>,<span class="number">0x4b</span>,<span class="number">0xe8</span>,<span class="number">0xe7</span>,<span class="number">0xa7</span>,<span class="number">0x18</span>,<span class="number">0x43</span>,<span class="number">0x8e</span>,<span class="number">0xb4</span>,<span class="number">0x2e</span>,<span class="number">0x6a</span>,<span class="number">0xa7</span>,<span class="number">0x72</span>,<span class="number">0x4c</span>,<span class="number">0x84</span>,<span class="number">0xc0</span>,<span class="number">0xaf</span>,<span class="number">0x4b</span>,<span class="number">0x41</span>,<span class="number">0x58</span>,<span class="number">0x96</span>,<span class="number">0x5c</span>,<span class="number">0x48</span>,<span class="number">0xa7</span>,<span class="number">0xd3</span>,<span class="number">0x9a</span>,<span class="number">0x03</span>,<span class="number">0x16</span>,<span class="number">0x4f</span>,<span class="number">0x74</span>,<span class="number">0x2a</span>,<span class="number">0x59</span>,<span class="number">0x7f</span>,<span class="number">0xf4</span>,<span class="number">0x6d</span>,<span class="number">0xa6</span>,<span class="number">0xcd</span>,<span class="number">0xcd</span>,<span class="number">0x93</span>,<span class="number">0xbc</span>,<span class="number">0xe4</span>,<span class="number">0xbf</span>,<span class="number">0x03</span>,<span class="number">0xfb</span>,<span class="number">0xd6</span>,<span class="number">0xc3</span>,<span class="number">0xf4</span>,<span class="number">0x35</span>,<span class="number">0xac</span>,<span class="number">0xad</span>,<span class="number">0x40</span>,<span class="number">0xd0</span>,<span class="number">0x3e</span>,<span class="number">0xd7</span>,<span class="number">0xa5</span>,<span class="number">0x50</span>,<span class="number">0x71</span>,<span class="number">0x0f</span>,<span class="number">0x6a</span>,<span class="number">0x20</span>,<span class="number">0xa5</span>,<span class="number">0xf0</span>,<span class="number">0xa0</span>,<span class="number">0x34</span>,<span class="number">0x27</span>,<span class="number">0x20</span>,<span class="number">0x0f</span>,<span class="number">0x34</span>,<span class="number">0x60</span>,<span class="number">0x37</span>,<span class="number">0xb2</span>,<span class="number">0x0e</span>,<span class="number">0x0a</span>,<span class="number">0x76</span>,<span class="number">0xfd</span>,<span class="number">0xd4</span>,<span class="number">0x93</span>,<span class="number">0x4d</span>,<span class="number">0xb6</span>,<span class="number">0xb9</span>,<span class="number">0x4e</span>,<span class="number">0xad</span>,<span class="number">0x98</span>,<span class="number">0x9e</span>,<span class="number">0xd9</span>,<span class="number">0x25</span>,<span class="number">0x65</span>,<span class="number">0x20</span>,<span class="number">0x40</span>,<span class="number">0x01</span>,<span class="number">0xa1</span>,<span class="number">0xc9</span>,<span class="number">0xf4</span>,<span class="number">0x11</span>,<span class="number">0xa9</span>,<span class="number">0x9c</span>,<span class="number">0xe7</span>,<span class="number">0x40</span>,<span class="number">0x9a</span>,<span class="number">0xfa</span>,<span class="number">0x5c</span>,<span class="number">0xac</span>,<span class="number">0x72</span>,<span class="number">0x2e</span>,<span class="number">0x0b</span>,<span class="number">0xf7</span>,<span class="number">0x2a</span>,<span class="number">0xd4</span>,<span class="number">0x29</span>,<span class="number">0x00</span>,<span class="number">0x05</span>,<span class="number">0xed</span>,<span class="number">0x35</span>,<span class="number">0xe3</span>,<span class="number">0xbc</span>,<span class="number">0xc5</span>,<span class="number">0xa8</span>,<span class="number">0x37</span>,<span class="number">0x79</span>,<span class="number">0xa7</span>,<span class="number">0x17</span>,<span class="number">0xbc</span>,<span class="number">0xe7</span>,<span class="number">0x36</span>,<span class="number">0x9a</span>,<span class="number">0x4e</span>,<span class="number">0xa7</span>,<span class="number">0x37</span>,<span class="number">0xeb</span>,<span class="number">0x6a</span>,<span class="number">0xa8</span>,<span class="number">0x19</span>,<span class="number">0x81</span>,<span class="number">0x90</span>,<span class="number">0xc0</span>,<span class="number">0x65</span>,<span class="number">0x58</span>,<span class="number">0x74</span>,<span class="number">0xc1</span>,<span class="number">0x1e</span>,<span class="number">0x86</span>,<span class="number">0x81</span>,<span class="number">0x10</span>,<span class="number">0xf3</span>,<span class="number">0x99</span>,<span class="number">0xb1</span>,<span class="number">0x34</span>,<span class="number">0x4c</span>,<span class="number">0x5e</span>,<span class="number">0x10</span>,<span class="number">0xc9</span>,<span class="number">0x92</span>,<span class="number">0x7e</span>,<span class="number">0x61</span>,<span class="number">0x8e</span>,<span class="number">0x9e</span>,<span class="number">0xb4</span>,<span class="number">0x12</span>,<span class="number">0x7b</span>,<span class="number">0x70</span>,<span class="number">0xab</span>,<span class="number">0x20</span>,<span class="number">0xba</span>,<span class="number">0xaf</span>,<span class="number">0x4c</span>,<span class="number">0xba</span>,<span class="number">0x2c</span>,<span class="number">0x67</span>,<span class="number">0x87</span>,<span class="number">0x98</span>,<span class="number">0xe0</span>,<span class="number">0x87</span>,<span class="number">0x0f</span>,<span class="number">0x8e</span>,<span class="number">0x4e</span>,<span class="number">0x12</span>,<span class="number">0x85</span>,<span class="number">0xb7</span>,<span class="number">0x17</span>,<span class="number">0x98</span>,<span class="number">0x4b</span>,<span class="number">0xa4</span>,<span class="number">0x53</span>,<span class="number">0x2e</span>,<span class="number">0x4f</span>,<span class="number">0xb2</span>,<span class="number">0x44</span>,<span class="number">0x5d</span>,<span class="number">0xed</span>,<span class="number">0xde</span>,<span class="number">0x1d</span>,<span class="number">0xd7</span>,<span class="number">0x3e</span>,<span class="number">0x79</span>,<span class="number">0xca</span>,<span class="number">0xd3</span>,<span class="number">0x06</span>,<span class="number">0xed</span>,<span class="number">0xdb</span>,<span class="number">0x82</span>,<span class="number">0xf8</span>,<span class="number">0x70</span>,<span class="number">0x62</span>,<span class="number">0xc8</span>,<span class="number">0xdb</span>,<span class="number">0x16</span>,<span class="number">0xca</span>,<span class="number">0xcd</span>,<span class="number">0xee</span>,<span class="number">0x7b</span>,<span class="number">0x6a</span>,<span class="number">0x95</span>,<span class="number">0xcd</span>,<span class="number">0xc3</span>,<span class="number">0x9b</span>,<span class="number">0x1c</span>,<span class="number">0xa1</span>,<span class="number">0x47</span>,<span class="number">0xa7</span>,<span class="number">0x79</span>,<span class="number">0x7a</span>,<span class="number">0x46</span>,<span class="number">0x9f</span>,<span class="number">0x85</span>,<span class="number">0x89</span>,<span class="number">0x74</span>,<span class="number">0xf7</span>,<span class="number">0x9c</span>,<span class="number">0x86</span>,<span class="number">0xd5</span>,<span class="number">0xcf</span>,<span class="number">0x57</span>,<span class="number">0xfa</span>,<span class="number">0xf7</span>,<span class="number">0xe8</span>,<span class="number">0x57</span>,<span class="number">0xe7</span>,<span class="number">0x2f</span>,<span class="number">0xd9</span>,<span class="number">0x6f</span>,<span class="number">0x3c</span>,<span class="number">0xca</span>,<span class="number">0x13</span>,<span class="number">0xd0</span>,<span class="number">0xb6</span>,<span class="number">0xa4</span>,<span class="number">0xb9</span>,<span class="number">0x9a</span>,<span class="number">0xb4</span>,<span class="number">0x25</span>,<span class="number">0x87</span>,<span class="number">0xeb</span>,<span class="number">0xa2</span>,<span class="number">0x3e</span>,<span class="number">0xf0</span>,<span class="number">0x12</span>,<span class="number">0xe1</span>,<span class="number">0x42</span>,<span class="number">0x6e</span>,<span class="number">0x2b</span>,<span class="number">0x76</span>,<span class="number">0x3e</span>,<span class="number">0x24</span>,<span class="number">0xbe</span>,<span class="number">0xbd</span>,<span class="number">0x03</span>,<span class="number">0x5e</span>,<span class="number">0xb6</span>,<span class="number">0x61</span>]</span><br><span class="line"></span><br><span class="line">n = (<span class="number">0x000000000402969</span><span class="number">-0x00000000040272D</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">	PatchByte(<span class="number">0x00000000040272D</span>+i, Byte(<span class="number">0x00000000040272D</span>+i) ^ s_box[i])</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、计算aes加密的key"><a href="#二、计算aes加密的key" class="headerlink" title="二、计算aes加密的key"></a>二、计算aes加密的key</h4><p>直接将密文拖进去程序内存，改1为0即可得到key</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">key=“th1s1sth3n1c3k3y”</span><br></pre></td></tr></table></figure>
+
+<p>三、对最后一步进行爆破，能得到30多组解，只有一组能解出正确的flag，反向进一步逆向那个迭代异或，从而得到aes加密的密文，进行2段aes解密出flag：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> unpad</span><br><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> libnum</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">enc = [<span class="number">189</span>, <span class="number">173</span>, <span class="number">180</span>, <span class="number">132</span>, <span class="number">16</span>, <span class="number">99</span>, <span class="number">179</span>, <span class="number">225</span>, <span class="number">198</span>, <span class="number">132</span>, <span class="number">45</span>, <span class="number">111</span>, <span class="number">186</span>, <span class="number">136</span>, <span class="number">116</span>, <span class="number">196</span>, <span class="number">144</span>, <span class="number">50</span>, <span class="number">234</span>, <span class="number">46</span>, <span class="number">198</span>, <span class="number">40</span>, <span class="number">101</span>, <span class="number">112</span>, <span class="number">201</span>, <span class="number">117</span>, <span class="number">120</span>, <span class="number">160</span>, <span class="number">11</span>, <span class="number">159</span>, <span class="number">166</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">256</span>):</span><br><span class="line">    a = [j]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">31</span>):</span><br><span class="line">        a.append(((enc[i] ^ ((a[i]^<span class="number">0x13</span>)*<span class="number">2</span>+<span class="number">7</span>))-(a[i]%<span class="number">9</span>)<span class="number">-2</span>)&amp;<span class="number">0xff</span>)</span><br><span class="line">    <span class="comment"># s = "".join(map(chr,a))</span></span><br><span class="line">    <span class="keyword">if</span> a[<span class="number">31</span>]==<span class="number">0xc4</span>:</span><br><span class="line">        print(a)</span><br><span class="line"></span><br><span class="line">flag = [<span class="number">0x4d</span>,<span class="number">0x77</span>,<span class="number">0x5e</span>,<span class="number">0x0f</span>,<span class="number">0xb3</span>,<span class="number">0x4d</span>,<span class="number">0x99</span>,<span class="number">0xa6</span>,<span class="number">0x8a</span>,<span class="number">0xfa</span>,<span class="number">0x54</span>,<span class="number">0xb3</span>,<span class="number">0x1e</span>,<span class="number">0x96</span>,<span class="number">0x91</span>,<span class="number">0x7c</span>,<span class="number">0x18</span>,<span class="number">0x85</span>,<span class="number">0xf8</span>,<span class="number">0x30</span>,<span class="number">0x5e</span>,<span class="number">0x61</span>,<span class="number">0xba</span>,<span class="number">0x34</span>,<span class="number">0x1c</span>,<span class="number">0xe9</span>,<span class="number">0x84</span>,<span class="number">0x45</span>,<span class="number">0x0b</span>,<span class="number">0x38</span>,<span class="number">0xbe</span>,<span class="number">0xc4</span>]</span><br><span class="line"><span class="comment">#这是正确的flag，测试出来的，有30多组，一个个测试</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(flag)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> xrange(i//<span class="number">4</span><span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):</span><br><span class="line">		flag[i]^=flag[j]</span><br><span class="line"><span class="keyword">print</span> flag</span><br><span class="line">flag = [<span class="number">77</span>, <span class="number">119</span>, <span class="number">94</span>, <span class="number">15</span>, <span class="number">254</span>, <span class="number">0</span>, <span class="number">212</span>, <span class="number">235</span>, <span class="number">176</span>, <span class="number">192</span>, <span class="number">110</span>, <span class="number">137</span>, <span class="number">122</span>, <span class="number">242</span>, <span class="number">245</span>, <span class="number">24</span>, <span class="number">115</span>, <span class="number">238</span>, <span class="number">147</span>, <span class="number">91</span>, <span class="number">134</span>, <span class="number">185</span>, <span class="number">98</span>, <span class="number">236</span>, <span class="number">137</span>, <span class="number">124</span>, <span class="number">17</span>, <span class="number">208</span>, <span class="number">7</span>, <span class="number">52</span>, <span class="number">178</span>, <span class="number">200</span>]</span><br><span class="line"></span><br><span class="line">c1 = <span class="string">b'\x4d\x77\x5e\x0f\xfe\x00\xd4\xeb\xb0\xc0\x6e\x89\x7a\xf2\xf5\x18'</span></span><br><span class="line">c2 = <span class="string">b'\x73\xee\x93\x5b\x86\xb9\x62\xec\x89\x7c\x11\xd0\x07\x34\xb2\xc8'</span></span><br><span class="line"></span><br><span class="line">des_crypto = <span class="string">b'\x0a\xf4\xee\xc8\x42\x8a\x9b\xdb\xa2\x26\x6f\xee\xee\xe0\xd8\xa2'</span></span><br><span class="line"><span class="comment">#将密文放进去内存，然后改下1为0获得输入key=th1s1sth3n1c3k3y</span></span><br><span class="line">aes_key = <span class="string">b"th1s1sth3n1c3k3y"</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">aes_decrypt</span><span class="params">(cipher, key=aes_key)</span>:</span></span><br><span class="line">    aes = AES.new(key,mode=AES.MODE_ECB)</span><br><span class="line">    <span class="keyword">return</span> aes.decrypt(cipher)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> aes_decrypt(c1)+aes_decrypt(c2)</span><br><span class="line"><span class="comment">#GWHT&#123;th1s_gam3_1s_s0_c00l_and_d&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

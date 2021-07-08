@@ -1,0 +1,587 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PWN和RE环境安装合集 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、Re常用工具下载与安装地址链接:https://pan.baidu.com/s/1js7wdznG-Up2EBXOIR5BxQ 
+密码:fr8f
+切记！！！下载下来之前先关闭防火墙、病毒防护等、,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">PWN和RE环境安装合集</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/工具安装"><b>「
+                    </b>工具安装<b> 」</b></a>
+                
+                June 08, 2021
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2021/06/08/PWN%E5%92%8CRE%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%90%88%E9%9B%86/" title="PWN和RE环境安装合集" class="">PWN和RE环境安装合集</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    16k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    15 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Pwn-Re/" rel="tag">Pwn&Re</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h4 id="一、Re常用工具下载与安装"><a href="#一、Re常用工具下载与安装" class="headerlink" title="一、Re常用工具下载与安装"></a>一、Re常用工具下载与安装</h4><p><strong>地址链接:<a href="https://pan.baidu.com/s/1js7wdznG-Up2EBXOIR5BxQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1js7wdznG-Up2EBXOIR5BxQ</a></strong> </p>
+<p><strong>密码:fr8f</strong></p>
+<p>切记！！！下载下来之前先关闭防火墙、病毒防护等、还有腾讯管家、360安全卫士等安全防护软件，因为会报毒，然后辛苦下的就会被删除掉，但是其实是没有伤害的，程序破解软件一般都比较敏感而已。Devc++需要安装，其他的是绿色版，不需要安装可以直接使用。</p>
+<h5 id="安卓逆向jeb的下载和安装"><a href="#安卓逆向jeb的下载和安装" class="headerlink" title="安卓逆向jeb的下载和安装"></a>安卓逆向jeb的下载和安装</h5><a id="more"></a>
+
+<p>1、下载好java的jdk</p>
+<p>JDK百度云链接：链接: <a href="https://pan.baidu.com/s/12RGKteggTr1i2QaMw7-zKg" target="_blank" rel="noopener">https://pan.baidu.com/s/12RGKteggTr1i2QaMw7-zKg</a> 密码: s51n</p>
+<p>2、配置java环境变量</p>
+<p>变量名：<strong>JAVA_HOME</strong><br> 变量值：<strong>C:\Program Files\Java\jdk1.8.0_91</strong><br> 在系统变量那里点新建，输入内容即可</p>
+<p><img src="/blog_img/clip_image001-3085187.png" alt="img"></p>
+<p>变量名：<strong>Path</strong><br>变量值：<strong>%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;</strong><br> 这里有两个路径（用英文分号隔开了），一个是JDK的路径，另一个是JDK下JRE的路径</p>
+<p>这个路径已经有了的，直接编辑添加即可</p>
+<p><img src="/blog_img/clip_image002-3085187.png" alt="img"></p>
+<p>变量名：<strong>CLASSPATH</strong><br>变量值：<strong>.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar;</strong><br>记得前面有个”<strong>.</strong>“ 。”<strong>.</strong>“ 表示JVM在当前文件下寻找.class可执行文件；如果没有“<strong>.</strong>”就只能运行JDK自带的<strong>JRE</strong>里面的文件了，同样的道理，新建一个系统变量，输入值即可</p>
+<p><img src="/blog_img/clip_image003-3085187.png" alt="img"></p>
+<p>在命令行检验下</p>
+<p><img src="/blog_img/clip_image004-3085187.png" alt="img"></p>
+<p>有说明安装成功～</p>
+<p>3、下载jeb3.0版本破解版</p>
+<p>链接: <a href="https://pan.baidu.com/s/1qudznfdsZ8t6xVw8Aehqng" target="_blank" rel="noopener">https://pan.baidu.com/s/1qudznfdsZ8t6xVw8Aehqng</a> 密码: j12h</p>
+<p>4、解压你的jeb，并打开那个jeb_wincon.bat</p>
+<p><img src="/blog_img/clip_image005-3085187.png" alt="img"></p>
+<p>成功运行jeb如下：</p>
+<p><img src="/blog_img/clip_image006-3085187.png" alt="img"></p>
+<p>四、夜神手机模拟器下载</p>
+<p>直接官网下载一个</p>
+<p><a href="https://www.yeshen.com/" target="_blank" rel="noopener">https://www.yeshen.com/</a></p>
+<p>主要用来安装apk程序，看运行效果</p>
+<p>(当然也可以用自己的手机当真机环境～)</p>
+<h4 id="二、ida7-0版本安装"><a href="#二、ida7-0版本安装" class="headerlink" title="二、ida7.0版本安装"></a>二、ida7.0版本安装</h4><p>链接:<a href="https://pan.baidu.com/s/1leq-ArOIDMTShaJONHc7nw" target="_blank" rel="noopener">https://pan.baidu.com/s/1leq-ArOIDMTShaJONHc7nw</a> 密码:h0z6</p>
+<p>这里记住放置的文件夹路径不能是中文路径！</p>
+<p> 如果安装成功，桌面会有这两个女人</p>
+<p><img src="/blog_img/clip_image001.png" alt="img"></p>
+<h4 id="三、Pwn工具与环境安装"><a href="#三、Pwn工具与环境安装" class="headerlink" title="三、Pwn工具与环境安装"></a>三、Pwn工具与环境安装</h4><h5 id="1、VMware-15-Pro专业版"><a href="#1、VMware-15-Pro专业版" class="headerlink" title="1、VMware 15 Pro专业版"></a>1、VMware 15 Pro专业版</h5><p><a href="https://www.52pojie.cn/thread-801613-1-1.html（该链接里面有注册密钥）" target="_blank" rel="noopener">https://www.52pojie.cn/thread-801613-1-1.html（该链接里面有注册密钥）</a></p>
+<p>安装好后，桌面有这个</p>
+<p><img src="/blog_img/clip_image002-3084192.png" alt="img"></p>
+<p>这里有装好环境的ubuntu16.04的镜像机，大家可以直接用～</p>
+<p><strong>链接: <a href="https://pan.baidu.com/s/15qM5eE99Fk1mWmvDfEIBIQ" target="_blank" rel="noopener">https://pan.baidu.com/s/15qM5eE99Fk1mWmvDfEIBIQ</a></strong> </p>
+<p><strong>密码: 11dv</strong></p>
+<p>如果用这个，就不用往下装环境了！！！</p>
+<h5 id="2、Ubuntu16-04-64位镜像"><a href="#2、Ubuntu16-04-64位镜像" class="headerlink" title="2、Ubuntu16.04 64位镜像"></a>2、Ubuntu16.04 64位镜像</h5><p><strong>下载地址：</strong></p>
+<p><a href="http://mirrors.aliyun.com/ubuntu-releases/16.04/" target="_blank" rel="noopener">http://mirrors.aliyun.com/ubuntu-releases/16.04/</a></p>
+<p><img src="/blog_img/clip_image003.png" alt="img"></p>
+<p>下载好ios文件</p>
+<p>接着打开VMware 15 Pro专业版</p>
+<p>开始安装Ubuntu虚拟机</p>
+<p><img src="/blog_img/clip_image004.png" alt="img"></p>
+<p><img src="/blog_img/clip_image005.png" alt="img"></p>
+<p><img src="/blog_img/clip_image006.png" alt="img"></p>
+<p>选择刚刚下载好的iso文件</p>
+<p><img src="/blog_img/clip_image007.png" alt="img"></p>
+<p><img src="/blog_img/clip_image008.png" alt="img"></p>
+<p>选个文件夹，尽量不要选在c盘，这个文件夹就包含了你以后虚拟机的所有东西</p>
+<p><img src="/blog_img/clip_image009.png" alt="img"></p>
+<p>默认一路下一步</p>
+<p><img src="/blog_img/clip_image010.png" alt="img"></p>
+<p>一直慢慢等他安装好就完事了，是安装完成后就直接进入了Ubuntu系统</p>
+<p>有关Ubuntu的各种玩法，就自己去谷歌查查 </p>
+<p>然后打开终端输入命令，进行以下的安装</p>
+<p><img src="/blog_img/clip_image011.png" alt="img"></p>
+<h4 id="3、pwndbg"><a href="#3、pwndbg" class="headerlink" title="3、pwndbg"></a>3、pwndbg</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo git clone https://github.com/pwndbg/pwndbg</span><br><span class="line">cd pwndbg</span><br><span class="line">./setup.sh</span><br></pre></td></tr></table></figure>
+
+<p> 安装完后，在终端输入：gdb</p>
+<p>如果出现：</p>
+<p><img src="/blog_img/clip_image012.png" alt="img"></p>
+<p>则说明安装成功</p>
+<h4 id="4、pwntools"><a href="#4、pwntools" class="headerlink" title="4、pwntools"></a>4、pwntools</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-dev</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python-pip git libssl-dev libffi-dev</span><br><span class="line">sudo pip install --upgrade pwntools</span><br></pre></td></tr></table></figure>
+
+<p>安装完后，按以下进行输入，如果没有报错，说明pwntools安装成功</p>
+<p><img src="/blog_img/clip_image013.png" alt="img"></p>
+<h4 id="5、32位动态运行库安装"><a href="#5、32位动态运行库安装" class="headerlink" title="5、32位动态运行库安装"></a>5、32位动态运行库安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install lib32ncurses5 </span><br><span class="line">sudo apt-get install lib32z1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="6、onegadget安装"><a href="#6、onegadget安装" class="headerlink" title="6、onegadget安装"></a>6、onegadget安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.0.tar.gz</span><br><span class="line">tar -xzvf ruby-2.7.0.tar.gz</span><br><span class="line"><span class="built_in">cd</span> ruby-2.7.0</span><br><span class="line">./configure</span><br><span class="line">sudo su</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">ruby -v <span class="comment">#看下是不是2.7版本，是的话安装成功！继续运行下面的命令</span></span><br><span class="line">sudo gem install one_gadget</span><br></pre></td></tr></table></figure>
+
+<p>要是报错zlib找不到，报错如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ERROR: Loading <span class="built_in">command</span>: install (LoadError)</span><br><span class="line"> cannot load such file -- zlib</span><br><span class="line"> ERROR: While executing gem ... (NoMethodError)</span><br><span class="line"> undefined method `invoke_with_build_args<span class="string">' for nil:NilClass</span></span><br></pre></td></tr></table></figure>
+
+<p>那就这样子执行：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br><span class="line"><span class="built_in">cd</span> ruby-2.5.1/ext/zlib</span><br><span class="line">ruby ./extconf.rb</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>make时报错（chmod +x Makefile）:make: *** No rule to make target <code>/include/ruby.h&#39;, needed by</code>zlib.o’. Stop.</p>
+<p>更改Makefile文件， zlib.o: $(top_srcdir)/include/ruby.h 改成  zlib.o: ../../include/ruby.h 到这里就可以make成功了。</p>
+<p>进入/ruby-2.5.1/ext/openssl目录执行 ruby ./extconf.rb、make 、make install命令。</p>
+<h4 id="7、pwngdb下载安装"><a href="#7、pwngdb下载安装" class="headerlink" title="7、pwngdb下载安装"></a>7、pwngdb下载安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/</span><br><span class="line">sudo git <span class="built_in">clone</span> https://github.com/scwuaptx/Pwngdb.git</span><br><span class="line">sudo gedit .gdbinit</span><br></pre></td></tr></table></figure>
+
+<p>把原来source的部分删掉，改成下面的</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/pwndbg/gdbinit.py</span><br><span class="line"><span class="built_in">source</span> ~/Pwngdb/pwngdb.py</span><br><span class="line"><span class="built_in">source</span> ~/Pwngdb/angelheap/gdbinit.py</span><br></pre></td></tr></table></figure>
+
+<p>保存一下退出</p>
+<p>随便打开一个elf程序，调试程序，pwndbg命令行输入par再tab能补全成为parchase说明ok了！</p>
+<h4 id="8、pip的源码下载安装"><a href="#8、pip的源码下载安装" class="headerlink" title="8、pip的源码下载安装"></a>8、pip的源码下载安装</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py   <span class="comment"># 下载安装脚本</span></span><br><span class="line">python3 get-pip.py</span><br><span class="line">python get-pip.py</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="9、Sublime-Text3下载安装"><a href="#9、Sublime-Text3下载安装" class="headerlink" title="9、Sublime Text3下载安装"></a>9、Sublime Text3下载安装</h4><p>最简单的是直接在ubuntu的software里面搜索Sublime Text直接安装</p>
+<p>下面是命令行安装的两种方法</p>
+<p>一、   方法一</p>
+<p>添加sublime text3的软件源</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:webupd8team/sublime-text-3</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install sublime-text-installer</span><br></pre></td></tr></table></figure>
+
+<p>等待安装完毕后，在终端输入 sublime直接打开sublime text3，或者在dash界面输入“sublime”打开软件。</p>
+<p>方法一不行就试试下面的方法二：</p>
+<p>通过Ctrl + Alt + T键盘快捷键或从应用程序启动器打开终端。 打开时，运行命令添加密钥环：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+
+<p>在提示时键入用户密码（无星号反馈），然后按Enter键。</p>
+<p>2.然后运行命令添加apt存储库：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"deb https://download.sublimetext.com/ apt/stable/"</span> | sudo tee /etc/apt/sources.list.d/sublime-text.list</span><br></pre></td></tr></table></figure>
+
+<p>3.最后通过Synaptic包管理器或运行命令安装sublime-text包：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt install sublime-text</span><br></pre></td></tr></table></figure>
+
+<h4 id="10、如何设置sumbline-text的自定义模板代码"><a href="#10、如何设置sumbline-text的自定义模板代码" class="headerlink" title="10、如何设置sumbline text的自定义模板代码"></a>10、如何设置sumbline text的自定义模板代码</h4><p>1、打开Tools &gt; Developer(开发者选项) &gt; new Snippet(新的代码块)</p>
+<p><img src="/blog_img/image-20210608005629811.png" alt="image-20210608005629811"></p>
+<p>建立一个状态机模板：触发命令为state_machine，也就是说，当输入state_machine时候，就会显示模板：</p>
+<p>如下图：</p>
+<p>tabTrigger 标签中是你的触发命令，如我触发状态机模板的命令为：state_machine</p>
+<p><img src="/blog_img/image-20210608005810043.png" alt="image-20210608005810043"></p>
+<p>之后，在这里写入你的代码模板即可：</p>
+<p><img src="/blog_img/image-20210608005759452.png" alt="image-20210608005759452"></p>
+<p>编辑完保存退出，最后随便打开一个文件，输入state后再tab即可看到模板~</p>
+<h4 id="10、ropper下载安装"><a href="#10、ropper下载安装" class="headerlink" title="10、ropper下载安装"></a>10、ropper下载安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install capstone</span><br><span class="line"></span><br><span class="line">sudo pip install filebytes</span><br><span class="line"></span><br><span class="line">sudo pip install keystone-engine</span><br><span class="line"></span><br><span class="line">sudo pip install ropper</span><br></pre></td></tr></table></figure>
+
+<h4 id="11、下载安装64位的格式化利用库"><a href="#11、下载安装64位的格式化利用库" class="headerlink" title="11、下载安装64位的格式化利用库"></a>11、下载安装64位的格式化利用库</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/hellman/libformatstr.git</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> libformatstr</span><br><span class="line"></span><br><span class="line">python setup.py install</span><br></pre></td></tr></table></figure>
+
+<h4 id="12、libcsearch的下载"><a href="#12、libcsearch的下载" class="headerlink" title="12、libcsearch的下载"></a>12、libcsearch的下载</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sudo pip3 install LibcSearcher</span><br><span class="line"></span><br><span class="line">sudo pip3 install -U LibcSearcher</span><br><span class="line"></span><br><span class="line"><span class="comment">#不行就本地：</span></span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/IZAY01/LibcSearcher.git</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> LibcSearcher</span><br><span class="line"></span><br><span class="line">sudo python3 setup.py develop</span><br></pre></td></tr></table></figure>
+
+<h4 id="13、seccomp-tools安装"><a href="#13、seccomp-tools安装" class="headerlink" title="13、seccomp-tools安装"></a>13、seccomp-tools安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install gcc ruby-dev</span><br><span class="line"></span><br><span class="line">gem install seccomp-tools</span><br></pre></td></tr></table></figure>
+
+<p>说在最后，其实这些操作都可以用shell脚本一把嗖，然后集成到docker环境中，俺已经淘汰虚拟机了，用docker打pwn：</p>
+<p><img src="/blog_img/image-20210708224754276.png" alt="image-20210708224754276"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

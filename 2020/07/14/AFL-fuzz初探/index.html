@@ -145,6 +145,8 @@
 
 <p><img src="/blog_img/image-20200714093537801.png" alt="image-20200714093537801"></p>
 <p>说明安装好了，这里解析下每个文件的作用</p>
+<a id="more"></a>
+
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">afl-gcc和afl-g++ 分别对应 gcc和g++的封装 </span><br><span class="line">afl-clang和afl-clang++ 分别对应clang的c和c++的封装</span><br><span class="line">afl-fuzz 是AFL的主体，用于对目标程序进行fuzz</span><br><span class="line">afl-analyze可以对用例进行分析，通过分析给定的用例，看能否发现用例中有单方的字段 </span><br><span class="line">afl-qemu-trace 用于qemu-mode，默认不安装 </span><br><span class="line">afl-plot 生成测试任务的状态图</span><br><span class="line">afl-tmin 和afl-cmin 对用例进行简化</span><br><span class="line">afl-whatsup 用于查看fuzz任务的状态</span><br><span class="line">afl-gotcpu 用于查看当前 cpu 状态</span><br><span class="line">afl-showmap 用于对单个用例进行执行路径跟踪</span><br></pre></td></tr></table></figure>
 
 <h3 id="二、白盒测试"><a href="#二、白盒测试" class="headerlink" title="二、白盒测试"></a>二、白盒测试</h3><p>准备一个测试用例1.c，这样我们可以通过afl对源码重新编译时进行插桩</p>
@@ -179,8 +181,8 @@
 
 <p><img src="/blog_img/image-20200719191243155.png" alt="image-20200719191243155"></p>
 <p>也就是说，这样子可以在程序开发时，自己手动fuzz，检测漏洞</p>
-<h3 id="三、白盒测试"><a href="#三、白盒测试" class="headerlink" title="三、白盒测试"></a>三、白盒测试</h3><p>这里安装qemu_mode前,需要装3个东西，按照以下命令执行安装</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> install libtool</span><br><span class="line">sudo apt-<span class="built_in">get</span> install libtool-bin</span><br><span class="line">which libtool  #会看到回显示/usr/bin/libtool</span><br><span class="line">cd qemu_mode</span><br><span class="line">./build_qemu_support.sh</span><br></pre></td></tr></table></figure>
+<h3 id="三、黑盒测试"><a href="#三、黑盒测试" class="headerlink" title="三、黑盒测试"></a>三、黑盒测试</h3><p>这里安装qemu_mode前,需要装3个东西，按照以下命令执行安装</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> install libtool</span><br><span class="line">sudo apt-<span class="built_in">get</span> install libtool-bin</span><br><span class="line">which libtool  #会看到回显示/usr/bin/libtool</span><br><span class="line">cd qemu_mode</span><br><span class="line">./build_qemu_support.sh</span><br><span class="line">cd ..</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
 
 <p>这里会解压完报错说某个文件已经存在，那么我们直接跳过解压过程，通过修改build_qemu_support.sh文件，这里修改成如下：把这2行直接注释掉</p>
 <p><img src="/blog_img/image-20200720171731411.png" alt="image-20200720171731411"></p>
@@ -253,9 +255,9 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">65 <p>Articles</p></a></li>
-                    <li><a href="/categories">7 <p>Categories</p></a></li>
-                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -264,7 +266,7 @@
             <div class="box sticky animated fadeInRight faster">
                 <div id="toc" class="subbox">
                     <h4>Contents</h4>
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、下载与安装"><span class="toc-number">1.</span> <span class="toc-text">一、下载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、白盒测试"><span class="toc-number">2.</span> <span class="toc-text">二、白盒测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、白盒测试"><span class="toc-number">3.</span> <span class="toc-text">三、白盒测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、并行fuzz了解"><span class="toc-number">4.</span> <span class="toc-text">四、并行fuzz了解</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、下载与安装"><span class="toc-number">1.</span> <span class="toc-text">一、下载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、白盒测试"><span class="toc-number">2.</span> <span class="toc-text">二、白盒测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、黑盒测试"><span class="toc-number">3.</span> <span class="toc-text">三、黑盒测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、并行fuzz了解"><span class="toc-number">4.</span> <span class="toc-text">四、并行fuzz了解</span></a></li></ol>
                 </div>
             </div>
             
@@ -283,7 +285,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

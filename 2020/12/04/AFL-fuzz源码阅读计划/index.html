@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AFL-fuzz源码阅读计划 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、什么是afl-fuzzAmerican fuzzy lop 号称是当前最高级的Fuzzing 测试工具之一，由谷歌的Michal Zalewski 所开发。通过对源码进行重新编译时进行插桩（简称,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">AFL-fuzz源码阅读计划</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/PWN"><b>「
+                    </b>PWN<b> 」</b></a>
+                
+                December 04, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/12/04/AFL-fuzz%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%A1%E5%88%92/" title="AFL-fuzz源码阅读计划" class="">AFL-fuzz源码阅读计划</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    42k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    38 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="一、什么是afl-fuzz"><a href="#一、什么是afl-fuzz" class="headerlink" title="一、什么是afl-fuzz"></a>一、什么是afl-fuzz</h3><p>American fuzzy lop 号称是当前最高级的Fuzzing 测试工具之一，由谷歌的Michal Zalewski 所开发。通过对源码进行重新编译时进行插桩（简称编译时插桩）的方式自动产生测试用例来探索二进制程序内部新的执行路径。与其他基于插桩技术的fuzzers 相比，afl-fuzz 具有较低的性能消耗，有各种高效的fuzzing 策略和tricks 最小化技巧，不需要先行复杂的配置，能无缝处理复杂的现实中的程序。当然AFL 也支持直接对没有源码的二进制程序进行测试，但需要QEMU 的支持，将在本文后面做详细介绍。</p>
+<h4 id="核心原理：它通过记录输入样本的代码覆盖率，从而调整输入样本以提高覆盖率，增加发现漏洞的概率"><a href="#核心原理：它通过记录输入样本的代码覆盖率，从而调整输入样本以提高覆盖率，增加发现漏洞的概率" class="headerlink" title="核心原理：它通过记录输入样本的代码覆盖率，从而调整输入样本以提高覆盖率，增加发现漏洞的概率"></a>核心原理：它通过记录输入样本的代码覆盖率，从而调整输入样本以提高覆盖率，增加发现漏洞的概率</h4><a id="more"></a>
+
+<h3 id="二、AFL简介"><a href="#二、AFL简介" class="headerlink" title="二、AFL简介"></a>二、AFL简介</h3><p>AFL（American Fuzzy Lop）是由安全研究员Micha? Zalewski（<a href="https://twitter.com/lcamtuf" target="_blank" rel="noopener">@lcamtuf</a>）开发的一款基于覆盖引导（Coverage-guided）的模糊测试工具，它通过记录输入样本的代码覆盖率，从而调整输入样本以提高覆盖率，增加发现漏洞的概率。</p>
+<p>①从源码编译程序时进行插桩，以记录代码覆盖率（Code Coverage）；<br>②选择一些输入文件，作为初始测试集加入输入队列（queue）；<br>③将队列中的文件按一定的策略进行“突变”；<br>④如果经过变异文件更新了覆盖范围，则将其保留添加到队列中;<br>⑤上述过程会一直循环进行，期间触发了crash的文件会被记录下来。</p>
+<p><img src="/blog_img/image-20201204105426394.png" alt="image-20201204105426394"></p>
+<h3 id="三、构建语料库"><a href="#三、构建语料库" class="headerlink" title="三、构建语料库"></a>三、构建语料库</h3><p>AFL需要一些初始输入数据（也叫种子文件）作为Fuzzing的起点，这些输入甚至可以是毫无意义的数据，AFL可以通过启发式算法自动确定文件格式结构。lcamtuf就在博客中给出了一个有趣的<a href="https://lcamtuf.blogspot.com/2014/11/pulling-jpegs-out-of-thin-air.html" target="_blank" rel="noopener">例子</a>——对djpeg进行Fuzzing时，仅用一个字符串”hello”作为输入，最后凭空生成大量jpge图像！</p>
+<p>尽管AFL如此强大，但如果要获得更快的Fuzzing速度，那么就有必要生成一个高质量的语料库，这一节就解决如何选择输入文件、从哪里寻找这些文件、如何精简找到的文件三个问题。</p>
+<h4 id="1-选择"><a href="#1-选择" class="headerlink" title="1. 选择"></a>1. 选择</h4><h5 id="1-有效的输入"><a href="#1-有效的输入" class="headerlink" title="(1) 有效的输入"></a>(1) 有效的输入</h5><h5 id="尽管有时候无效输入会产生bug和崩溃，但有效输入可以更快的找到更多执行路径"><a href="#尽管有时候无效输入会产生bug和崩溃，但有效输入可以更快的找到更多执行路径" class="headerlink" title="尽管有时候无效输入会产生bug和崩溃，但有效输入可以更快的找到更多执行路径"></a>尽管有时候无效输入会产生bug和崩溃，但有效输入可以更快的找到更多执行路径</h5><h5 id="2-尽量小的体积"><a href="#2-尽量小的体积" class="headerlink" title="(2) 尽量小的体积"></a>(2) 尽量小的体积</h5><p>较小的文件会不仅可以减少测试和处理的时间，也能节约更多的内存，AFL给出的建议是最好小于1 KB，但其实可以根据自己测试的程序权衡，这在AFL文档的<code>perf_tips.txt</code>中有具体说明。</p>
+<h5 id="3-移除执行相同代码的输入文件——AFL-CMIN"><a href="#3-移除执行相同代码的输入文件——AFL-CMIN" class="headerlink" title="(3)移除执行相同代码的输入文件——AFL-CMIN"></a>(3)移除执行相同代码的输入文件——AFL-CMIN</h5><p><code>afl-cmin</code>的核心思想是：<strong>尝试找到与语料库全集具有相同覆盖范围的最小子集</strong>。举个例子：假设有多个文件，都覆盖了相同的代码，那么就丢掉多余的文件。其使用方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">afl-cmin -i input_dir -o output_dir -- &#x2F;path&#x2F;to&#x2F;tested&#x2F;program [params]</span><br></pre></td></tr></table></figure>
+
+<p>更多的时候，我们需要从文件中获取输入，这时可以使用“@@”代替被测试程序命令行中输入文件名的位置。Fuzzer会将其替换为实际执行的文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$$ afl-cmin -i input_dir -o output_dir -- &#x2F;path&#x2F;to&#x2F;tested&#x2F;program [params] @@</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-减小单个输入文件的大小——AFL-TMIN"><a href="#4-减小单个输入文件的大小——AFL-TMIN" class="headerlink" title="(4) 减小单个输入文件的大小——AFL-TMIN"></a>(4) 减小单个输入文件的大小——AFL-TMIN</h5><p>整体的大小得到了改善，接下来还要对每个文件进行更细化的处理。afl-tmin缩减文件体积的原理这里就不深究了，有机会会在后面文章中解释，这里只给出使用方法（其实也很简单，有兴趣的朋友可以自己搜一搜）。</p>
+<p><code>afl-tmin</code>有两种工作模式，<code>instrumented mode</code>和<code>crash mode</code>。默认的工作方式是<code>instrumented mode</code>，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ afl-tmin -i input_file -o output_file -- &#x2F;path&#x2F;to&#x2F;tested&#x2F;program [params] @@</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、代码覆盖率及其相关概念"><a href="#四、代码覆盖率及其相关概念" class="headerlink" title="四、代码覆盖率及其相关概念"></a>四、代码覆盖率及其相关概念</h3><p>代码覆盖率是模糊测试中一个极其重要的概念，<strong>使用代码覆盖率可以评估和改进测试过程，执行到的代码越多，找到bug的可能性就越大</strong>，毕竟，在覆盖的代码中并不能100%发现bug，在未覆盖的代码中却是100%找不到任何bug的，所以本节中就将详细介绍代码覆盖率的相关概念。</p>
+<h4 id="1-代码覆盖率（Code-Coverage）"><a href="#1-代码覆盖率（Code-Coverage）" class="headerlink" title="1. 代码覆盖率（Code Coverage）"></a>1. 代码覆盖率（Code Coverage）</h4><p>代码覆盖率是一种度量代码的覆盖程度的方式，也就是指源代码中的某行代码是否已执行；对二进制程序，还可将此概念理解为汇编代码中的某条指令是否已执行。其计量方式很多，但无论是GCC的GCOV还是LLVM的SanitizerCoverage，都提供函数（function）、基本块（basic-block）、边界（edge）三种级别的覆盖率检测，更具体的细节可以参考LLVM的<a href="https://clang.llvm.org/docs/SanitizerCoverage.html" target="_blank" rel="noopener">官方文档</a>。</p>
+<h4 id="2-基本块（Basic-Block）"><a href="#2-基本块（Basic-Block）" class="headerlink" title="2. 基本块（Basic Block）"></a>2. 基本块（Basic Block）</h4><p>缩写为BB，指一组顺序执行的指令，BB中第一条指令被执行后，后续的指令也会被全部执行，每个BB中所有指令的执行次数是相同的，也就是说一个BB必须满足以下特征：</p>
+<ul>
+<li>只有一个入口点，BB中的指令不是任何<strong>跳转指令</strong>的目标。</li>
+<li>只有一个退出点，只有最后一条指令使执行流程转移到另一个BB </li>
+<li><img src="/blog_img/image-20201208112516784.png" alt="image-20201208112516784"></li>
+</ul>
+<h4 id="3-边（edge）"><a href="#3-边（edge）" class="headerlink" title="3. 边（edge）"></a>3. 边（edge）</h4><p>AFL的<a href="http://lcamtuf.coredump.cx/afl/technical_details.txt" target="_blank" rel="noopener">技术白皮书</a>中提到fuzzer通过插桩代码捕获边（edge）覆盖率。那么什么是edge呢？我们可以将程序看成一个控制流图（CFG），图的每个节点表示一个基本块，而edge就被用来表示在基本块之间的转跳。知道了每个基本块和跳转的执行次数，就可以知道程序中的每个语句和分支的执行次数，从而获得比记录BB更细粒度的覆盖率信息。</p>
+<p><img src="/blog_img/image-20201208112526262.png" alt="image-20201208112526262"></p>
+<h4 id="4-元组（tuple）"><a href="#4-元组（tuple）" class="headerlink" title="4. 元组（tuple）"></a>4. 元组（tuple）</h4><p>具体到AFL的实现中，使用二元组(branch_src, branch_dst)来记录<strong>当前基本块</strong> + <strong>前一基本块</strong> 的信息，从而获取目标的执行流程和代码覆盖情况，伪代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cur_location = &lt;COMPILE_TIME_RANDOM&gt;;            <span class="comment">//用一个随机数标记当前基本块</span></span><br><span class="line">shared_mem[cur_location ^ prev_location]++;        <span class="comment">//将当前块和前一块异或保存到shared_mem[]</span></span><br><span class="line">prev_location = cur_location &gt;&gt; <span class="number">1</span>;                <span class="comment">//cur_location右移1位区分从当前块到当前块的转跳</span></span><br></pre></td></tr></table></figure>
+
+<p>实际插入的汇编代码，如下图所示，首先保存各种寄存器的值并设置ecx/rcx，然后调用<code>__afl_maybe_log</code>，这个方法的内容相当复杂，这里就不展开讲了，但其主要功能就和上面的伪代码相似，用于记录覆盖率，放入一块共享内存中。</p>
+<p><img src="/blog_img/image-20201208112602731.png" alt="image-20201208112602731"></p>
+<h4 id="5、代码插装的原理分析"><a href="#5、代码插装的原理分析" class="headerlink" title="5、代码插装的原理分析"></a>5、代码插装的原理分析</h4><p>我们以afl-gcc为例子分析，通过分析afl-gcc的源码，我们可以知道，这个是个gcc的wrapper，我们通过打印命令行参数可以知道afl-gcc执行的东西:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc /tmp/hello.c -B /root/src/afl<span class="number">-2.52b</span> -g -O3 -funroll-loops -D__AFL_COMPILER=<span class="number">1</span> -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>会发现，本质上还是调用gcc，并设置宏和参数，这里-B设置好了编译器的搜索路径，那么在编译时，就会生成as文件，作为符号链接指向afl-as这个汇编器，执行实际的汇编操作。</p>
+<p>对于源码的插桩其实就是通过先将源文件编译成汇编，再通过afl-as来完成的，我们在afl.as中找到关键插入代码的函数：</p>
+<p>fprintf(outf, use_64bit ? trampoline_fmt_64 : trampoline_fmt_32, R(MAP_SIZE));  </p>
+<p>先判断是32位还是64位，然后插入相应的代码，这里以32位的为例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> u8 *trampoline_fmt_32 =</span><br><span class="line"></span><br><span class="line">    <span class="string">"\n"</span></span><br><span class="line">    <span class="string">"/* --- AFL TRAMPOLINE (32-BIT) --- */\n"</span></span><br><span class="line">    <span class="string">"\n"</span></span><br><span class="line">    <span class="string">".align 4\n"</span></span><br><span class="line">    <span class="string">"\n"</span></span><br><span class="line">    <span class="string">"leal -16(%%esp), %%esp\n"</span></span><br><span class="line">    <span class="string">"movl %%edi,  0(%%esp)\n"</span></span><br><span class="line">    <span class="string">"movl %%edx,  4(%%esp)\n"</span></span><br><span class="line">    <span class="string">"movl %%ecx,  8(%%esp)\n"</span></span><br><span class="line">    <span class="string">"movl %%eax, 12(%%esp)\n"</span></span><br><span class="line">    <span class="string">"movl $0x%08x, %%ecx\n"</span></span><br><span class="line">    <span class="string">"call __afl_maybe_log\n"</span></span><br><span class="line">    <span class="string">"movl 12(%%esp), %%eax\n"</span></span><br><span class="line">    <span class="string">"movl  8(%%esp), %%ecx\n"</span></span><br><span class="line">    <span class="string">"movl  4(%%esp), %%edx\n"</span></span><br><span class="line">    <span class="string">"movl  0(%%esp), %%edi\n"</span></span><br><span class="line">    <span class="string">"leal 16(%%esp), %%esp\n"</span></span><br><span class="line">    <span class="string">"\n"</span></span><br><span class="line">    <span class="string">"/* --- END --- */\n"</span></span><br><span class="line">    <span class="string">"\n"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> u8 *trampoline_fmt_64 =</span><br><span class="line"></span><br><span class="line">    <span class="string">"\n"</span></span><br><span class="line">    <span class="string">"/* --- AFL TRAMPOLINE (64-BIT) --- */\n"</span></span><br><span class="line">    <span class="string">"\n"</span></span><br><span class="line">    <span class="string">".align 4\n"</span></span><br><span class="line">    <span class="string">"\n"</span></span><br><span class="line">    <span class="string">"leaq -(128+24)(%%rsp), %%rsp\n"</span></span><br><span class="line">    <span class="string">"movq %%rdx,  0(%%rsp)\n"</span></span><br><span class="line">    <span class="string">"movq %%rcx,  8(%%rsp)\n"</span></span><br><span class="line">    <span class="string">"movq %%rax, 16(%%rsp)\n"</span></span><br><span class="line">    <span class="string">"movq $0x%08x, %%rcx\n"</span></span><br><span class="line">    <span class="string">"call __afl_maybe_log\n"</span></span><br><span class="line">    <span class="string">"movq 16(%%rsp), %%rax\n"</span></span><br><span class="line">    <span class="string">"movq  8(%%rsp), %%rcx\n"</span></span><br><span class="line">    <span class="string">"movq  0(%%rsp), %%rdx\n"</span></span><br><span class="line">    <span class="string">"leaq (128+24)(%%rsp), %%rsp\n"</span></span><br><span class="line">    <span class="string">"\n"</span></span><br><span class="line">    <span class="string">"/* --- END --- */\n"</span></span><br><span class="line">    <span class="string">"\n"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们可以知道是ATT格式的汇编，有%，所以从左往右进行代码阅读，先申请出栈空间用来保存edi等寄存器的值，参数从右往左入栈~这里movq $0x%08x, %%ecx的意思是将第三个参数放入到ecx寄存器中，我们先来看看ecx原本的值是什么，发现是R(MAP_SIZE)，这里R(x)=(Random()%x)，也就是说R(MAP_SIZE)是从0到64k之间的一个随机数，这里我们可以理解到就是在处理分支时，需要插桩代码时，afl-as先生成一个随机数，作为运行时保存在ecx中的值。而这个随机数，便是用来标识这个代码块的key！关键的代码插装函数就是afl_maybe_log,后面详细分析这个函数。它对于每一个点插入的代码都不一样，代码时随机的，即不考虑碰撞的情况下执行被插入的代码时可以唯一的确定程序当前运行位置。</p>
+<h4 id="6、记录执行流"><a href="#6、记录执行流" class="headerlink" title="6、记录执行流"></a>6、记录执行流</h4><p>知道怎么获取程序执行的每一个位置，现在要研究存储和利用，我们的目标是用最少的测试用例完成最多的路径覆盖，于是我们需要记住每次执行的路径，若下一次的输入得到了一样的路径就丢弃，有新路径就保存。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cur_location = &lt;COMPILE_TIME_RANDOM&gt;;        <span class="comment">//随机生成的值，用以表示当前分支位置</span></span><br><span class="line">shared_mem[cur_location ^ prev_location]++;  <span class="comment">//异或运算的值作为地址</span></span><br><span class="line">prev_location = cur_location &gt;&gt; <span class="number">1</span>;           <span class="comment">//为解决不能分辨XX的问题而提出的解决办法</span></span><br></pre></td></tr></table></figure>
+
+<p>下面我们用一张图来说明fuzzer的工作原理</p>
+<p><img src="/blog_img/image-20201224105357762.png" alt="image-20201224105357762"></p>
+<p>如上图有三种对象：</p>
+<ol>
+<li><strong>fuzzer</strong>：即直接执行<code>afl-fuzz</code>产生的进程。它负责控制fuzzing</li>
+<li><strong>server</strong>：由fuzzer使用<code>fork</code>和<code>execve(target)</code>新建的子进程，它其实是被测程序了，但是它本身不会将测试用例作为输入去执行程序，它将作为一个母体，接受fuzzer的指令，<code>fork</code>出子进程去做真正的测试，并将子进程的pid和其退出状态传递给fuzzer。</li>
+<li><strong>test</strong>：由server使用<code>fork</code>得到的子进程，它将用afl生成的测试用例为输入，执行原有程序逻辑，并将返回的结果报告给父进程（server）,再由父进程报告给父进程的父进程(fuzzer)。</li>
+</ol>
+<h5 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h5><p>如上图三个对象之间需要通信，afl采用了匿名管道，信号和共享内存三种方式：</p>
+<ol>
+<li><strong>匿名管道</strong>：在fuzzer中定义了两个匿名管道：<code>st_pipe[2], ctl_pipe[2]</code>，前者传输状态(数据)，方向为server到fuzzer，后者传入指令，方向为fuzzer到server。</li>
+<li><strong>信号</strong>：server在创建子进程后会使用<code>waitpid</code>等待子进程的信号或事件，得到其改变后的状态后将它传递给fuzzer</li>
+<li><strong>共享内存</strong>：fuzzer要获取test的执行情况，而这些是由test记录的，所以在test结束等事件发生后，fuzzer要获取这些执行流，afl使用共享内存，在fuzzer中申请了一片共享内存用于存储MAP并将其shm_id设置到环境变量中，server会通过环境变量得到shm_id再次打开这片共享内存，之后test就能直接使用它向它里面记录路径，而fuzzer直接可以读test记录的路径了。</li>
+</ol>
+<h4 id="7、插装代码执行"><a href="#7、插装代码执行" class="headerlink" title="7、插装代码执行"></a>7、插装代码执行</h4><p>现在我们要开始分析__afl_maybe_log函数的定义了，先来看看AFL_VARS：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="string">"\n"</span></span><br><span class="line">  <span class="string">".AFL_VARS:\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  .comm   __afl_area_ptr, 4, 32\n"</span>           <span class="comment">//这个变量存储共享内存的首地址</span></span><br><span class="line">  <span class="string">"  .comm   __afl_setup_failure, 1, 32\n"</span>      <span class="comment">//一个标志位，当设置共享内存失败它会被置位</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> COVERAGE_ONLY</span></span><br><span class="line">  <span class="string">"  .comm   __afl_prev_loc, 4, 32\n"</span>           <span class="comment">//存储上一个位置，即上面R(MAP_SIZE)生成的随机数的值</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* !COVERAGE_ONLY */</span></span></span><br><span class="line">  <span class="string">"  .comm   __afl_fork_pid, 4, 32\n"</span>           <span class="comment">//存储server fork出来的test的pid</span></span><br><span class="line">  <span class="string">"  .comm   __afl_temp, 4, 32\n"</span>               <span class="comment">//一个buffer  4字节</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">".AFL_SHM_ENV:\n"</span></span><br><span class="line">  <span class="string">"  .asciz \""</span> SHM_ENV_VAR <span class="string">"\"\n"</span>              <span class="comment">//常量字串，fuzzer申请的共享内存的shm_id被作为环境变量被赋值给SHM_ENV_VAR存放</span></span><br><span class="line">                                                <span class="comment">//server可以通过这个名字取出shm_id以得到共享内存</span></span><br></pre></td></tr></table></figure>
+
+<p>main_payload_32的定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> u8* main_payload_32 = </span><br><span class="line">  <span class="string">".text\n"</span></span><br><span class="line">  <span class="string">".att_syntax\n"</span></span><br><span class="line">  <span class="string">".code32\n"</span></span><br><span class="line">  <span class="string">".align 8\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line"></span><br><span class="line">  <span class="string">"__afl_maybe_log:\n"</span>                                  </span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  lahf\n"</span></span><br><span class="line">  <span class="string">"  seto %al\n"</span></span><br><span class="line">  <span class="string">"  movl  __afl_area_ptr, %edx\n"</span>                       <span class="comment">//__afl_area_ptr存储的是共享内存的起始位置</span></span><br><span class="line">  <span class="string">"  testl %edx, %edx\n"</span></span><br><span class="line">  <span class="string">"  je    __afl_setup\n"</span>                                <span class="comment">//先判断server中是否已经设置共享内存，若没有先通过ID获取并设置</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"__afl_store:\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  /* Calculate and store hit for the code location specified in ecx. There\n"</span></span><br><span class="line">  <span class="string">"     is a double-XOR way of doing this without tainting another register,\n"</span></span><br><span class="line">  <span class="string">"     and we use it on 64-bit systems; but it's slower for 32-bit ones. */\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">#ifndef COVERAGE_ONLY</span><br><span class="line">  <span class="string">"  movl __afl_prev_loc, %edi\n"</span>                        <span class="comment">//初始位置0</span></span><br><span class="line">  <span class="string">"  xorl %ecx, %edi\n"</span>                                  <span class="comment">//上面已经解释过了</span></span><br><span class="line">  <span class="string">"  shrl $1, %ecx\n"</span></span><br><span class="line">  <span class="string">"  movl %ecx, __afl_prev_loc\n"</span></span><br><span class="line">#<span class="keyword">else</span></span><br><span class="line">  <span class="string">"  movl %ecx, %edi\n"</span></span><br><span class="line">#endif <span class="comment">/* ^!COVERAGE_ONLY */</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">#ifdef SKIP_COUNTS</span><br><span class="line">  <span class="string">"  orb  $1, (%edx, %edi, 1)\n"</span></span><br><span class="line">#<span class="keyword">else</span></span><br><span class="line">  <span class="string">"  incb (%edx, %edi, 1)\n"</span></span><br><span class="line">#endif <span class="comment">/* ^SKIP_COUNTS */</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"__afl_return:\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  addb $127, %al\n"</span></span><br><span class="line">  <span class="string">"  sahf\n"</span></span><br><span class="line">  <span class="string">"  ret\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">".align 8\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"__afl_setup:\n"</span>                                  <span class="comment">//此处为初始共享内存，即通过shm_id得到共享内存并将其首地址放在</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  cmpb $0, __afl_setup_failure\n"</span>                </span><br><span class="line">  <span class="string">"  jne  __afl_return\n"</span>                          <span class="comment">//当上次已经设置并且失败了，就不必再次尝试而是直接退出了</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl %eax\n"</span></span><br><span class="line">  <span class="string">"  pushl %ecx\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $.AFL_SHM_ENV\n"</span></span><br><span class="line">  <span class="string">"  call  getenv\n"</span>                              <span class="comment">//通过环境变量得到shm_id</span></span><br><span class="line">  <span class="string">"  addl  $4, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  testl %eax, %eax\n"</span></span><br><span class="line">  <span class="string">"  je    __afl_setup_abort\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl %eax\n"</span></span><br><span class="line">  <span class="string">"  call  atoi\n"</span></span><br><span class="line">  <span class="string">"  addl  $4, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $0          /* shmat flags    */\n"</span></span><br><span class="line">  <span class="string">"  pushl $0          /* requested addr */\n"</span></span><br><span class="line">  <span class="string">"  pushl %eax        /* SHM ID         */\n"</span></span><br><span class="line">  <span class="string">"  call  shmat\n"</span>                                <span class="comment">//获取共享内存地址</span></span><br><span class="line">  <span class="string">"  addl  $12, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  cmpl $-1, %eax\n"</span></span><br><span class="line">  <span class="string">"  je   __afl_setup_abort\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  /* Store the address of the SHM region. */\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  movl %eax, __afl_area_ptr\n"</span>                  <span class="comment">//将首地址放在__afl_area_ptr里</span></span><br><span class="line">  <span class="string">"  movl %eax, %edx\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  popl %ecx\n"</span></span><br><span class="line">  <span class="string">"  popl %eax\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"__afl_forkserver:\n"</span>                            <span class="comment">//server</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl %eax\n"</span></span><br><span class="line">  <span class="string">"  pushl %ecx\n"</span></span><br><span class="line">  <span class="string">"  pushl %edx\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  /* Phone home and tell the parent that we're OK. (Note that signals with\n"</span></span><br><span class="line">  <span class="string">"     no SA_RESTART will mess it up). If this fails, assume that the fd is\n"</span></span><br><span class="line">  <span class="string">"     closed because we were execve()d from an instrumented binary, or because\n"</span> </span><br><span class="line">  <span class="string">"     the parent doesn't want to use the fork server. */\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $4          /* length    */\n"</span></span><br><span class="line">  <span class="string">"  pushl $__afl_temp /* data      */\n"</span>          <span class="comment">//__afl_temp为4字节，即buffer</span></span><br><span class="line">  <span class="string">"  pushl $"</span> STRINGIFY((FORKSRV_FD + <span class="number">1</span>)) <span class="string">"  /* file desc */\n"</span></span><br><span class="line">  <span class="string">"  call  write\n"</span>                                <span class="comment">//通过st_pipe把数据传输给fuzzer</span></span><br><span class="line">  <span class="string">"  addl  $12, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  cmpl  $4, %eax\n"</span></span><br><span class="line">  <span class="string">"  jne   __afl_fork_resume\n"</span>                    <span class="comment">//当失败的时候，可能是因为fuzzer不想使用server</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"__afl_fork_wait_loop:\n"</span>                        <span class="comment">//否则就进入fork_wait_loop</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  /* Wait for parent by reading from the pipe. Abort if read fails. */\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $4          /* length    */\n"</span></span><br><span class="line">  <span class="string">"  pushl $__afl_temp /* data      */\n"</span></span><br><span class="line">  <span class="string">"  pushl $"</span> STRINGIFY(FORKSRV_FD) <span class="string">"        /* file desc */\n"</span></span><br><span class="line">  <span class="string">"  call  read\n"</span>                                 <span class="comment">//等待fuzzer的指令</span></span><br><span class="line">  <span class="string">"  addl  $12, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  cmpl  $4, %eax\n"</span></span><br><span class="line">  <span class="string">"  jne   __afl_die\n"</span>                            <span class="comment">//当指令出错程序退出</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  /* Once woken up, create a clone of our process. This is an excellent use\n"</span></span><br><span class="line">  <span class="string">"     case for syscall(__NR_clone, 0, CLONE_PARENT), but glibc boneheadedly\n"</span></span><br><span class="line">  <span class="string">"     caches getpid() results and offers no way to update the value, breaking\n"</span></span><br><span class="line">  <span class="string">"     abort(), raise(), and a bunch of other things :-( */\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  call fork\n"</span>                                  <span class="comment">//否则就调用fork创建test，test用于执行真正的测试用例</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  cmpl $0, %eax\n"</span></span><br><span class="line">  <span class="string">"  jl   __afl_die\n"</span></span><br><span class="line">  <span class="string">"  je   __afl_fork_resume\n"</span>                     <span class="comment">//test进程</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  /* In parent process: write PID to pipe, then wait for child. */\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  movl  %eax, __afl_fork_pid\n"</span>                 <span class="comment">//server把test的pid放在__afl_fork_pid</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $4              /* length    */\n"</span></span><br><span class="line">  <span class="string">"  pushl $__afl_fork_pid /* data      */\n"</span></span><br><span class="line">  <span class="string">"  pushl $"</span> STRINGIFY((FORKSRV_FD + <span class="number">1</span>)) <span class="string">"      /* file desc */\n"</span></span><br><span class="line">  <span class="string">"  call  write\n"</span>                                <span class="comment">//server将test的pid告知fuzzer</span></span><br><span class="line">  <span class="string">"  addl  $12, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $0             /* no flags  */\n"</span></span><br><span class="line">  <span class="string">"  pushl $__afl_temp    /* status    */\n"</span></span><br><span class="line">  <span class="string">"  pushl __afl_fork_pid /* PID       */\n"</span></span><br><span class="line">  <span class="string">"  call  waitpid\n"</span>                              <span class="comment">//server挂起等待test的信号</span></span><br><span class="line">  <span class="string">"  addl  $12, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  cmpl  $0, %eax\n"</span></span><br><span class="line">  <span class="string">"  jle   __afl_die\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $4          /* length    */\n"</span></span><br><span class="line">  <span class="string">"  pushl $__afl_temp /* data      */\n"</span></span><br><span class="line">  <span class="string">"  pushl $"</span> STRINGIFY((FORKSRV_FD + <span class="number">1</span>)) <span class="string">"  /* file desc */\n"</span></span><br><span class="line">  <span class="string">"  call  write\n"</span>                                <span class="comment">//当test状态改变，waitpid返回，server将收到的test的状态转交给fuzzer</span></span><br><span class="line">  <span class="string">"  addl  $12, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  jmp __afl_fork_wait_loop\n"</span>                   <span class="comment">//再次进入fork_wait_loop状态，可见此状态就是就是准备接收fuzzer指令并产生test的循环</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"__afl_fork_resume:\n"</span>                           <span class="comment">//</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  /* In child process: close fds, resume execution. */\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $"</span> STRINGIFY(FORKSRV_FD) <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  call  close\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  pushl $"</span> STRINGIFY((FORKSRV_FD + <span class="number">1</span>)) <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  call  close\n"</span>                                <span class="comment">//test不再使用管道与fuzzer交互，所以把他们都关闭</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  addl  $8, %esp\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  popl %edx\n"</span></span><br><span class="line">  <span class="string">"  popl %ecx\n"</span></span><br><span class="line">  <span class="string">"  popl %eax\n"</span></span><br><span class="line">  <span class="string">"  jmp  __afl_store\n"</span>                           <span class="comment">//接着跳转到__afl_store</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"__afl_die:\n"</span>                                   <span class="comment">//退出</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  xorl %eax, %eax\n"</span></span><br><span class="line">  <span class="string">"  call _exit\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"__afl_setup_abort:\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  /* Record setup failure so that we don't keep calling\n"</span></span><br><span class="line">  <span class="string">"     shmget() / shmat() over and over again. */\n"</span></span><br><span class="line">  <span class="string">"\n"</span></span><br><span class="line">  <span class="string">"  incb __afl_setup_failure\n"</span></span><br><span class="line">  <span class="string">"  popl %ecx\n"</span></span><br><span class="line">  <span class="string">"  popl %eax\n"</span></span><br><span class="line">  <span class="string">"  jmp __afl_return\n"</span></span><br></pre></td></tr></table></figure>
+
+<p>从上面可以看出来，在第一次调用<strong>afl_maybe_log时，</strong>afl_arena_ptr未被设置，就会进入<strong>afl_setup处，它设置完会进入</strong>afl_fork_server处，之后该进程会一直循环等待fuzzer的指令，收到指令就会fork出子进程test，test再次调用<strong>afl_maybe_log时由于</strong>alf_arena_ptr已被设置不会再进入这些代码，而会直接进入__afl_store存储路径并返回</p>
+<p>我们用一张图再次深刻理解下这个原理和过程</p>
+<p><img src="/blog_img/image-20201224114825041.png" alt="image-20201224114825041"></p>
+<p>到这里我们已经能够知道测试用例的结果了</p>
+<h4 id="8、生成测试用例"><a href="#8、生成测试用例" class="headerlink" title="8、生成测试用例"></a>8、生成测试用例</h4><p>afl可以使用自己定义的特值(即词典)，作用是可以加快fuzz的速度，毕竟有效的测试用例很重要！</p>
+<p>1.user extras (over)，从头开始，将用户提供的tokens依次替换到原文件中<br>2.user extras (insert)，从头开始，将用户提供的tokens依次插入到原文件中<br>3.auto extras (over)，从头开始，将自动检测的tokens依次替换到原文件中</p>
+<p>注意使用不同种方法可能会生成相同的用例，当遇到已经被测试过的用例将跳过不再重复测试它</p>
+<p>effector map</p>
+<p>afl能推测一种对于执行流没有影响的数据，对这种数据进行变异将是没有多大意义的，这里把它定义为无效的，他的具体识别方法是若一byte数据完全翻转后都不改变执行流，那么就认为它是无效的，为此afl可以生成一张effector map表表明可能得有效数据的范围，以后变异也只是对有效数据进行变异。一般情况下有3种：</p>
+<p>1、使用dumb mode或者从fuzzer</p>
+<p>2、文件小于128字节</p>
+<p>3、当90%都是有效的那么剩下的就认为是有效的</p>
+<p>常见的变异方式：</p>
+<h5 id="bitflip"><a href="#bitflip" class="headerlink" title="bitflip"></a>bitflip</h5><p>这将按照一定的规律反转比特位</p>
+<h5 id="arithmetic"><a href="#arithmetic" class="headerlink" title="arithmetic"></a>arithmetic</h5><p>对数据进行算术运算</p>
+<h5 id="havoc"><a href="#havoc" class="headerlink" title="havoc"></a>havoc</h5><p>进行随机次变异，每次变异随机选择一种变异方式。</p>
+<h5 id="splice"><a href="#splice" class="headerlink" title="splice"></a>splice</h5><p>选择两个差别较大的用例，随机选择一个位置将它们收尾分割，交叉组合形成新的用例.</p>
+<h3 id="五、源码阅读"><a href="#五、源码阅读" class="headerlink" title="五、源码阅读"></a>五、源码阅读</h3>
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、什么是afl-fuzz"><span class="toc-number">1.</span> <span class="toc-text">一、什么是afl-fuzz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、AFL简介"><span class="toc-number">2.</span> <span class="toc-text">二、AFL简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、构建语料库"><span class="toc-number">3.</span> <span class="toc-text">三、构建语料库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、代码覆盖率及其相关概念"><span class="toc-number">4.</span> <span class="toc-text">四、代码覆盖率及其相关概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、源码阅读"><span class="toc-number">5.</span> <span class="toc-text">五、源码阅读</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

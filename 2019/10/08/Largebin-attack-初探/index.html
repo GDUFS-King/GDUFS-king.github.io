@@ -152,10 +152,10 @@ Large bins 中一,">
 
 <p><img src="/blog_img/1570513689215.png" alt="57051368921"></p>
 <p>可以看到申请的堆块0x400到0x420放在larbin(index64),而3个0x430的堆块放在largebin(index65)，下面用图来解析：</p>
-<p><img src="/blog_img/1570516257014.png" alt="57051625701"></p>
+<p><img src="/blog_img/image-20201025114041262.png" alt="image-20201025114041262"></p>
 <p>这是largebin中的堆块的分配示意图，上方的是size有相同和不同，但处于同一largebin的chunk分布，下方是相同size处于同一largebin的chunk分布。</p>
 <p>很清楚地可以看到fk和bk形成的横向链表，fd_nextsize和bk_nextsize形成的纵向链表（看不出可以将图顺时针旋转90度再看看）</p>
-<p>这里通过fd指针和bk指针形成循环链表很好理解，和之前的small bin和unsorted bin一样，但是不同的在于，largebin中的chunk是按照从大到小的顺序排列的(表头大，表尾小)，当有相同size的chunk时则按照free的时间顺序排序。</p>
+<p>这里通过fd指针和bk指针形成循环链表很好理解，和之前的small bin和unsorted bin一样，但是不同的在于，largebin中的chunk是按照从大到小的顺序排列的(表头大，表尾小)，当有相同size的chunk时则按照free的时间顺序排序（也就是尾插法）。</p>
 <p>同时相同size的chunk，只有第一个chunk会有fd_nextsize和bk_nextsize，其他的都没有，fd_nextsize和bk_nextsize置为0。</p>
 <p>一般的，bk_nextchunk指向前一个比它大的chunk(表头和表尾除外)。这样就很好理解，fd_nextsize指向下一个比它小的chunk。</p>
 <p>表头chunk的bk_nextsize指向表尾chunk，表尾的fd_nextsize指向表头chunk，从而fd_nextsize指针形成一个循环链表，bk_nextsize指针也形成一个循环链表，所以largebin的链表结构也相对复杂一些，但是理清楚了就好了。</p>
@@ -392,9 +392,9 @@ Large bins 中一,">
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">65 <p>Articles</p></a></li>
-                    <li><a href="/categories">7 <p>Categories</p></a></li>
-                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -422,7 +422,7 @@ Large bins 中一,">
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

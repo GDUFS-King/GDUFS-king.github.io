@@ -11,7 +11,9 @@
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="TriDiamond Obsidian,"> 
     <meta name="description" content="一、源码介绍：当需要合并相邻的freechunk时用到unlink：前言：P的选取一定是你要unlink合并后的P的地址，不是随便选取的~1、向后合并：
-1234567891011121314151,"> 
+
+
+12345678910111213141,"> 
     <meta name="author" content="V1ct0r"> 
     <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -141,9 +143,9 @@
     <div class='main'>
         <div class="content markdown animated fadeIn">
             <h3 id="一、源码介绍："><a href="#一、源码介绍：" class="headerlink" title="一、源码介绍："></a>一、源码介绍：</h3><h4 id="当需要合并相邻的freechunk时用到unlink："><a href="#当需要合并相邻的freechunk时用到unlink：" class="headerlink" title="当需要合并相邻的freechunk时用到unlink："></a>当需要合并相邻的freechunk时用到unlink：</h4><h4 id="前言：P的选取一定是你要unlink合并后的P的地址，不是随便选取的"><a href="#前言：P的选取一定是你要unlink合并后的P的地址，不是随便选取的" class="headerlink" title="前言：P的选取一定是你要unlink合并后的P的地址，不是随便选取的~"></a>前言：P的选取一定是你要unlink合并后的P的地址，不是随便选取的~</h4><p>1、向后合并：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#!c</span><br><span class="line">    <span class="comment">/*malloc.c  int_free函数中*/</span></span><br><span class="line"><span class="comment">/*这里p指向当前malloc_chunk结构体，bck和fwd分别为当前chunk的向后和向前一个free chunk*/</span></span><br><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">    <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">      prevsize = p-&gt;prev_size;</span><br><span class="line"><span class="built_in">size</span> += prevsize;</span><br><span class="line"><span class="comment">//修改指向当前chunk的指针，指向前一个chunk。</span></span><br><span class="line">      p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize)); </span><br><span class="line">      unlink(p, bck, fwd);</span><br><span class="line">&#125;   </span><br><span class="line"></span><br><span class="line"><span class="comment">//相关函数说明：</span></span><br><span class="line"><span class="comment">/* Treat space at ptr + offset as a chunk */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> chunk_at_offset(p, s)  ((mchunkptr) (((char *) (p)) + (s))) </span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*unlink操作的实质就是：将P所指向的chunk从双向链表中移除，这里BK与FD用作临时变量*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> unlink(P, BK, FD) &#123;                                            \</span></span><br><span class="line">    FD = P-&gt;fd;                                   \</span><br><span class="line">    BK = P-&gt;bk;                                   \</span><br><span class="line">    FD-&gt;bk = BK;                                  \</span><br><span class="line">    BK-&gt;fd = FD;                                  \</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#!c</span><br><span class="line">    <span class="comment">/*malloc.c  int_free函数中*/</span></span><br><span class="line"><span class="comment">/*这里p指向当前malloc_chunk结构体，bck和fwd分别为当前chunk的向后和向前一个free chunk*/</span></span><br><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">    <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">      prevsize = p-&gt;prev_size;</span><br><span class="line"><span class="built_in">size</span> += prevsize;</span><br><span class="line"><span class="comment">//修改指向当前chunk的指针，指向前一个chunk。</span></span><br><span class="line">      p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize)); </span><br><span class="line">      unlink(p, bck, fwd);</span><br><span class="line">&#125;   </span><br><span class="line"></span><br><span class="line"><span class="comment">//相关函数说明：</span></span><br><span class="line"><span class="comment">/* Treat space at ptr + offset as a chunk */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> chunk_at_offset(p, s)  ((mchunkptr) (((char *) (p)) + (s))) </span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*unlink操作的实质就是：将P所指向的chunk从双向链表中移除，这里BK与FD用作临时变量*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> unlink(P, BK, FD) &#123;                                            \</span></span><br><span class="line">    FD = P-&gt;fd;                                   \</span><br><span class="line">    BK = P-&gt;bk;                                   \</span><br><span class="line">    FD-&gt;bk = BK;                                  \</span><br><span class="line">    BK-&gt;fd = FD;                                  \</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>画个图举例说明：</p>
 <p><img src="/blog_img/1563366311730.png" alt="1563366311730"></p>
@@ -461,9 +463,9 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">65 <p>Articles</p></a></li>
-                    <li><a href="/categories">7 <p>Categories</p></a></li>
-                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -491,7 +493,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

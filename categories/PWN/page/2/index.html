@@ -71,7 +71,7 @@
         
     </ul>
     <p class="copyright" id="copyright">
-        &copy; 2020 V1ct0r.
+        &copy; 2021 V1ct0r.
         Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
         Theme <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
     </p>
@@ -117,6 +117,8 @@
             </li>
             
             
+            <li class="animated fadeInDown search-bar iconfont icon-search"></li>
+            
         </ul>
         <div class="iconfont icon-menu switchmenu gradient-text animated fadeInDown"></div>
     </div>
@@ -138,35 +140,36 @@
             <a href="/categories/PWN"><b>「
                 </b>PWN<b> 」</b></a>
             
-            January 03, 2020
+            May 09, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="数组下标越界专题" class="posttitle">数组下标越界专题</a></h3>
+            <a href="/2020/05/09/Glibc2.31%E4%B8%8B%E7%9A%84check%E6%9C%BA%E5%88%B6%E5%92%8C%E5%88%A9%E7%94%A8%E6%8A%80%E5%B7%A7/" title="2.31中check机制和漏洞利用分析" class="posttitle">2.31中check机制和漏洞利用分析</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                56k
+                200k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                51 mins.
+                3:02
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C/" rel="tag">下标越界</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/heap-of-2-31/" rel="tag">heap of 2.31</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h4 id="一、数组下标越界简介："><a href="#一、数组下标越界简介：" class="headerlink" title="一、数组下标越界简介："></a>一、数组下标越界简介：</h4><p>栈是由高往低增长的，而数组的存储是由低位往高位存的，如果越界的话，会把当前函数的ebp和下一跳的指令地址覆盖掉，如果覆盖了当前函数的ebp，那么在恢复的时候esp就不能指向正确的...</p>
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>之前一直有2.31的题目出现在赛场上，趁着这个机会，整理一波2.31下的tcache机制和利用技巧，以学习的目的为主。</p>
+<h3 id="一、check机制和利用技巧说明"><a href="#一、check机制和利用技巧说明" class="headerlink" title="一、check机制和利用技巧说明"></a>一、check机制和利用技巧说明</h3><h4 id="1、fastbin的double-free"><a href="#1、fastbin的double-free" class="headerlink" title="1、fastbin的double free"></a>1、fastbin的double free</h4><p>只...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/05/09/Glibc2.31%E4%B8%8B%E7%9A%84check%E6%9C%BA%E5%88%B6%E5%92%8C%E5%88%A9%E7%94%A8%E6%8A%80%E5%B7%A7/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -187,6 +190,485 @@
 
     <div id="primary">
         
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            May 09, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/05/09/Glibc2.31%E4%B8%8B%E7%9A%84check%E6%9C%BA%E5%88%B6%E5%92%8C%E5%88%A9%E7%94%A8%E6%8A%80%E5%B7%A7/" title="2.31中check机制和漏洞利用分析" class="posttitle">2.31中check机制和漏洞利用分析</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        200k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        3:02
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/heap-of-2-31/" rel="tag">heap of 2.31</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>之前一直有2.31的题目出现在赛场上，趁着这个机会，整理一波2.31下的tcache机制和利用技巧，以学习的目的为主。</p>
+<h3 id="一、check机制和利用技巧说明"><a href="#一、check机制和利用技巧说明" class="headerlink" title="一、check机制和利用技巧说明"></a>一、check机制和利用技巧说明</h3><h4 id="1、fastbin的double-free"><a href="#1、fastbin的double-free" class="headerlink" title="1、fastbin的double free"></a>1、fastbin的double free</h4><p>只要填满了7个tcache，下一步就是放入到fastbin中，接着如果存在uaf的话，可以直接121实现和2.23一样的double free效果</p>
+<h4 id="2、tcache的double-free"><a href="#2、tcache的double-free" class="headerlink" title="2、tcache的double free"></a>2、tcache的double free</h4><a id="more"></a>
+
+<p>我们先来看下2.31下的源码：关于tcache结构体和key结构体</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/05/09/Glibc2.31%E4%B8%8B%E7%9A%84check%E6%9C%BA%E5%88%B6%E5%92%8C%E5%88%A9%E7%94%A8%E6%8A%80%E5%B7%A7/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%81%9A%E5%A0%86%E9%A2%98%E7%9A%84%E5%BF%83%E5%BE%97/" title="做pwn题的心得" class="posttitle">做pwn题的心得</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        4.3k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        4 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、做栈题的心得："><a href="#一、做栈题的心得：" class="headerlink" title="一、做栈题的心得："></a>一、做栈题的心得：</h3><p>1、看栈的大小</p>
+<p>2、判断栈溢出的字节数(够的话直接栈上操作再跳回main函数再次操作，不够的话，栈迁移到bss上)</p>
+<p>命令：cyclic n  cyclic -l 报错(4位)</p>
+<p>3、如果开了canary，先泄露出canary(覆盖低字节或者格式化字符串泄露)，记得函数调用完要回填canary</p>
+<p>4、如果开了pie，先利用write或者puts函数(覆盖0截断)或者格式化字符串泄露基地址</p>
+<p>5、NX开了的话，一般不管，没开的话直接填shellcode，可以手写也可以工具直接生成</p>
+<p>6、一般...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E5%81%9A%E5%A0%86%E9%A2%98%E7%9A%84%E5%BF%83%E5%BE%97/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%A0%86%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/" title="堆入门学习知识总结" class="posttitle">堆入门学习知识总结</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        29k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        26 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/heap/" rel="tag">heap</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>一、堆的分析：</p>
+<p>通过系统调用brk和mmap实现malloc内存分配:</p>
+<p>thread有个arena空间，可以申请chunk</p>
+<p>arena的个数是跟系统中处理器核心个数相关的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">For <span class="number">32</span> <span class="built_in">bit</span> systems:</span><br><span class="line">     Number of arena = <span class="number">2</span> * number of cores + <span class="number">1.</span></span><br><span class="line">For <span class="number">64</span> <span class="built_in">bit</span> systems:</span><br><span class="line">     Number of arena = <span class="number">8</span> * number of cores + <span class="number">1.</span></span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h4 id="多Arena的管理，可能就会有阻塞，资源的竞争关系"><a href="#多Arena的管理，可能就会有阻塞，资源的竞争关系" class="headerlink" title="多Arena的管理，可能就会有阻塞，资源的竞争关系"></a>多Arena的管理，可能就会有阻塞，资源的竞争关系</h4><p>3种数据结构:</p>
+...
+            
+            <span class="read-more"><a href="/2020/01/03/%E5%A0%86%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%831/" title="栈溢出入门到放弃1" class="posttitle">栈溢出入门到放弃1</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        2.8k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        3 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>缓冲区：stack、heap</p>
+<h3 id="1、栈溢出：当前输入的字符的数量大于buf的大小，造成溢出，ret地址被覆盖，造成任意地址跳转"><a href="#1、栈溢出：当前输入的字符的数量大于buf的大小，造成溢出，ret地址被覆盖，造成任意地址跳转" class="headerlink" title="1、栈溢出：当前输入的字符的数量大于buf的大小，造成溢出，ret地址被覆盖，造成任意地址跳转"></a>1、栈溢出：当前输入的字符的数量大于buf的大小，造成溢出，ret地址被覆盖，造成任意地址跳转</h3><p>来道题目直接看看：</p>
+<p></p>
+<a id="more"></a>
+
+<p>这里很清晰，一个main函数，调用puts函数和read函数和puts函数，下面简单的例子演示下参数入栈：</p>
+<p>单步走：先调用puts函数，先将参数“give me some thing？”压入栈中</p>
+<p></p>
+<p></p>
+<p></p>
+<p>执行完puts函数，借助栈中的0x8048489可回到下一条将要执行的指令的地址（return地址），回到了现场，此过程pop出0x8048489（因...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%831/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/" title="栈溢出入门到放弃2" class="posttitle">栈溢出入门到放弃2</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        9.3k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        8 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、对保护机制的探索："><a href="#一、对保护机制的探索：" class="headerlink" title="一、对保护机制的探索："></a>一、对保护机制的探索：</h3><p>本文针对刷过的题目，介绍一些常见的保护机制以及破解方法，这里一个个介绍。</p>
+<h4 id="1、checksec"><a href="#1、checksec" class="headerlink" title="1、checksec"></a>1、checksec</h4><p>工欲善其事必先利其器，这个指令用于检查题目的保护机制以及判断是32位还是64位的程序，专业地讲是用来检查可执行文件属性，例如PIE, RELRO, PaX, Canaries, ASLR, Fortify Source等等属性。 举个栗子：</p>
+<p>checksec + 文件名，可实现检查功能：</p>
+<p></p>
+<a id="more"></a>
+
+<h4 id="2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little："><a href="#2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little：" class="headerlink" title="2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little："></a>2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386...</h4>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="栈溢出从入门到放弃3" class="posttitle">栈溢出从入门到放弃3</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        61k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        56 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、初级栈溢出系列"><a href="#一、初级栈溢出系列" class="headerlink" title="一、初级栈溢出系列"></a>一、初级栈溢出系列</h3><p>从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。</p>
+<p>一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被覆盖，我们的最终目标都是实现调用system(“/bin/sh”)函数去getshell，过程花样可以千奇百怪，但是总有规律可以寻找~</p>
+<a id="more"></a>
+
+<h4 id="1、第一步找危险函数。"><a href="#1、第一步找危险函数。" class="headerlink" title="1、第一步找危险函数。"></a>1、第一步找危险函数。</h4><p>输入函数：</p>
+<p>gets(&amp;buf) 直接读取一行，忽略’\x00’ ，一看没有字符数的限制，那肯定是200%的溢出~</p>
+<p>read(0，&amp...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="栈溢出入门到放弃4" class="posttitle">栈溢出入门到放弃4</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        15k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        13 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、中级栈溢出总结："><a href="#一、中级栈溢出总结：" class="headerlink" title="一、中级栈溢出总结："></a>一、中级栈溢出总结：</h3><p>来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：</p>
+<p>重点介绍一个64位的很好用的ROP链子，这个链子是根据</p>
+<a id="more"></a>
+
+<p></p>
+<p>这两个函数的汇编写出来的，我们可以去看看：</p>
+<p></p>
+<p>就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？</p>
+<p>首先先读懂这段汇编的意思：首先执行抬一次栈的操作，接着要pop6个参数到相应的寄存器中，然后是ret，接着看到上面mov那里，很...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E7%8E%A9%E8%BD%AC%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/" title="玩转花式栈溢出" class="posttitle">玩转花式栈溢出</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        14k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        13 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%A0%88%E8%BF%81%E7%A7%BB/" rel="tag">栈迁移</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>一、花式栈溢出介绍：</p>
+<p>花式栈溢出又叫栈迁移技术，是指在可以写的payload的长度不佳的情况下（一般只有ebp和ret位置可以写，没有多的了，或者再多给两行可以写的），这样的话我们需要进行栈迁移，具体做法有如下两种：</p>
+<p>1、迁移到栈本身，2、迁移到bss段中，3、迁移到堆块（后期补充）</p>
+<p>先来看看迁移到栈的情况：</p>
+<p>来一道题目：</p>
+<p></p>
+<p></p>
+<p></p>
+<p>这里堆栈不可执行保护，其他的没开，然后栈溢出发现只能溢出8字节，32位的话，就是覆盖到ebp和ret的位置，很局限，这里想到栈迁移，于是搞一波操作：</p>
+<p>第一步：迁移到本身...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E7%8E%A9%E8%BD%AC%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="师傅给的2道pwn题" class="posttitle">师傅给的2道pwn题</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        19k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        17 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="题目一："><a href="#题目一：" class="headerlink" title="题目一："></a>题目一：</h3><p>read_note：</p>
+<h3 id="一波分析："><a href="#一波分析：" class="headerlink" title="一波分析："></a>一波分析：</h3><p></p>
+<a id="more"></a>这里开了栈溢出保护，堆栈不可执行，然后还有内存地址随机化，只有got还可以写，适应了就好~
+
+<p>动态链接，库是libc.so.6，可以得到，再去看看ida吧：</p>
+<p></p>
+<p>这里程序大概的流程也出来了，就是让你输入路径（字符串长度为5其实根本不可能），然后能打开该路径下的文件（就是个幌子，没用的），跳过，输入的字符长度大于5，就false，继续执行程序，要写note的大小note_length，还有note的内容，内容在thinking_note这里，会被输出来，然后如...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -235,472 +717,9 @@
 </div>
 
 
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="星盟AWD的pwn题" class="posttitle">星盟AWD的pwn题</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        16k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        14 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/awd/" rel="tag">awd</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h4 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h4><p>pwn1:</p>
-<p>64位保护全开，ida分析一波：</p>
-<a id="more"></a>
-
-<p></p>
-<p>会发现常规菜单题，然后有3个函数，一个个看吧：</p>
-<p>malloc：</p>
-<p></p>
-<p>这里可以看到最多7个堆块，而且堆块大小限定在0x90到0x2333，当堆块量等于7时，貌似有UAF的free，但是其实没有什么用，因为bss上并不会存储chunk的地址，所以正常的malloc，同时可以打印地址，这里直接打印出了堆地址和libc地址</p>
-<p></p>
-<p>简单的free函数，正常没有漏洞</p>
-<p>edit：</p>
-<p></p>
-<p>这是漏洞点所在，会发现这里有个任意地址写，8字节的数字，0xcafebabe...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%98%9F%E7%9B%9FAWD%E7%9A%84pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="格式化字符串漏洞学习" class="posttitle">格式化字符串漏洞学习</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        35k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        32 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/format/" rel="tag">format</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="前置知识："><a href="#前置知识：" class="headerlink" title="前置知识："></a>前置知识：</h3><p>一些小技巧和知识：<br><a id="more"></a><br></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">这部分来自icemakr的博客</span><br><span class="line"></span><br><span class="line"><span class="number">32</span>位</span><br><span class="line"></span><br><span class="line">读</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$x'</span>.format(index)           // 读<span class="number">4</span>个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$p'</span>.format(index)           // 同上面</span><br><span class="line"><span class="string">'$&#123;&#125;$s'</span>.format(index)</span><br><span class="line">写</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$n'</span>.format(index)           // 解引用，...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E7%A5%9E%E5%A5%87%E7%9A%84gadget/" title="神奇的gadget" class="posttitle">神奇的gadget</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        14k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        12 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/gadget/" rel="tag">gadget</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%B1%87%E7%BC%96/" rel="tag">汇编</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、神奇的gadget：</p>
-<p>这个gadget一般存在于__do_global_dtors_aux中，可能是出题人自己写的gadget吧~适用于no leak类型的题目。</p>
-<a id="more"></a>
-
-<p></p>
-<p></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add [rbp<span class="number">-3</span>Dh],ebx           <span class="comment">//当rbp和ebx可控时，我们可以修改rbp-0x3d地址里面内容，一般用于计算真实地址之间的偏移，从而获取想要的真实地址</span></span><br></pre></td></tr></table></figure>
-
-<p>拿一道题看看吧：</p>
-<h4 id="no-leak"><a href="#no-leak" class="headerlink" title="no_leak"></a>no_leak</h4><p>先看看保护机制：</p>
-<p></p>
-<p>got表不可改，NX保护，庆幸的是没有canary保护和pie，比较友好，先看看ida：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int...</span></span></span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/%E7%A5%9E%E5%A5%87%E7%9A%84gadget/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E8%80%81%E9%93%81%E4%B8%80%E9%81%93pwn%E9%A2%98/" title="library题解" class="posttitle">library题解</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        49k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        45 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/fastbin-attack/" rel="tag">fastbin attack</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/uaf/" rel="tag">uaf</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、题目"><a href="#一、题目" class="headerlink" title="一、题目"></a>一、题目</h3><h4 id="library"><a href="#library" class="headerlink" title="library"></a>library</h4><p>先checksec下：</p>
-<p></p>
-<a id="more"></a>
-
-<p>除了pie没有开，其他保护都开了，got表不可改，那么只能改malloc_hook和free_hook了，这题ida看下逻辑：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl __noreturn <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char...</span></span></span></span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/%E8%80%81%E9%93%81%E4%B8%80%E9%81%93pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Lore/" title="House of Lor" class="posttitle">House of Lor</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        6.6k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        6 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、原理：</p>
-<p>先来看下small bin中的源码：</p>
-<a id="more"></a>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (in_smallbin_range(nb)) &#123;</span><br><span class="line">       <span class="comment">// 获取 small bin 的索引</span></span><br><span class="line">       idx = smallbin_index(nb);</span><br><span class="line">       <span class="comment">// 获取对应 small bin 中的 chunk 指针</span></span><br><span class="line">       bin = bin_at(av, idx);</span><br><span class="line">       <span class="comment">// 先执行 victim= last(bin...</span></span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-Lore/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Rabbit/" title="House of Rabbit" class="posttitle">House of Rabbit</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        21k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        19 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、原理介绍：</p>
-<p>1、修改size：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"string.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk1=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602000</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk2=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602050</span></span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"><span class="built_in">free</span>(chunk1);</span><br><span class="line"><span class="built_in">free</span>(chunk2);</span><br><span class="line">chunk1[<span class="number">-1</span>]=<span class="number">0xa1</span>; </span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">&...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-Rabbit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-orange/" title="House of orange" class="posttitle">House of orange</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        84k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1:17
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h4 id="一、第一种类型的原理"><a href="#一、第一种类型的原理" class="headerlink" title="一、第一种类型的原理"></a>一、第一种类型的原理</h4><p>House of Orange 的利用比较特殊，首先需要目标漏洞是堆上的漏洞但是特殊之处在于题目中不存在 free 函数或其他释放堆块的函数。我们知道一般想要利用堆漏洞，需要对堆块进行 malloc 和 free 操作，但是在 House of Orange 利用中无法使用 free 函数，因此 House of Orange 核心就是通过漏洞利用获得 free 的效果。如我们前面所述，House of Orange 的核心在于在没有 free 函数的情况下得到一个释放的堆块...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-orange/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/IO_File/" title="IO_FILE探索" class="posttitle">IO_FILE探索</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        81k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        1:13
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/vtable%E8%B7%B3%E8%BD%AC/" rel="tag">vtable跳转</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%B3%84%E6%BC%8F%E5%9C%B0%E5%9D%80/" rel="tag">泄漏地址</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h4 id="一、IO-File结构体一览"><a href="#一、IO-File结构体一览" class="headerlink" title="一、IO_File结构体一览"></a>一、IO_File结构体一览</h4><p>首先看一波源码：</p>
-<a id="more"></a>
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">IO_FILE</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> _flags;       <span class="comment">/* High-order word is _IO_MAGIC; rest is flags. */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _IO_file_flags _flags</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* The following pointers correspond...</span></span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/IO_File/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/Pwnhub%E4%B8%80%E9%81%93%E9%A2%98/" title="万圣节Pwnhub一道题" class="posttitle">万圣节Pwnhub一道题</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        36k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        33 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/xxtea/" rel="tag">xxtea</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、pwnhub"><a href="#一、pwnhub" class="headerlink" title="一、pwnhub"></a>一、pwnhub</h3><p>这题感觉挺有意思的 ，思路清晰了，但是过程煎熬了，下面记录下自己经历的事和学到的东西。</p>
-<p>保护全开，就不说了直接看看ida：</p>
-<a id="more"></a>
-
-<p></p>
-<p>3个功能，一个malloc、一个free、一个write函数，这里先看下malloc函数：</p>
-<p></p>
-<p>先申请一个0x10的没用的块用来隔开堆块，再申请不超过0xff的堆块去写内容，然后每一次malloc，num就会加一，这里只能malloc10次，超了就没了，接着看下free函数：</p>
-<p></p>
-<p>很明显的UAF漏洞，然后只free那个自己申请的内容块，0x10的堆块作为标志...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/Pwnhub%E4%B8%80%E9%81%93%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
     </div>
     
-    <div id="pager"><a href="/categories/PWN/page/3/" class="more" data-loading="Loading..." data-load-more="Load more">Load more</a></div>
+    <div id="pager"><a href="/categories/PWN/page/3/" class="more" data-loading="加载中..." data-load-more="Load more">Load more</a></div>
     
 </div>
 <div id="preview"></div>
@@ -713,7 +732,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

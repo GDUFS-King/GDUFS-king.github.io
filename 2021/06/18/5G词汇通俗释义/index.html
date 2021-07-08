@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>5G知识点梳理 - V1ct0r的博客</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="前言学习之前，先问下自己，什么是5G，有什么用，知己知彼，方能百战不怠。
+5G在物联网方面的使用很广，目前韩国三星、(威瑞森电信)verizon、(土耳其通信公司)turkcell和瑞典爱立信均可提,"> 
+    <meta name="author" content="V1ct0r"> 
+    <link rel="alternative" href="atom.xml" title="V1ct0r的博客" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+
+    
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+
+    
+<link rel="stylesheet" href="/css/obsidian.css">
+
+    
+<link rel="stylesheet" href="/css/ball-atom.min.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">V1ct0r的博客</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://yoursite.com">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">5G知识点梳理</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="/categories/5G"><b>「
+                    </b>5G<b> 」</b></a>
+                
+                June 18, 2021
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2021/06/18/5G%E8%AF%8D%E6%B1%87%E9%80%9A%E4%BF%97%E9%87%8A%E4%B9%89/" title="5G知识点梳理" class="">5G知识点梳理</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    16k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    15 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%A0%B8%E5%BF%83%E7%BD%91/" rel="tag">核心网</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>学习之前，先问下自己，什么是5G，有什么用，知己知彼，方能百战不怠。</p>
+<p>5G在物联网方面的使用很广，目前韩国三星、(威瑞森电信)verizon、(土耳其通信公司)turkcell和瑞典爱立信均可提供5g服务。</p>
+<p>5g系统采用的是基于服务的架构(service-based)，也叫SBA架构。</p>
+<a id="more"></a>
+
+<h3 id="一、5G常见词汇解析"><a href="#一、5G常见词汇解析" class="headerlink" title="一、5G常见词汇解析"></a>一、5G常见词汇解析</h3><h5 id="5GC-5g-core-network"><a href="#5GC-5g-core-network" class="headerlink" title="5GC(5g core network)"></a>5GC(5g core network)</h5><p>5g核心网对用户面和控制面分离，采用服务化架构设计，主要由网络功能(NF)组成，采用分布式的功能，新的网络功能加入或撤出，并不影响整体网络的功能。</p>
+<h5 id="NF-network-function"><a href="#NF-network-function" class="headerlink" title="NF(network function)"></a>NF(network function)</h5><p>5g将相关的功能分别拆解，各司其职，通过参考点接入(接口)，它们被成为网络功能（NF）。</p>
+<p>网络功能（NF）常见的有AMF，SMF，UPF，UDM等，NF可以随时新加入和退出，只要资源池中还有其它相同的网络功能，就不会影响网络，这极大的方便了组网部署。也便于负荷分担、升级等。</p>
+<h5 id="参考点-接口Nx"><a href="#参考点-接口Nx" class="headerlink" title="参考点(接口Nx)"></a>参考点(接口Nx)</h5><p>在5g核心网中，参考点是特定两个功能之间的交互界面，是标准的双方之间的协议映射关系，类似于以往移动通信中的接口的概念。</p>
+<h5 id="MEC（移动边缘计算-MobileEdgeComputing）"><a href="#MEC（移动边缘计算-MobileEdgeComputing）" class="headerlink" title="MEC（移动边缘计算,MobileEdgeComputing）"></a>MEC（移动边缘计算,MobileEdgeComputing）</h5><p>5G中的关键技术，可利用无线接入网络就近提供电信用户所需服务和云端计算功能。</p>
+<h5 id="NG接口"><a href="#NG接口" class="headerlink" title="NG接口"></a>NG接口</h5><p>无线接入网和5g核心网之间的接口，NG接口分为NG-C接口（NG-RAN和5GC之间的控制面接口）和NG-U接口（NG-RAN和5GC之间的用户面接口）</p>
+<h5 id="AMF-Access-and-Manage-Function"><a href="#AMF-Access-and-Manage-Function" class="headerlink" title="AMF(Access and Manage Function)"></a>AMF(Access and Manage Function)</h5><p>接入和移动管理功能，它直接管理5g的无线接入请求，进行注册管理、连接管理、可达性管理和移动性管理等功能。</p>
+<h5 id="UPF-用户平面plane管理"><a href="#UPF-用户平面plane管理" class="headerlink" title="UPF(用户平面plane管理)"></a>UPF(用户平面plane管理)</h5><p>分组路由和转发，数据包检查等，用户平面部分策略规则</p>
+<p>5G核心网的用户面和控制面彻底分离，使能UPF（用户面功能）实现下沉和分布式部署。这种分离架构，使MEC（多接入边缘计算）成为可能，并分布式部署于网络接入侧、本地侧、汇聚侧和核心侧。</p>
+<h5 id="SMF-session会话管理功能"><a href="#SMF-session会话管理功能" class="headerlink" title="SMF(session会话管理功能)"></a>SMF(session会话管理功能)</h5><p>会话管理功能，5G中重要的网络功能之一。会话管理，例如会话建立，修改和释放，包括UPF和AN节点之间的通道维护，UEIP地址分配和管理等。</p>
+<h5 id="PCF-ploy策略控制功能"><a href="#PCF-ploy策略控制功能" class="headerlink" title="PCF(ploy策略控制功能)"></a>PCF(ploy策略控制功能)</h5><p>策略控制功能（PCF），5G核心网的网络功能之一。它的主要功能是使用统一的策略框架来管理网络行为，并协同UDR中的用户信息，来执行相关的策略。</p>
+<h5 id="UDR-United-Data-Repository"><a href="#UDR-United-Data-Repository" class="headerlink" title="UDR(United Data Repository)"></a>UDR(United Data Repository)</h5><p>统一数据存储库（UDR），通过UDM存储和检索用户数据，由PCF存储和检索策略数据，存储和检索用于开放的结构化数据。</p>
+<h5 id="数据网络（DN）"><a href="#数据网络（DN）" class="headerlink" title="数据网络（DN）"></a>数据网络（DN）</h5><p>运营商服务，因特网接入或第三方服务等</p>
+<h5 id="统一数据管理（UDM）"><a href="#统一数据管理（UDM）" class="headerlink" title="统一数据管理（UDM）"></a>统一数据管理（UDM）</h5><ul>
+<li>3GPP AKA认证证书处理。</li>
+<li>用户标识处理（例如，存储和管理SUPI）。</li>
+<li>支持解析加密的签约标识符（SUCI）。</li>
+<li>基于签约数据的访问授权。（例如，漫游限制）</li>
+<li>服务于UE的NF的注册管理 （例如，存储服务的AMF，SMF）。</li>
+<li>支持业务/会话连续性。</li>
+<li>支持被叫SMS消息传输。</li>
+<li>合法侦听功能。</li>
+<li>签约管理。</li>
+<li>短信管理。</li>
+<li>支持与 HSS/HLR融合。</li>
+</ul>
+<p>统一数据管理（UDM），5G核心网的网络功能之一。通过生成3GPPAKA身份验证凭据，通过对SUPI的存储和管理，对用户进行识别处理，对用户进行合法性验证。</p>
+<p>通过UDM，可以对非法用户进行有效拦截，UDM使用可能存储在UDR中的用户数据（包括身份验证数据），在这种情况下，UDM实现应用流程逻辑，不需要内部用户数据存储。</p>
+<h5 id="NRF-repository"><a href="#NRF-repository" class="headerlink" title="NRF(repository)"></a>NRF(repository)</h5><p>网络存储库功能（NRF），5G核心网的网络功能之一。支持服务发现功能，从NF实例接收NF发现请求，并将发现的NF实例（被发现）的信息提供给NF实例。</p>
+<p>在5G中可以灵活配置，在网络分切片的背景下，基于网络实现，可以在不同级别部署多个NRF，包括：PLMN级别（NRF配置有整个PLMN的信息），共享切片级别（NRF配置有属于一组网络切片的信息），切片特定级别（NRF配置有属于S-NSSAI的信息）</p>
+<h5 id="NEF-exposure"><a href="#NEF-exposure" class="headerlink" title="NEF(exposure)"></a>NEF(exposure)</h5><p>网络开放功能（NEF），是5G对外开放和提供标准接口的网络功能。基于3GPP网络功能通过NEF向其他系统公开功能和事件，既提供开放性，又能保障系统的安全。 </p>
+<p>NEF的存在，将5G系统的功能实现标准化的展现，极大的便利了第三方接入，例如应用功能，边缘计算等，同时，对网络和用户敏感信息的屏蔽，又保证了系统的安全。</p>
+<h5 id="SMSF"><a href="#SMSF" class="headerlink" title="SMSF"></a>SMSF</h5><p>短信网络功能（SMSF），支持基于NAS的SMS，主用用于管理用户数据检查并相应地进行SMS传递。</p>
+<p>SMSF将带有UE的SM-RP / SM-CP传递，将SM从UE中继到SMS-GMSC / IWMSC / SMS-Router，将SMS从SMS-GMSC / IWMSC / SMS-Router中继到UE。同时，验证短信相关的CDR，并进行合法拦截。</p>
+<p>与AMF和SMS-GMSC的交互，用于UE不可用于SMS传输的通知流程（即，当UE不可用于SMS时，通知SMS-GMSC通知UDM）。</p>
+<h5 id="NSSF-slice-select"><a href="#NSSF-slice-select" class="headerlink" title="NSSF(slice select)"></a>NSSF(slice select)</h5><p>网络切片选择功能（NSSF），是5G支持网络切片网络功能。选择为UE提供服务的网络切片实例集，以为用户提供个性化的网络服务。</p>
+<p>NSSF确定允许的NSSAI，并在必要时确定到用户的S-NSSAI的映射，对于已配置的NSSAI，并在需要时确定到已用户的S-NSSAI的映射，确定AMF集用于服务UE，或者，基于配置，可能通过查询NRF来确定候选AMF列表。</p>
+<h5 id="NWDAF-network-data-analyse"><a href="#NWDAF-network-data-analyse" class="headerlink" title="NWDAF(network data analyse)"></a>NWDAF(network data analyse)</h5><p>网络数据分析功能（NWDAF），是运营管理的网络分析逻辑功能。NWDAF为NF提供特定于网络切片的网络数据分析。NWDAF在网络切片实例级别上向NF提供网络分析信息（即，负载级别信息），并且NWDAF不需要知道使用该网络切片的当前用户。</p>
+<p>NWDAF将网络切片特定的网络状态分析信息通知给用户它的NF。NF可以直接从NWDAF收集切片特定的网络状态分析信息，这极大的增强了5G网络对切片用户的大数据掌握。PCF和NSSF都是网络分析的使用者。PCF可以在其策略决策中使用该数据。NSSF可以使用NWDAF提供的负载级别信息进行切片选择。</p>
+<h5 id="NG-RAN-基站"><a href="#NG-RAN-基站" class="headerlink" title="NG-RAN(基站)"></a>NG-RAN(基站)</h5><p>NG-RAN由两种不同类型的节点组成：gNB（下一代节点B，即5G基站）和ng-eNB（新一代进化节点B，即下一代4G基站）。gNB是实际的新5G基站，而ng-eNB在以前的LTE-eNB的基础上发展而来。</p>
+<h5 id="AUSF-Authentication-Server-Function"><a href="#AUSF-Authentication-Server-Function" class="headerlink" title="AUSF(Authentication Server Function)"></a>AUSF(Authentication Server Function)</h5><p>AuthenticationServer Function ，鉴权服务功能，类似4G中MME的鉴权功能，可支持3GPP框架定义的接入服务鉴权，同时也可以支持非3GPP接入网的鉴权。</p>
+<h5 id="Application-Function-AF"><a href="#Application-Function-AF" class="headerlink" title="Application Function (AF)"></a>Application Function (AF)</h5><p>应用功能，该功能与5G核心网交互目的在于提供服务，例如支持如下功能：对于业务路由的应用影响，访问网络能力曝光，与策略框架交互进行策略管控。根据运营商部署策略，受信AF可以直接访问5G核心网内部网元功能提升业务处理效率，当然也可以采取通用的外部网元功能访问框架通过NEF与相应的内部网元功能实现信息交互</p>
+<h5 id="5G设备身份寄存器（5G-EIR）"><a href="#5G设备身份寄存器（5G-EIR）" class="headerlink" title="5G设备身份寄存器（5G-EIR）"></a>5G设备身份寄存器（5G-EIR）</h5><p>移动设备识别寄存器（EIR）存储着移动设备的国际移动设备识别码（IMEI），在表格中分别列出了准许使用的、出现故障需监视的、失窃不准使用的移动设备的IMEI识别码，使得运营部门对于不管是失窃还是由于技术故障或误操作而危及网路正常运行的MS设备，都能采取及时的防范措施，以确保网路内所使用的移动设备的唯一性和安全性。</p>
+<h5 id="安全边缘保护代理（SEPP）"><a href="#安全边缘保护代理（SEPP）" class="headerlink" title="安全边缘保护代理（SEPP）"></a>安全边缘保护代理（SEPP）</h5><p>5G系统架构引入了安全边缘保护代理（SEPP）作为位于PLMN周边的实体</p>
+<h5 id="网络数据分析功能（NWDAF）"><a href="#网络数据分析功能（NWDAF）" class="headerlink" title="网络数据分析功能（NWDAF）"></a>网络数据分析功能（NWDAF）</h5><p>3GPP在Rel 15的5G标准中引入的网络功能，开始主要用于网络切片相关数据的分析</p>
+<h5 id="BSF-Binding-Support-Function"><a href="#BSF-Binding-Support-Function" class="headerlink" title="BSF(Binding Support Function)"></a>BSF(Binding Support Function)</h5><p>会话绑定支持功能，提供了以下功能：</p>
+<p>BSF 服务注册/注销/更新</p>
+<p>Nbsf 服务鉴权：验证 BSF 支持对 Service Consumer 进行服务鉴权。</p>
+<p>与 NRF 连接检测：心跳检测、BSF 可靠性、BSF 支持主备 NRF 切换。</p>
+<p>会话绑定信息创建：删除、查询\t验证 SMF 和内置 BSF 支持 IP PDU Session 绑定信息创建、删除和查询。</p>
+<p>UE 信息获取：IP 地址重复的会话绑定信息查询、PCRF的地址映射。</p>
+<h5 id="CHF-Charging-Function"><a href="#CHF-Charging-Function" class="headerlink" title="CHF(Charging Function)"></a>CHF(Charging Function)</h5><p>计费功能</p>
+<h3 id="二、5G的协议栈"><a href="#二、5G的协议栈" class="headerlink" title="二、5G的协议栈"></a>二、5G的协议栈</h3><h4 id="关于pdu的理解"><a href="#关于pdu的理解" class="headerlink" title="关于pdu的理解"></a>关于pdu的理解</h4><p>​       在5G网络中，PDU连接业务就是用户设备UE和数据网络DN(运营商)之间交换PDU数据包的业务，PDU连接业务通过UE或应用服务器AF发起PDU会话的建立来实现。 一个PDU会话是指一个用户终端UE与数据网络DN之间进行通讯的过程，PDU会话建立后，也就是建立了一条UE和DN的数据传输通道。</p>
+<h4 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h4><h5 id="1-信令面协议栈"><a href="#1-信令面协议栈" class="headerlink" title="1.信令面协议栈"></a>1.信令面协议栈</h5><p>1.1 5G-AN和5GC的接口(N2)<br>AN-AMF</p>
+<p><img src="/blog_img/70.png" alt="img"></p>
+<p>NG-AP协议定义在38.413中，SCTP协议定义在RFC 4960</p>
+<p>AN-SMF</p>
+<p><img src="/blog_img/70-20210620161938520.png" alt="img"></p>
+<p>N2-SM消息是NG-AP消息的一部分，这部分消息由AMF负责透传。从接入网的角度N2-SM消息终结于AMF。</p>
+<h4 id="1-2-UE和5GC接口-N1"><a href="#1-2-UE和5GC接口-N1" class="headerlink" title="1.2 UE和5GC接口(N1)"></a>1.2 UE和5GC接口(N1)</h4><p>N1 NAS信令的终结点为UE和AMF，一个NAS信令连接用于注册管理/连接管理(RM/CM)和会话管理（SM）。NAS协议由NAS-MM和NAS-SM两部分组成；此外UE和5GC间还有多个其它协议（SM、SMS、UE policy、LCS等），这些协议都是通过N1 NAS-MM进行透传的。</p>
+<p>RM/CM NAS消息和其它类型的NAS消息是解耦的，也就是AMF负责RM/CM，其它的消息就透传给对应的模块去处理。</p>
+<p>位于AMF的NAS-MM负责：1）维护处理RM/CM的状态和对应流程处理，2）提供安全的NAS消息传输通道（也即NAS层的加密和完保），3）透传其它类型的NAS消息（SM、SMS、UE Policy、LCS）。</p>
+<p>如果UE同时通过3GPP和non-3GPP接入网接入5GC，那么每个接入模式下都有一个N1 NAS信令连接。</p>
+<p><img src="/blog_img/70-20210620162217695.png" alt="img"></p>
+<p>1.2.1 UE—AMF</p>
+<p>NAS-MM: NAS-MM协议负责注册管理、连接管理、用户面连接的激活和去激活操作，负责NAS消息的加密和完保。5G NAS协议定义在 TS 24.501.</p>
+<p>5G-AN Protocol layer: 接入网的协议栈取决于具体的接入网类型；如果从eNB接入，则对应的空口协议栈定义在TS36.300，如果从gNodeB接入，则对应的空口协议定义在TS38.300，如果从non-3GPP网络接入，则对应的协议栈定义在TS23.501 8.2.4章节。</p>
+<p><img src="/blog_img/70-20210620162300776.png" alt="img"></p>
+<p>1.2.2 UE—SM</p>
+<p>NAS-SM: NAS-SM消息支持用户面PDU会话的建立、修改、释放；NAS-SM消息通过AMF传输，且其对AMF是透明的（也就是AMF负责透传SM消息、不对其进行解析处理）。具体的消息和流程见于协议TS 24.501。</p>
+<p><img src="/blog_img/70-20210620162330000.png" alt="img"></p>
+<p>1.3 5GC—5GC<br>5GC内部网元之间的接口为SBI接口，采用HTTP服务的形式。SBI接口有：Namf, Nsmf, Nudm, Nnrf, Nnssf, Nausf, Nnef, Nsmsf, Nudr, Npcf, N5g-eir, Nlmf。</p>
+<p><img src="/blog_img/70-20210620162344554.png" alt="img"></p>
+<p>上图就是SBI协议栈（图片来源TS29.500  5.1章节），采用互联网常用的HTTP/TCP协议，HTTP/2请参考RFC 7540。</p>
+<p>1.4  non-3GPP接入</p>
+<p><img src="/blog_img/70-20210620162412381.png" alt="img"></p>
+<p>IKEv2见于RFC7296《Internet Key Exchange Protocol Version 2》，</p>
+<p>1.5 UE—gNB （NR）</p>
+<p><img src="/blog_img/70-20210620162422414.png" alt="img"></p>
+<p>上图是5G新空口信令协议栈，层次和3G/4G的空口协议层次一样，都是RRC/PDCP/RLC/MAC/PHY这几层。</p>
+<ol start="2">
+<li>用户面协议栈</li>
+<li>1 一条PDU会话的用户面协议栈</li>
+</ol>
+<p><img src="/blog_img/70-20210620162458668.png" alt="img"></p>
+<p>N3口使用GTP-U协议，这和3G/4G一样，GTP-U定义于TS29.281；5G-AN用户面协议栈取决于具体的接入网类型，如果是通过gNB接入，其协议栈见于下文2.2节。</p>
+<p>2.2 UE—gNB</p>
+<p><img src="/blog_img/70-20210620162441897.png" alt="img"></p>
+<p>相比于3G/4G的空口用户面协议栈，5G新空口用户面协议栈多了一层SDAP(Service Data Adaptation Protocol ）。SDAP协议定义于TS37.324，PDCP定义于TS38.323，RLC定义于TS38.322，MAC定义于TS38.321。</p>
+<p>现在用一张图看看5g的架构部署：</p>
+<p><img src="/blog_img/image-20210620195215542.png" alt="image-20210620195215542"></p>
+<h3 id="三、图解通信原理与案例分析"><a href="#三、图解通信原理与案例分析" class="headerlink" title="三、图解通信原理与案例分析"></a>三、图解通信原理与案例分析</h3><h4 id="移动通信技术的发展史"><a href="#移动通信技术的发展史" class="headerlink" title="移动通信技术的发展史"></a>移动通信技术的发展史</h4><p>1G：语音服务，基于模拟信号传输；</p>
+<p>2G：语音+文字+图片服务，基于数字信号传输。当年的彩信就是2G产物；</p>
+<p>3G：语音多媒体，互联网服务，提供更高的速度。3G开始，视频电话成为可能；</p>
+<p>4G：为数据传输而设计，开始支持网络游戏，高清视频等，这是现在的主流网络。</p>
+<p>5G：超高数据速率、超低延时、超大规模设备。</p>
+<p>在对点对通信层面上看，5G与4G相比，没有引入全新的核心技术，只是在4G的基础之上做了增强，</p>
+<p>但从网络通信层面上看，5G对传统的电信网络进行了大量的重构，加入了虚拟、泛在、智能等特征。</p>
+<p>5G NR包括三大应用场景、在三大场景之上展现出来的六大基本特征、以及得到实现三大应用场景的6大特征，采用的关键技术。</p>
+<h4 id="5G的三大应用场景"><a href="#5G的三大应用场景" class="headerlink" title="5G的三大应用场景"></a>5G的三大应用场景</h4><p>URLLC超可靠低时延通信、eMBB增强移动带宽、mMTC海量机器类通信</p>
+<h4 id="3、5G的四大特征"><a href="#3、5G的四大特征" class="headerlink" title="3、5G的四大特征"></a>3、5G的四大特征</h4><p>泛在、低功耗、网络虚拟化、网络智能化</p>
+<h4 id="4、5G的关键技术"><a href="#4、5G的关键技术" class="headerlink" title="4、5G的关键技术"></a>4、5G的关键技术</h4><h5 id="无线接入技术-大规模MIMO"><a href="#无线接入技术-大规模MIMO" class="headerlink" title="无线接入技术(大规模MIMO)"></a>无线接入技术(大规模MIMO)</h5><h5 id="网络重构技术："><a href="#网络重构技术：" class="headerlink" title="网络重构技术："></a>网络重构技术：</h5><p>（1）NFV（网络功能虚拟化，Network Function Virtualization）</p>
+<p>就是将网络中的专用电信设备的软硬件功能转移到虚拟机上，在通用的商用服务器上通过软件替代专有硬件来实现网元功能。</p>
+<p>（2）SDN（软件定义网络，Software Defined Network）</p>
+<p>5G网络通过SDN连接边缘云和核心云里的VMs（虚拟机），SDN控制器执行映射，建立核心云与边缘云之间的连接。网络切片也由SDN集中控制。</p>
+<p><img src="/blog_img/20201220210006150.png" alt="img"></p>
+<p>SDN，NFV和云技术使网络从底层物理基础设施分开，变成更抽象灵活的以软件为中心的构架，可以通过编程，来提供业务连接。</p>
+<p>（3）网络切片：</p>
+<p>5G网络将面向不同的应用场景，比如，超高清视频、虚拟现实、大规模物联网、车联网等等，不同的场景对网络的移动性、安全性、时延、可靠性，甚至是计费方式的要求是不一样的，因此，需要将物理网络切割成多个虚拟网络，每个虚拟网络面向不同的应用场景需求。虚拟网络之间逻辑独立，互不影响。</p>
+<p><img src="/blog_img/853f351c714f14a31f5d98e1142e2c05.png" alt="img"></p>
+<h5 id="分布式业务服务"><a href="#分布式业务服务" class="headerlink" title="分布式业务服务"></a>分布式业务服务</h5><p>MEC(mobile edge computing)</p>
+<p>涉及到宏基站的部署，终端就可以直接通过基站直接访问业务服务器，而不需要先通过核心网，才能访问业务服务器。极大的减少了终端与业务之间的延时。</p>
+<h4 id="5、5G无线接入网RAN的演进"><a href="#5、5G无线接入网RAN的演进" class="headerlink" title="5、5G无线接入网RAN的演进"></a>5、5G无线接入网RAN的演进</h4><h4 id="6、5G核心网的演变"><a href="#6、5G核心网的演变" class="headerlink" title="6、5G核心网的演变"></a>6、5G核心网的演变</h4><p>5G核心网，采用的是SBA架构（Service Based Architecture，即基于服务的架构）。</p>
+<p>SBA架构，基于云原生构架设计，借鉴了IT领域的“微服务”理念。把原来具有多个功能的整体，分拆为多个具有独自功能的个体。每个个体，实现自己的微服务。</p>
+<p>有一个明显的外部表现，就是网元大量增加了。除了UPF之外，都是控制面。</p>
+<p>网元看上去很多，实际上，硬件都是在虚拟化平台里面虚拟出来的。</p>
+<p>这样一来，非常容易扩容、缩容，也非常容易升级、割接，相互之间不会造成太大影响（不知道是核心网工程师的福音还是失业）。</p>
+<p>简而言之，5G核心网就是模块化、软件化。就是为了“切片”。</p>
+<p>就是为了满足不同场景的需求。不同业务应用场合，所使用的不同模块！</p>
+<p><img src="/blog_img/e050a18ce14c38d1d818fbd7abe06a07.png" alt="img"></p>
+<p><img src="/blog_img/0492b4919bd7bbd1856b5ce06b226924.png" alt="img"></p>
+<h4 id="7、5G的八大组网方案"><a href="#7、5G的八大组网方案" class="headerlink" title="7、5G的八大组网方案"></a>7、5G的八大组网方案</h4><p>● 选项1，独立组网(SA)，即LTE基站连接4G核心网，目前4G网络的组网架构。</p>
+<p>● 选项2，独立组网(SA)，即5G NR基站连接5G核心网： 5G NR + 5G 新核心网独立组网</p>
+<p><img src="/blog_img/4734f295c33834708d8b05bc58474c86.png" alt="img"></p>
+<p>● 选项3，非独立组网(NSA)，即LTE和5G NR基站双连接4G核心网： 4G LTE接入网 + 5G NR 接入网+4G LTE核心网</p>
+<p>● 选项4，非独立组网(NSA)，即5G NR和LTE基站双连接5G核心网： 4G LTE接入网 + 5G NR接入网 + 5G 核心网</p>
+<p>● 选项5，独立组网(SA)，即LTE基站连接5G核心网： 4G LTE接入网 + 5G 核心网</p>
+<p><img src="/blog_img/b3c88babe7b374dce2410b7f9863b182.png" alt="img"></p>
+<p>● 选项6，被业界抛弃</p>
+<p>● 选项7，非独立组网(NSA)，即LTE和5G NR基站双连接5G核心网：4G LTE接入网 + 5G NR接入网 + 5G核心网</p>
+<p><img src="/blog_img/112d86b6bbfaae92142d0942f2c22f09.png" alt="img"></p>
+<p>● 选项8，被业界抛弃</p>
+<h3 id="四、open5Gs的下载安装"><a href="#四、open5Gs的下载安装" class="headerlink" title="四、open5Gs的下载安装"></a>四、open5Gs的下载安装</h3><p>这是个github上的开源项目，实现了5G的部分功能，尝试安装上环境进行简单的测试。</p>
+<h4 id="1、先来一波环境安装"><a href="#1、先来一波环境安装" class="headerlink" title="1、先来一波环境安装"></a>1、先来一波环境安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装open5Gs</span></span><br><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install software-properties-common</span><br><span class="line">$ sudo add-apt-repository ppa:open5gs/latest</span><br><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install open5gs</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装WebUI，非必要，可以用命令行其实</span></span><br><span class="line"> $ sudo apt update</span><br><span class="line"> $ sudo apt install curl</span><br><span class="line"> $ curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -</span><br><span class="line"> $ sudo apt install nodejs</span><br><span class="line"> $ curl -fsSL https://open5gs.org/open5gs/assets/webui/install | sudo -E bash -</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><strong>参考文献</strong>：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/80523506" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/80523506</a></p>
+<p><a href="https://finance.sina.com.cn/tech/2021-03-01/doc-ikftssap9434612.shtml" target="_blank" rel="noopener">https://finance.sina.com.cn/tech/2021-03-01/doc-ikftssap9434612.shtml</a></p>
+<p><a href="https://blog.csdn.net/u010178611/article/details/81365200#comments_16875793" target="_blank" rel="noopener">https://blog.csdn.net/u010178611/article/details/81365200#comments_16875793</a></p>
+<p>一文读懂http/2：<a href="https://zhuanlan.zhihu.com/p/26559480" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26559480</a></p>
+<p>5G的SBA架构部署图：<a href="https://www.exfo.com/umbraco/surface/file/download/?ni=27934&amp;cn=" target="_blank" rel="noopener">https://www.exfo.com/umbraco/surface/file/download/?ni=27934&amp;cn=</a></p>
+<p>图解5G通信原理与案例分析<a href="https://blog.csdn.net/HiWangWenBing/article/details/111414505" target="_blank" rel="noopener">https://blog.csdn.net/HiWangWenBing/article/details/111414505</a></p>
+<p>产生的问题记录？？？</p>
+<p>1、mec这么强大，具体的原理是怎么样的，我们测试的主要目标是mec吗？</p>
+<p>什么是分布式什么是集群</p>
+<p>分布式：一个业务分拆多个子业务，部署在不同的服务器上<br>集群：同一个业务，部署在多个服务器上</p>
+<p>3、华为目前的5G组网方案是什么样的？</p>
+<p>4、我装了open5Gs在我的ubuntu20上，我需要买SDR吗？作为gNB那种</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>V1ct0r</p>
+                    <span>Where there is a will,there is a way！</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一、5G常见词汇解析"><span class="toc-number">2.</span> <span class="toc-text">一、5G常见词汇解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、5G的协议栈"><span class="toc-number">3.</span> <span class="toc-text">二、5G的协议栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、图解通信原理与案例分析"><span class="toc-number">4.</span> <span class="toc-text">三、图解通信原理与案例分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、open5Gs的下载安装"><span class="toc-number">5.</span> <span class="toc-text">四、open5Gs的下载安装</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2021
+        <span class="gradient-text">
+            V1ct0r
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+    
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+
+    
+<script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+
+
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+
+    
+<script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+
+    
+<script src="/js/busuanzi.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+
+
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Where there is a will,there is a way！", "有志者，事竟成！"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

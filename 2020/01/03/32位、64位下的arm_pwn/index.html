@@ -100,13 +100,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    26k
+                    28k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    24 mins.
+                    25 mins.
                 </span>
                 
                 
@@ -144,13 +144,95 @@
 <h4 id="一、环境配置："><a href="#一、环境配置：" class="headerlink" title="一、环境配置："></a>一、环境配置：</h4><p>环境是一大玄学问题，这里仅仅是 我Ubuntu16.04下的环境配置，亲测有效，但是遇到玄学的问题时，也请留言，努力帮大家解决。</p>
 <a id="more"></a>
 
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装qemu</span></span><br><span class="line">apt-get install qemu</span><br><span class="line"><span class="comment">#更新一下</span></span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="comment">#安装32位的依赖库</span></span><br><span class="line">sudo apt-get install -y gcc-arm-linux-gnueabi</span><br><span class="line"><span class="comment">#运行32位的动态链接程序方法</span></span><br><span class="line">qemu-arm -L /usr/arm-linux-gnueabi ./文件</span><br><span class="line"><span class="comment">#安装64位的依赖库</span></span><br><span class="line">sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</span><br><span class="line"><span class="comment">#运行64位的动态链接程序方法</span></span><br><span class="line">qemu-aarch64 -L /usr/aarch64-linux-gnu ./文件</span><br><span class="line"><span class="comment">#安装gdb调试工具</span></span><br><span class="line">sudo apt-get install git gdb gdb-multiarch</span><br><span class="line"><span class="comment">#32位程序下断调试步骤</span></span><br><span class="line">qemu-arm -g <span class="number">1234</span> -L /usr/arm-linux-gnueabi ./文件(窗口<span class="number">1</span>)</span><br><span class="line">gdb-multiarch ./文件(窗口<span class="number">2</span>)</span><br><span class="line">pwndbg&gt; target remote :<span class="number">1234</span></span><br><span class="line">pwndbg&gt; b *<span class="number">0x8bb0</span></span><br><span class="line"><span class="comment">#64位程序下断调试步骤</span></span><br><span class="line">qemu-aarch64 -g <span class="number">1234</span> -L /usr/aarch64-linux-gnu ./文件(窗口<span class="number">1</span>)</span><br><span class="line">gdb-multiarch ./文件(窗口<span class="number">2</span>)</span><br><span class="line">pwndbg&gt; target remote :<span class="number">1234</span></span><br><span class="line">pwndbg&gt; b *<span class="number">0x8bb0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装qemu</span></span><br><span class="line">sudo apt-get install qemu</span><br><span class="line"><span class="comment">#sudo apt-get install qemu-user(ubuntu20下命令)</span></span><br><span class="line"><span class="comment">#更新一下</span></span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="comment">#安装32位的依赖库</span></span><br><span class="line">sudo apt-get install -y gcc-arm-linux-gnueabi</span><br><span class="line"><span class="comment">#运行32位的动态链接程序方法</span></span><br><span class="line">qemu-arm -L /usr/arm-linux-gnueabi ./文件</span><br><span class="line"><span class="comment">#安装64位的依赖库</span></span><br><span class="line">sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu</span><br><span class="line"><span class="comment">#运行64位的动态链接程序方法</span></span><br><span class="line">qemu-aarch64 -L /usr/aarch64-linux-gnu ./文件</span><br><span class="line"><span class="comment">#安装gdb调试工具</span></span><br><span class="line">sudo apt-get install git gdb gdb-multiarch</span><br><span class="line"><span class="comment">#32位程序下断调试步骤</span></span><br><span class="line">qemu-arm -g <span class="number">1234</span> -L /usr/arm-linux-gnueabi ./文件(窗口<span class="number">1</span>)</span><br><span class="line">gdb-multiarch ./文件(窗口<span class="number">2</span>)</span><br><span class="line">pwndbg&gt; target remote :<span class="number">1234</span></span><br><span class="line">pwndbg&gt; b *<span class="number">0x8bb0</span></span><br><span class="line"><span class="comment">#64位程序下断调试步骤</span></span><br><span class="line">qemu-aarch64 -g <span class="number">1234</span> -L /usr/aarch64-linux-gnu ./文件(窗口<span class="number">1</span>)</span><br><span class="line">gdb-multiarch ./文件(窗口<span class="number">2</span>)</span><br><span class="line">pwndbg&gt; target remote :<span class="number">1234</span></span><br><span class="line">pwndbg&gt; b *<span class="number">0x8bb0</span></span><br></pre></td></tr></table></figure>
 
+<p>运行程序时先用strings看清楚是用什么编译的，确定好ubuntu版本后再下刀！</p>
 <h4 id="二、arm汇编基础："><a href="#二、arm汇编基础：" class="headerlink" title="二、arm汇编基础："></a>二、arm汇编基础：</h4><p>环境起来了，就可以像平时一样分析漏洞打题了，但是还是有不同的地方：</p>
 <p>1、arm32只有16个32bit的通用寄存器，r0到r12，lr，pc，sp，函数调用时，前4个参数是压入寄存器的(r0、r1、r2、r3)，后面的参数是压入栈中的</p>
 <p>2、arm64有32个64bit长度的通用寄存器x0到x30以及sp，函数调用时，前8个参数都是通过寄存器来传递x0到x7</p>
-<p>3、用一张图熟悉常见的arm汇编指令</p>
-<p><img src="/blog_img/1573037860774.png" alt="57303786077"></p>
+<p>3、用一张图表熟悉常见的arm汇编指令</p>
+<table>
+<thead>
+<tr>
+<th><strong>指令</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>指令</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MOV</td>
+<td>移动数据</td>
+<td>EOR</td>
+<td>按位异或</td>
+</tr>
+<tr>
+<td>MVN</td>
+<td>移动并取反</td>
+<td>LDR</td>
+<td>加载</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>加</td>
+<td>STR</td>
+<td>存储</td>
+</tr>
+<tr>
+<td>SUB</td>
+<td>减</td>
+<td>LDM</td>
+<td>加载多个</td>
+</tr>
+<tr>
+<td>MUL</td>
+<td>乘</td>
+<td>STM</td>
+<td>存储多个</td>
+</tr>
+<tr>
+<td>LSL</td>
+<td>逻辑左移</td>
+<td>PUSH</td>
+<td>入栈</td>
+</tr>
+<tr>
+<td>LSR</td>
+<td>逻辑右移</td>
+<td>POP</td>
+<td>出栈</td>
+</tr>
+<tr>
+<td>ASR</td>
+<td>算术右移</td>
+<td>B</td>
+<td>跳转</td>
+</tr>
+<tr>
+<td>ROR</td>
+<td>右旋</td>
+<td>BL</td>
+<td>Link跳转</td>
+</tr>
+<tr>
+<td>CMP</td>
+<td>比较</td>
+<td>BX</td>
+<td>分支跳转</td>
+</tr>
+<tr>
+<td>AND</td>
+<td>按位与</td>
+<td>BLX</td>
+<td>使用Link分支跳转</td>
+</tr>
+<tr>
+<td>ORR</td>
+<td>按位或</td>
+<td>SWI/SVC</td>
+<td>系统调用</td>
+</tr>
+</tbody></table>
 <p>4、举几个常见的汇编代码：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ldr r0,[r1, #<span class="number">4</span>]     <span class="comment">//将内存单元R1+4中的字读取到R0寄存器中，同时R1=R1+4</span></span><br><span class="line">add r1,r2,#<span class="number">1</span>    <span class="comment">//表示r1=r2+1， 即寄存器r1的值等于寄存器r2的值加上1</span></span><br><span class="line">b、bl          <span class="comment">//相当于call</span></span><br><span class="line">BIC    R1,  R1,   #<span class="number">0x0F</span>     <span class="comment">//将R1   低4位清0</span></span><br><span class="line">mov r1,#<span class="number">4096</span>      <span class="comment">//r1 = 4096</span></span><br><span class="line">msr cpsr，r0       <span class="comment">//复制r0到cpsr中</span></span><br><span class="line">str r1,[r2,#<span class="number">4</span>]  <span class="comment">//将r1的数据保存到地址为r2+4的内存单元中</span></span><br><span class="line">sub r1,r2,#<span class="number">1</span>    <span class="comment">//表示r1=r2-1</span></span><br></pre></td></tr></table></figure>
 
@@ -161,7 +243,7 @@
 <p>​    通常子程序这样写，保证了子程序中还可以调用子程序。<br>​                         stmfd sp!, {lr}<br>​                         ……<br>​                         ldmfd sp!, {pc}</p>
 <p>​    （2）当异常发生时，异常模式的r14用来保存异常返回地址，将r14如栈可以处理嵌套中断。</p>
 <p>​        程序计数器r15（PC）：PC是有读写限制的。当没有超过读取限制的时候，读取的值是指令的地址加上8个字节，由于ARM指令总是以字对齐的，故bit[1:0]总是00。当用str或stm存储PC的时候，偏移量有可能是8或12等其它值。在V3及以下版本中，写入bit[1:0]的值将被忽略，而在V4及以上版本写入r15的bit[1:0]必须为00，否则后果不可预测。</p>
-<h5 id="如果通俗地理解就是lr-rax，sp-rsp，pc-rip"><a href="#如果通俗地理解就是lr-rax，sp-rsp，pc-rip" class="headerlink" title="如果通俗地理解就是lr=rax，sp=rsp，pc=rip"></a>如果通俗地理解就是lr=rax，sp=rsp，pc=rip</h5><p>相对的，x30是存放ret地址</p>
+<h5 id="如果通俗地理解就是lr-ret地址，sp-rsp，pc-rip"><a href="#如果通俗地理解就是lr-ret地址，sp-rsp，pc-rip" class="headerlink" title="如果通俗地理解就是lr=ret地址，sp=rsp，pc=rip"></a>如果通俗地理解就是lr=ret地址，sp=rsp，pc=rip</h5><p>相对的，x30是存放ret地址</p>
 <h3 id="arm数据类型与寄存器"><a href="#arm数据类型与寄存器" class="headerlink" title="arm数据类型与寄存器"></a>arm数据类型与寄存器</h3><p><img src="/blog_img/image-20200720160343396.png" alt="image-20200720160343396"></p>
 <p>ldr和str可以看成load和store</p>
 <p>字节序方面同样存在大端序和小端序的问题</p>
@@ -185,6 +267,8 @@
 <h4 id="64位寄存器"><a href="#64位寄存器" class="headerlink" title="64位寄存器"></a>64位寄存器</h4><p>ARM64位参数调用规则遵循AAPCS64，规定堆栈为满递减堆栈。</p>
 <p>寄存器调用规则如下：</p>
 <p><img src="/blog_img/image-20200720174745645.png" alt="image-20200720174745645"></p>
+<p>在执行压栈和出栈的指令时，通常使用LDMIA/STMDB</p>
+<p>​    但事实上在汇编的过程中，可以看到LDMIA和STMDB指令已转换为PUSH和POP，那是因为 PUSH和STMDB sp!, reglist，POP和LDMIA sp! Reglist是等价的</p>
 <h4 id="三、做题实战"><a href="#三、做题实战" class="headerlink" title="三、做题实战"></a>三、做题实战</h4><h5 id="1、64位下的arm程序"><a href="#1、64位下的arm程序" class="headerlink" title="1、64位下的arm程序"></a>1、64位下的arm程序<img src="/blog_img/1573039129553.png" alt="57303912955"></h5><p>可以看到程序除了NX，什么也没有开，ida分析下逻辑：</p>
 <p><img src="/blog_img/1573039511646.png" alt="57303951164"></p>
 <p>先读0x200字节到bss段中，然后再栈溢出，漏洞点相当简单，既然有读到栈上我们就直接填shellcode然后改写下bss权限为7即可，但是这是在arm的环境下，所以实现起来，相对困难一点点</p>
@@ -253,9 +337,9 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">65 <p>Articles</p></a></li>
-                    <li><a href="/categories">7 <p>Categories</p></a></li>
-                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -283,7 +367,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

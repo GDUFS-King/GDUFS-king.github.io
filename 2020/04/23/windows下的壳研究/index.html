@@ -102,7 +102,7 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    3.5k
+                    3.7k
                 </span>
                 
                 
@@ -190,7 +190,11 @@
 <p><img src="/blog_img/image-20200423175526204.png" alt="image-20200423175526204"></p>
 <p>这里有syc的那个程序就是我们的脱好壳的程序</p>
 <p><img src="/blog_img/image-20200423175603750.png" alt="image-20200423175603750"></p>
-<p>可以发现从upx1到upx0了，完美，脱壳结束！如果程序开了内存地址随机化，记得先关闭随机化即可～</p>
+<p>可以发现从upx1到upx0了，完美，脱壳结束！</p>
+<p>如果程序开了内存地址随机化，记得先关闭随机化即可，操作如下：</p>
+<p>在exe文件中找到dllcharacteristic(动态库属性)</p>
+<p><img src="/blog_img/image-20201021105626854.png" alt="image-20201021105626854"></p>
+<p>把dll can move取消，即将0x40改成0x00即可，或者直接在010edit中找到这个值改为00，这样就关闭了随机化。</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
@@ -238,9 +242,9 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">65 <p>Articles</p></a></li>
-                    <li><a href="/categories">7 <p>Categories</p></a></li>
-                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -261,7 +265,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

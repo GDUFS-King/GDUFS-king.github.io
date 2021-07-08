@@ -142,6 +142,8 @@
         <div class="content markdown animated fadeIn">
             <h3 id="一、初级栈溢出系列"><a href="#一、初级栈溢出系列" class="headerlink" title="一、初级栈溢出系列"></a>一、初级栈溢出系列</h3><p>从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。</p>
 <p>一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被覆盖，我们的最终目标都是实现调用system(“/bin/sh”)函数去getshell，过程花样可以千奇百怪，但是总有规律可以寻找~</p>
+<a id="more"></a>
+
 <h4 id="1、第一步找危险函数。"><a href="#1、第一步找危险函数。" class="headerlink" title="1、第一步找危险函数。"></a>1、第一步找危险函数。</h4><p>输入函数：</p>
 <p>gets(&amp;buf) 直接读取一行，忽略’\x00’ ，一看没有字符数的限制，那肯定是200%的溢出~</p>
 <p>read(0，&amp;buf，0x40)   buf的大小为0x20，说明可以溢出0x20个字节，够ret覆盖了~</p>
@@ -379,9 +381,9 @@
                     </dl>
                 </div>
                 <ul>
-                    <li><a href="/">65 <p>Articles</p></a></li>
-                    <li><a href="/categories">7 <p>Categories</p></a></li>
-                    <li><a href="/tags">61 <p>Tags</p></a></li>
+                    <li><a href="/">92 <p>Articles</p></a></li>
+                    <li><a href="/categories">20 <p>Categories</p></a></li>
+                    <li><a href="/tags">82 <p>Tags</p></a></li>
                 </ul>
             </div>
             
@@ -409,7 +411,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

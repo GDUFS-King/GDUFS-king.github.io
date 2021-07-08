@@ -71,7 +71,7 @@
         
     </ul>
     <p class="copyright" id="copyright">
-        &copy; 2020 V1ct0r.
+        &copy; 2021 V1ct0r.
         Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
         Theme <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
     </p>
@@ -117,6 +117,8 @@
             </li>
             
             
+            <li class="animated fadeInDown search-bar iconfont icon-search"></li>
+            
         </ul>
         <div class="iconfont icon-menu switchmenu gradient-text animated fadeInDown"></div>
     </div>
@@ -138,35 +140,36 @@
             <a href="/categories/PWN"><b>「
                 </b>PWN<b> 」</b></a>
             
-            July 14, 2020
+            April 26, 2021
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/07/14/AFL-fuzz%E5%88%9D%E6%8E%A2/" title="AFL-fuzz初探" class="posttitle">AFL-fuzz初探</a></h3>
+            <a href="/2021/04/26/BUUCTF%E5%88%B7%E9%A2%98/" title="BUUCTF刷题" class="posttitle">BUUCTF刷题</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                23k
+                168k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                21 mins.
+                2:32
             </span>
             
             
         </p>
         
         
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li></ul>
+        
         <div class="md-content animated fadeIn">
             
-            <h3 id="一、下载与安装"><a href="#一、下载与安装" class="headerlink" title="一、下载与安装"></a>一、下载与安装</h3><p>这里附上官网下载地址：<a href="https://lcamtuf.coredump.cx/afl/" target="_blank" rel="noopener">https://lcamtuf.coredump.cx/afl/</a></p>
-<p>下载下来解压后，放到虚拟机中，进入文件夹，执行下面的命令进行安装：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line">sudo make...</span></pre></td></tr></table></figure>
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近准备打一下铁三，因为知道有3道pwn题，正好毕业答辩完，刷刷题目，准备一手，只记录有意思的题目，或者自己忘记的知识点或者知识盲区的题目。</p>
+<h3 id="一、pwn1-sctf-2016"><a href="#一、pwn1-sctf-2016" class="headerlink" title="一、pwn1_sctf_2016"></a>一、pwn1_sctf_2016</h3><p>一道有趣的题目，先来看...</p>
             
-            <span class="read-more"><a href="/2020/07/14/AFL-fuzz%E5%88%9D%E6%8E%A2/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2021/04/26/BUUCTF%E5%88%B7%E9%A2%98/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -200,9 +203,56 @@
                   <b>「 </b>PWN<b> 」</b>
                 </a>
             
-            May 09, 2020
+            April 02, 2021
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/05/09/ubuntu19%E4%B8%8B%E7%9A%84smallbin%E7%9A%84unlink/" title="ubuntu19下的smallbin的unlink" class="posttitle">ubuntu19下的smallbin的unlink</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2021/04/02/CVE-2015-5621-net-snmp%E4%B9%8B%E7%A9%BA%E6%8C%87%E9%92%88%E9%94%99%E8%AF%AFDos%E6%94%BB%E5%87%BB/" title="CVE-2015-5621-net-snmp之空指针错误Dos攻击" class="posttitle">CVE-2015-5621-net-snmp之空指针错误Dos攻击</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        26k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        24 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/CVE/" rel="tag">CVE</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、net-snmp简介"><a href="#一、net-snmp简介" class="headerlink" title="一、net-snmp简介"></a>一、net-snmp简介</h3><p>SNMP协议是个成熟的网络管理协议，可以使用在远程系统中检索信息和设定值，在传输层它使用的是UDP协议，而net-snmp是个开放源代码的snmp协议实现。支持v1，v2c还有v3，并可以使用ipv4和ipv6，也包含了snmp trap的所有相关实现。net-snmp包含了snmp实用程序集和完整的snmp开发库。可以理解成net-snmp就是对snmp的封装，可以实现很多snmp的功能。</p>
+<h3 id="二、漏洞描述"><a href="#二、漏洞描述" class="headerlink" title="二、漏洞描述"></a>二、漏洞描述</h3><p>CVE-2015-5621是15年爆出来的cve漏洞，影响5.8之前...</p>
+            
+            <span class="read-more"><a href="/2021/04/02/CVE-2015-5621-net-snmp%E4%B9%8B%E7%A9%BA%E6%8C%87%E9%92%88%E9%94%99%E8%AF%AFDos%E6%94%BB%E5%87%BB/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            March 22, 2021
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2021/03/22/CVE-2018-6789%E2%80%94%E2%80%94Exim-RCE-Vulnerability/" title="CVE-2018-6789——Exim RCE Vulnerability" class="posttitle">CVE-2018-6789——Exim RCE Vulnerability</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
@@ -220,18 +270,20 @@
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/small-bin-attack/" rel="tag">small bin attack</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/unlink/" rel="tag">unlink</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/CVE/" rel="tag">CVE</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p>利用的机制是当malloc走到smallbin的时候，如果smallbin的size和malloc的nb相同，会从smallbin链bk上解下来一个chunk，同时会将这条链上剩余的chunk放到对应size的tcache_entry中，终止条件是该smallbin为空或者对应的tcache_entry被装满。</p>
+                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这个漏洞由台湾的安全研究员工meh发现，经过华为未然实验室的师傅复现，成功实现了远程代码执行，最近在学习网络协议漏洞的挖掘，正好复现一下这块的东西，这两天要啃下来！</p>
+<h3 id="一、漏洞介绍"><a href="#一、漏洞介绍" class="headerlink" title="一、漏洞介绍"></a>一、漏洞介绍</h3><p>漏洞的成因是b64decode函数在对不规范的base64编码过的数据进行解码时可能会溢出堆上的一个字节，比较经典的off-by-one漏洞。</p>
+<p>存在漏洞的b64decode函数部分代码如下：</p>
 <a id="more"></a>
 
-<p>仔细观察smallbin插入tcache_entry的代码：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> tc_idx = csize2tidx...</span></pre></td></tr></table></figure>
+<p></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">b64decode(<span class="keyword">const</span> uschar *code, uschar **ptr)</span><br><span class="line">&#123...</span></pre></td></tr></table></figure>
             
-            <span class="read-more"><a href="/2020/05/09/ubuntu19%E4%B8%8B%E7%9A%84smallbin%E7%9A%84unlink/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2021/03/22/CVE-2018-6789%E2%80%94%E2%80%94Exim-RCE-Vulnerability/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -250,172 +302,9 @@
                   <b>「 </b>PWN<b> 」</b>
                 </a>
             
-            January 03, 2020
+            December 29, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%81%9A%E5%A0%86%E9%A2%98%E7%9A%84%E5%BF%83%E5%BE%97/" title="做pwn题的心得" class="posttitle">做pwn题的心得</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        4.2k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        4 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、做栈题的心得："><a href="#一、做栈题的心得：" class="headerlink" title="一、做栈题的心得："></a>一、做栈题的心得：</h3><p>1、看栈的大小</p>
-<p>2、判断栈溢出的字节数(够的话直接栈上操作再跳回main函数再次操作，不够的话，栈迁移到bss上)</p>
-<p>命令：cyclic n  cyclic -l 报错(4位)</p>
-<p>3、如果开了canary，先泄露出canary(覆盖低字节或者格式化字符串泄露)，记得函数调用完要回填canary</p>
-<p>4、如果开了pie，先利用write或者puts函数(覆盖0截断)或者格式化字符串泄露基地址</p>
-<p>5、NX开了的话，一般不管，没开的话直接填shellcode，可以手写也可以工具直接生成</p>
-<p>6、一般...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E5%81%9A%E5%A0%86%E9%A2%98%E7%9A%84%E5%BF%83%E5%BE%97/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%A0%86%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/" title="堆入门学习知识总结" class="posttitle">堆入门学习知识总结</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        29k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        26 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/heap/" rel="tag">heap</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">知识点</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、堆的分析：</p>
-<p>通过系统调用brk和mmap实现malloc内存分配:</p>
-<p>thread有个arena空间，可以申请chunk</p>
-<p>arena的个数是跟系统中处理器核心个数相关的：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">For <span class="number">32</span> <span class="built_in">bit</span> systems:</span><br><span class="line">     Number of arena = <span class="number">2</span> * number of cores + <span class="number">1.</span></span><br><span class="line">For <span class="number">64</span> <span class="built_in">bit</span> systems:</span><br><span class="line">     Number of arena = <span class="number">8</span> * number of cores + <span class="number">1.</span></span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h4 id="多Arena的管理，可能就会有阻塞，资源的竞争关系"><a href="#多Arena的管理，可能就会有阻塞，资源的竞争关系" class="headerlink" title="多Arena的管理，可能就会有阻塞，资源的竞争关系"></a>多Arena的管理，可能就会有阻塞，资源的竞争关系</h4><p>3种数据结构:</p>
-...
-            
-            <span class="read-more"><a href="/2020/01/03/%E5%A0%86%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%831/" title="栈溢出入门到放弃1" class="posttitle">栈溢出入门到放弃1</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        2.8k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        3 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>缓冲区：stack、heap</p>
-<h3 id="1、栈溢出：当前输入的字符的数量大于buf的大小，造成溢出，ret地址被覆盖，造成任意地址跳转"><a href="#1、栈溢出：当前输入的字符的数量大于buf的大小，造成溢出，ret地址被覆盖，造成任意地址跳转" class="headerlink" title="1、栈溢出：当前输入的字符的数量大于buf的大小，造成溢出，ret地址被覆盖，造成任意地址跳转"></a>1、栈溢出：当前输入的字符的数量大于buf的大小，造成溢出，ret地址被覆盖，造成任意地址跳转</h3><p>来道题目直接看看：</p>
-<p></p>
-<a id="more"></a>
-
-<p>这里很清晰，一个main函数，调用puts函数和read函数和puts函数，下面简单的例子演示下参数入栈：</p>
-<p>单步走：先调用puts函数，先将参数“give me some thing？”压入栈中</p>
-<p></p>
-<p></p>
-<p></p>
-<p>执行完puts函数，借助栈中的0x8048489可回到下一条将要执行的指令的地址（return地址），回到了现场，此过程pop出0x8048489（因...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%831/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/" title="栈溢出入门到放弃2" class="posttitle">栈溢出入门到放弃2</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/12/29/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="linux下的对进程的学习" class="posttitle">linux下的对进程的学习</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
@@ -433,20 +322,162 @@
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="一、对保护机制的探索："><a href="#一、对保护机制的探索：" class="headerlink" title="一、对保护机制的探索："></a>一、对保护机制的探索：</h3><p>本文针对刷过的题目，介绍一些常见的保护机制以及破解方法，这里一个个介绍。</p>
-<h4 id="1、checksec"><a href="#1、checksec" class="headerlink" title="1、checksec"></a>1、checksec</h4><p>工欲善其事必先利其器，这个指令用于检查题目的保护机制以及判断是32位还是64位的程序，专业地讲是用来检查可执行文件属性，例如PIE, RELRO, PaX, Canaries, ASLR, Fortify Source等等属性。 举个栗子：</p>
-<p>checksec + 文件名，可实现检查功能：</p>
-<p></p>
+                <h3 id="一、什么是进程？"><a href="#一、什么是进程？" class="headerlink" title="一、什么是进程？"></a>一、什么是进程？</h3><p>就是操作系统为了实现某些功能进行的分身术，生成的子进程可以进行相应的工作</p>
+<p>创建进程最基本的调用是fork</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">fork</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">vfork</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>调用 fork 时，系统将创建一个与当前进程相同的新进程。通常将原有的进程称为父进程，把新创建的进程称为子进程。子进程是父进程的一个拷贝，子进程获得同父进程相同的数据，但是同父进程使用不同的数据段和堆栈段。子进程从父进程继承大多数的属性，但是也修改...</p>
+            
+            <span class="read-more"><a href="/2020/12/29/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            December 23, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/12/23/CVE-2017-13089%E2%80%94wget%E6%A0%88%E6%BA%A2%E5%87%BA/" title="CVE-2017-13089—wget栈溢出" class="posttitle">CVE-2017-13089—wget栈溢出</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        31k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        28 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/CVE/" rel="tag">CVE</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、漏洞描述"><a href="#一、漏洞描述" class="headerlink" title="一、漏洞描述"></a>一、漏洞描述</h3><p>wget 是一个从网络上自动下载文件的工具，支持通过 HTTP、HTTPS、FTP 三种最常见的 TCP/IP 协议，在1.19.2的版本之前，被爆出一个严重的栈溢出漏洞，wget在处理重定向时，会调用http.c:skip_short_body()函数，解析器在解析时会使用strtol函数去读取每个块的长度，但是不检查块的长度是否为非负数，解析器试图通过MIN()函数跳过块的前512字节，最终传递参数到connect.c:fd_read()中。由于<code>fd_read()</code>仅会接受一个int...</p>
+            
+            <span class="read-more"><a href="/2020/12/23/CVE-2017-13089%E2%80%94wget%E6%A0%88%E6%BA%A2%E5%87%BA/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            December 04, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/12/04/AFL-fuzz%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%A1%E5%88%92/" title="AFL-fuzz源码阅读计划" class="posttitle">AFL-fuzz源码阅读计划</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        42k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        38 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、什么是afl-fuzz"><a href="#一、什么是afl-fuzz" class="headerlink" title="一、什么是afl-fuzz"></a>一、什么是afl-fuzz</h3><p>American fuzzy lop 号称是当前最高级的Fuzzing 测试工具之一，由谷歌的Michal Zalewski 所开发。通过对源码进行重新编译时进行插桩（简称编译时插桩）的方式自动产生测试用例来探索二进制程序内部新的执行路径。与其他基于插桩技术的fuzzers 相比，afl-fuzz 具有较低的性能消耗，有各种高效的fuzzing 策略和tricks 最小化技巧，不需要先行复杂的配置，能无缝处理复杂的现实中的程序。当然AFL 也支持直接对没有源码的二进制程...</p>
+            
+            <span class="read-more"><a href="/2020/12/04/AFL-fuzz%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%A1%E5%88%92/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            November 26, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/11/26/glibc2.29-2.31%E5%88%B7%E9%A2%98/" title="glibc2.29-2.31刷题" class="posttitle">glibc2.29-2.31刷题</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        96k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        1:27
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Glibc2-31/" rel="tag">Glibc2.31</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、small-bin-attack"><a href="#一、small-bin-attack" class="headerlink" title="一、small bin attack"></a>一、small bin attack</h3><h4 id="祥云杯babyheap"><a href="#祥云杯babyheap" class="headerlink" title="祥云杯babyheap"></a>祥云杯babyheap</h4><h4 id="分析下程序的流程"><a href="#分析下程序的流程" class="headerlink" title="分析下程序的流程"></a>分析下程序的流程</h4><p></p>
 <a id="more"></a>
 
-<h4 id="2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little："><a href="#2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little：" class="headerlink" title="2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386-32-little："></a>2、Arch表示位数，amd64-64-little表示该程序是64位的，32位的是i386...</h4>
+<p></p>
+<p>在menu前面还有个vmmap申请出内存，然后往里面存flag的操作，我们来看看:</p>
+<p>这里会放flag到内存中，然后在flag上方放入随机数，接着打印出随机数的地址给我们</p>
+<p>接着我们分析下这个程序：</p>
+<h4 id="calloc"><a href="#calloc" class="headerlink" title="calloc"></a>calloc</h4><p></p>
+<p>这是一个会清空内存的堆申请操作，而且不按照malloc那种方式优先利用tcache而是另起炉灶从topchunk切割，直到unsorted bin有东西，也会优先考虑unsorted bin，这里申请范围在0x80...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%832/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/11/26/glibc2.29-2.31%E5%88%B7%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -465,40 +496,41 @@
                   <b>「 </b>PWN<b> 」</b>
                 </a>
             
-            January 03, 2020
+            November 19, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="栈溢出入门到放弃4" class="posttitle">栈溢出入门到放弃4</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/11/19/SROP%E4%B8%93%E9%A2%98/" title="SROP专题" class="posttitle">SROP专题</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        15k
+                        45k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        13 mins.
+                        41 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/srop/" rel="tag">srop</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="一、中级栈溢出总结："><a href="#一、中级栈溢出总结：" class="headerlink" title="一、中级栈溢出总结："></a>一、中级栈溢出总结：</h3><p>来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：</p>
-<p>重点介绍一个64位的很好用的ROP链子，这个链子是根据</p>
+                <h3 id="一、什么是srop？有什么用？"><a href="#一、什么是srop？有什么用？" class="headerlink" title="一、什么是srop？有什么用？"></a>一、什么是srop？有什么用？</h3><p>srop技术用来还原系统调用前的寄存器信息，那么我们可以伪造寄存器的值实现函数调用利用~简单理解成类似栈溢出劫持控制流。</p>
+<p>在CTF中最常和orw的题目相结合。</p>
+<h3 id="二、不同ubuntu版本下的srop的使用技巧"><a href="#二、不同ubuntu版本下的srop的使用技巧" class="headerlink" title="二、不同ubuntu版本下的srop的使用技巧"></a>二、不同ubuntu版本下的srop的使用技巧</h3><p>1、16.04（glibc2.23）</p>
+<p>这里简单拿一道题示范一下:</p>
+<a id="more"></a>
+
 <p></p>
-<p>这两个函数的汇编写出来的，我们可以去看看：</p>
-<p></p>
-<p>就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？</p>
-<p>首先先读懂这段汇编的意思：首先执行抬一次栈的操作，接着要pop6个参数到相应的寄存器中，然后是ret，接着看到上面mov那里，很清...</p>
+<p>题目本身不难，就一个堆任意溢出，但是作为复习的话，用不同的方法去把它打出来，打法也是比较常规，先io_file泄露地址，然后unsortedbin 往free_hook上方写一个0x7f的size...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/11/19/SROP%E4%B8%93%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -517,114 +549,9 @@
                   <b>「 </b>PWN<b> 」</b>
                 </a>
             
-            January 03, 2020
+            November 09, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="栈溢出从入门到放弃3" class="posttitle">栈溢出从入门到放弃3</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        61k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        56 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、初级栈溢出系列"><a href="#一、初级栈溢出系列" class="headerlink" title="一、初级栈溢出系列"></a>一、初级栈溢出系列</h3><p>从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。</p>
-<p>一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被覆盖，我们的最终目标都是实现调用system(“/bin/sh”)函数去getshell，过程花样可以千奇百怪，但是总有规律可以寻找~</p>
-<h4 id="1、第一步找危险函数。"><a href="#1、第一步找危险函数。" class="headerlink" title="1、第一步找危险函数。"></a>1、第一步找危险函数。</h4><p>输入函数：</p>
-<p>gets(&amp;buf) 直接读取一行，忽略’\x00’ ，一看没有字符数的限制，那肯定是200%的溢出~</p>
-<p>read(0，&amp...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E7%8E%A9%E8%BD%AC%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/" title="玩转花式栈溢出" class="posttitle">玩转花式栈溢出</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        14k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        13 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%A0%88%E8%BF%81%E7%A7%BB/" rel="tag">栈迁移</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、花式栈溢出介绍：</p>
-<p>花式栈溢出又叫栈迁移技术，是指在可以写的payload的长度不佳的情况下（一般只有ebp和ret位置可以写，没有多的了，或者再多给两行可以写的），这样的话我们需要进行栈迁移，具体做法有如下两种：</p>
-<p>1、迁移到栈本身，2、迁移到bss段中，3、迁移到堆块（后期补充）</p>
-<p>先来看看迁移到栈的情况：</p>
-<p>来一道题目：</p>
-<p></p>
-<p></p>
-<p></p>
-<p>这里堆栈不可执行保护，其他的没开，然后栈溢出发现只能溢出8字节，32位的话，就是覆盖到ebp和ret的位置，很局限，这里想到栈迁移，于是搞一波操作：</p>
-<p>第一步：迁移到本身...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E7%8E%A9%E8%BD%AC%E8%8A%B1%E5%BC%8F%E6%A0%88%E6%BA%A2%E5%87%BA/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="师傅给的2道pwn题" class="posttitle">师傅给的2道pwn题</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/11/09/Windows-pwn%E5%85%A5%E9%97%A8/" title="Windows-pwn入门" class="posttitle">Windows-pwn入门</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
@@ -636,26 +563,79 @@
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        17 mins.
+                        18 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Windows/" rel="tag">Windows</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="题目一："><a href="#题目一：" class="headerlink" title="题目一："></a>题目一：</h3><p>read_note：</p>
-<h3 id="一波分析："><a href="#一波分析：" class="headerlink" title="一波分析："></a>一波分析：</h3><p></p>
-<a id="more"></a>这里开了栈溢出保护，堆栈不可执行，然后还有内存地址随机化，只有got还可以写，适应了就好~
+                <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>因为讲漏洞挖掘的老师讲到了windows下的栈溢出漏洞等，本着学习的心态，想学习一下具体的利用方式，所以干脆直接装一下环境。</p>
+<h3 id="二、环境安装"><a href="#二、环境安装" class="headerlink" title="二、环境安装"></a>二、环境安装</h3><h4 id="1、下载xdbg和ida作为调试器（32位-64位）"><a href="#1、下载xdbg和ida作为调试器（32位-64位）" class="headerlink" title="1、下载xdbg和ida作为调试器（32位+64位）"></a>1、下载xdbg和ida作为调试器（32位+64位）</h4><a id="more"></a>
 
-<p>动态链接，库是libc.so.6，可以得到，再去看看ida吧：</p>
 <p></p>
-<p>这里程序大概的流程也出来了，就是让你输入路径（字符串长度为5其实根本不可能），然后能打开该路径下的文件（就是个幌子，没用的），跳过，输入的字符长度大于5，就false，继续执行程序，要写note的大小note_length，还有note的内容，内容在thinking_note这里，会被输出来，然后如...</p>
+<p>这个相信搞二进制的师傅都有～</p>
+<h4 id="2、下载安装pwntools"><a href="#2、下载安装pwntools" class="headerlink" title="2、下载安装pwntools"></a>2、下载安装pwntools</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python -m pip install pwntools</span><br></pre></td></tr></table></figure>
+
+<p>可能有些师傅直接pip install 就可以装了，这里只是给出我的计算机环境安装方法，装好了后，import pwn没问题就没事，要是有问题的话，具体情况具体分析，...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/11/09/Windows-pwn%E5%85%A5%E9%97%A8/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            July 14, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/07/14/AFL-fuzz%E5%88%9D%E6%8E%A2/" title="AFL-fuzz初探" class="posttitle">AFL-fuzz初探</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        23k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        21 mins.
+                    </span>
+                
+                
+            </p>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、下载与安装"><a href="#一、下载与安装" class="headerlink" title="一、下载与安装"></a>一、下载与安装</h3><p>这里附上官网下载地址：<a href="https://lcamtuf.coredump.cx/afl/" target="_blank" rel="noopener">https://lcamtuf.coredump.cx/afl/</a></p>
+<p>下载下来解压后，放到虚拟机中，进入文件夹，执行下面的命令进行安装：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<p></p>
+<p>说明安装好了，这里解析下每个文件的作用</p>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">afl-gcc和afl-g++ 分别对应 gcc和g++的封装 </span><br><span class="line">afl-clang和afl-clang++ 分别对应clang的c和c++的封装</span><br><span class="line">afl-fuzz 是AFL的主体，用于对目标程序进行fuzz</span><br><span class="line">afl-analyze...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/07/14/AFL-fuzz%E5%88%9D%E6%8E%A2/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -663,7 +643,7 @@
 
     </div>
     
-    <div id="pager"><a href="/categories/PWN/page/2/" class="more" data-loading="Loading..." data-load-more="Load more">Load more</a></div>
+    <div id="pager"><a href="/categories/PWN/page/2/" class="more" data-loading="加载中..." data-load-more="Load more">Load more</a></div>
     
 </div>
 <div id="preview"></div>
@@ -676,7 +656,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.

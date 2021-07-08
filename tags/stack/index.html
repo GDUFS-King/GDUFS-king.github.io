@@ -71,7 +71,7 @@
         
     </ul>
     <p class="copyright" id="copyright">
-        &copy; 2020 V1ct0r.
+        &copy; 2021 V1ct0r.
         Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
         Theme <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
     </p>
@@ -116,6 +116,8 @@
                 <a href="/archives/" title="ARCHIVES" external="false" class="menu-link">ARCHIVES</a>
             </li>
             
+            
+            <li class="animated fadeInDown search-bar iconfont icon-search"></li>
             
         </ul>
         <div class="iconfont icon-menu switchmenu gradient-text animated fadeInDown"></div>
@@ -259,58 +261,6 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="栈溢出入门到放弃4" class="posttitle">栈溢出入门到放弃4</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        15k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        13 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、中级栈溢出总结："><a href="#一、中级栈溢出总结：" class="headerlink" title="一、中级栈溢出总结："></a>一、中级栈溢出总结：</h3><p>来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：</p>
-<p>重点介绍一个64位的很好用的ROP链子，这个链子是根据</p>
-<p></p>
-<p>这两个函数的汇编写出来的，我们可以去看看：</p>
-<p></p>
-<p>就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？</p>
-<p>首先先读懂这段汇编的意思：首先执行抬一次栈的操作，接着要pop6个参数到相应的寄存器中，然后是ret，接着看到上面mov那里，很清...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="栈溢出从入门到放弃3" class="posttitle">栈溢出从入门到放弃3</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -336,11 +286,67 @@
             
                 <h3 id="一、初级栈溢出系列"><a href="#一、初级栈溢出系列" class="headerlink" title="一、初级栈溢出系列"></a>一、初级栈溢出系列</h3><p>从现在开始温习栈溢出，从初级栈溢出到高级栈溢出到花式栈溢出都重温一遍，主要结合题目练习加深巩固。</p>
 <p>一般来说，实现栈溢出，都是因为读入的字节数超过了buf允许的大小，导致ret地址被覆盖，我们的最终目标都是实现调用system(“/bin/sh”)函数去getshell，过程花样可以千奇百怪，但是总有规律可以寻找~</p>
+<a id="more"></a>
+
 <h4 id="1、第一步找危险函数。"><a href="#1、第一步找危险函数。" class="headerlink" title="1、第一步找危险函数。"></a>1、第一步找危险函数。</h4><p>输入函数：</p>
 <p>gets(&amp;buf) 直接读取一行，忽略’\x00’ ，一看没有字符数的限制，那肯定是200%的溢出~</p>
 <p>read(0，&amp...</p>
             
             <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%833/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="栈溢出入门到放弃4" class="posttitle">栈溢出入门到放弃4</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        15k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        13 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、中级栈溢出总结："><a href="#一、中级栈溢出总结：" class="headerlink" title="一、中级栈溢出总结："></a>一、中级栈溢出总结：</h3><p>来到中级栈溢出这里，当64位的程序很难得到有用的rop链时（参数在rdi，rsi，rdx中，通常是很难凑齐这3个的）就需要我们用程序现有的链子去构造，找找看：</p>
+<p>重点介绍一个64位的很好用的ROP链子，这个链子是根据</p>
+<a id="more"></a>
+
+<p></p>
+<p>这两个函数的汇编写出来的，我们可以去看看：</p>
+<p></p>
+<p>就是这里了，看到loc_4006A6和loc_400690两个位置，这里怎么利用呢？</p>
+<p>首先先读懂这段汇编的意思：首先执行抬一次栈的操作，接着要pop6个参数到相应的寄存器中，然后是ret，接着看到上面mov那里，很...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%88%E6%BA%A2%E5%87%BA%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%834/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -521,7 +527,7 @@
 </body>
 <footer>
     <p class="copyright" id="copyright">
-        &copy; 2020
+        &copy; 2021
         <span class="gradient-text">
             V1ct0r
         </span>.
