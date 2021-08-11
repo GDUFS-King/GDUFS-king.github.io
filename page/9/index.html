@@ -143,34 +143,35 @@
             January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/DES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8CAES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%8E%A2/" title="DES加密算法和AES加密算法初探" class="posttitle">DES加密算法和AES加密算法初探</a></h3>
+            <a href="/2020/01/03/Diffie-Hellman%E7%AE%97%E6%B3%95/" title="Diffie-Hellman算法" class="posttitle">Diffie-Hellman算法</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                225k
+                4.2k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                3:25
+                4 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/aes/" rel="tag">aes</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/des/" rel="tag">des</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/dh%E7%AE%97%E6%B3%95/" rel="tag">dh算法</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h3 id="一、DES加密算法原理分析"><a href="#一、DES加密算法原理分析" class="headerlink" title="一、DES加密算法原理分析"></a>一、DES加密算法原理分析</h3><h4 id="1、所需要的参数："><a href="#1、所需要的参数：" class="headerlink" title="1、所需要的参数："></a>1、所需要的参数：</h4><p>key：8个字节共64位的工作密钥</p>
-<p>data：8个字节共64位的需要被加密或者被解密的数据</p>
-<p>mode：DES工作方式，加密或者解密(CBC模式和ECB模式)...</p>
+            <h3 id="一、原理分析"><a href="#一、原理分析" class="headerlink" title="一、原理分析"></a>一、原理分析</h3><h4 id="离散对数问题"><a href="#离散对数问题" class="headerlink" title="离散对数问题"></a>离散对数问题</h4><p>假定 a, p 均是素数，下面两个集合相等，证明过程请参考 <a href="http://www.amazon.com/Cryptography-Network-Security-Principles-Practice/dp/0133354695" target="_blank" rel="noopener">Cryptography and Network Security</a> 第八章：</p>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; a^<span class="number">1</span> mod p,...</span></pre></td></tr></table></figure>
             
-            <span class="read-more"><a href="/2020/01/03/DES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8CAES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%8E%A2/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/Diffie-Hellman%E7%AE%97%E6%B3%95/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -191,59 +192,6 @@
 
     <div id="primary">
         
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/密码学">
-                  <b>「 </b>密码学<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/DES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8CAES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%8E%A2/" title="DES加密算法和AES加密算法初探" class="posttitle">DES加密算法和AES加密算法初探</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        225k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        3:25
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/aes/" rel="tag">aes</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/des/" rel="tag">des</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、DES加密算法原理分析"><a href="#一、DES加密算法原理分析" class="headerlink" title="一、DES加密算法原理分析"></a>一、DES加密算法原理分析</h3><h4 id="1、所需要的参数："><a href="#1、所需要的参数：" class="headerlink" title="1、所需要的参数："></a>1、所需要的参数：</h4><p>key：8个字节共64位的工作密钥</p>
-<p>data：8个字节共64位的需要被加密或者被解密的数据</p>
-<p>mode：DES工作方式，加密或者解密(CBC模式和ECB模式)</p>
-<a id="more"></a>
-
-<h4 id="2、初始置换"><a href="#2、初始置换" class="headerlink" title="2、初始置换"></a>2、初始置换</h4><p>DES算法使用64位的密钥key将64位的明文输入块变成64位的密文输出块，并将输出块分为L0和R0两部分，每部分均为32位。初始置换规则如下：</p>
-<p>注意：这里的数字表示的是原数据的位置，不是数据</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">58</span>,<span class="number">50</span>,<span class="number">42</span>,<span class="number">34</span>,<span class="number">26</span>,<span class="number">18</span>,<span class="number">10</span>,<span class="number">2</span>,</span><br><span class="line"><span class="number">60</span>,<span class="number">52</span>,<span class="number">44</span>,<span class="number">36</span>,<span class="number">28...</span></span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/DES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8CAES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%8E%A2/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -361,44 +309,45 @@
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
+                <a href="/categories/密码学">
+                  <b>「 </b>密码学<b> 」</b>
                 </a>
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Einherjar/" title="House of Einherjar" class="posttitle">House of Einherjar</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/DES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8CAES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%8E%A2/" title="DES加密算法和AES加密算法初探" class="posttitle">DES加密算法和AES加密算法初探</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        39k
+                        225k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        36 mins.
+                        3:25
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/aes/" rel="tag">aes</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/des/" rel="tag">des</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h4 id="一、原理："><a href="#一、原理：" class="headerlink" title="一、原理："></a>一、原理：</h4><p>那个的是unlink中的向前合并：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">       <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">           prevsize = prev_size(p);</span><br><span class="line">           <span class="built_in">size</span> += prevsize;</span><br><span class="line">           p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize));</span><br><span class="line">           unlink(av, p, bck, fwd);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
-
+                <h3 id="一、DES加密算法原理分析"><a href="#一、DES加密算法原理分析" class="headerlink" title="一、DES加密算法原理分析"></a>一、DES加密算法原理分析</h3><h4 id="1、所需要的参数："><a href="#1、所需要的参数：" class="headerlink" title="1、所需要的参数："></a>1、所需要的参数：</h4><p>key：8个字节共64位的工作密钥</p>
+<p>data：8个字节共64位的需要被加密或者被解密的数据</p>
+<p>mode：DES工作方式，加密或者解密(CBC模式和ECB模式)</p>
 <a id="more"></a>
 
-<p>这个和unlink的操作其实差不多，但是呢填入的fd和bk不一样:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;fd =...</span></pre></td></tr></table></figure>
+<h4 id="2、初始置换"><a href="#2、初始置换" class="headerlink" title="2、初始置换"></a>2、初始置换</h4><p>DES算法使用64位的密钥key将64位的明文输入块变成64位的密文输出块，并将输出块分为L0和R0两部分，每部分均为32位。初始置换规则如下：</p>
+<p>注意：这里的数字表示的是原数据的位置，不是数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">58</span>,<span class="number">50</span>,<span class="number">42</span>,<span class="number">34</span>,<span class="number">26</span>,<span class="number">18</span>,<span class="number">10</span>,<span class="number">2</span>,</span><br><span class="line"><span class="number">60</span>,<span class="number">52</span>,<span class="number">44</span>,<span class="number">36</span>,<span class="number">28...</span></span></pre></td></tr></table></figure>
             
-            <span class="read-more"><a href="/2020/01/03/House-of-Einherjar/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/DES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8CAES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%8E%A2/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -468,35 +417,38 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/" title="canary崩坏技巧" class="posttitle">canary崩坏技巧</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Einherjar/" title="House of Einherjar" class="posttitle">House of Einherjar</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        62k
+                        39k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        56 mins.
+                        36 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/canary/" rel="tag">canary</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="题目1：bin"><a href="#题目1：bin" class="headerlink" title="题目1：bin"></a>题目1：bin</h3><h4 id="方法介绍：leak-canary"><a href="#方法介绍：leak-canary" class="headerlink" title="方法介绍：leak canary"></a>方法介绍：leak canary</h4><p>利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。</p>
-<h4 id="开始分析："><a href="#开始分析：" class="headerlink" title="开始分析："></a>开始分析：</h4><p>常规操作，先checksec下，再ida静态分析</p>
-<p><a id="more"></a><br><br><br>很明显有格式化字符串漏洞和栈溢出漏洞，但是开了栈溢出保护，程序有2个输入，第一次输入可以先泄露cananry，第二次直接覆盖canary就可以栈溢出了，简单明了，gdb动态调试，可以看到canary在格式化字符串的偏移为7，<br></p>
-<p>在第二个次输入中，我们需要输入到canary进行覆盖工作，这是可以...</p>
+                <h4 id="一、原理："><a href="#一、原理：" class="headerlink" title="一、原理："></a>一、原理：</h4><p>那个的是unlink中的向前合并：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">       <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">           prevsize = prev_size(p);</span><br><span class="line">           <span class="built_in">size</span> += prevsize;</span><br><span class="line">           p = chunk_at_offset(p, -((<span class="keyword">long</span>) prevsize));</span><br><span class="line">           unlink(av, p, bck, fwd);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>这个和unlink的操作其实差不多，但是呢填入的fd和bk不一样:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;fd =...</span></pre></td></tr></table></figure>
             
-            <span class="read-more"><a href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/House-of-Einherjar/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -621,37 +573,35 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="0CTF复现zero" class="posttitle">0CTF复现zero</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/" title="canary崩坏技巧" class="posttitle">canary崩坏技巧</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        53k
+                        62k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        48 mins.
+                        56 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/unsorted-bin-attack/" rel="tag">unsorted bin attack</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/canary/" rel="tag">canary</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="zerostorage"><a href="#zerostorage" class="headerlink" title="zerostorage"></a>zerostorage</h3><p>前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。</p>
-<p>1、分析保护机制<br></p>
-<p>保护全开，ida搞一波：<a id="more"></a></p>
-<p></p>
-<p>初始化时有个随机数生成的函数，为后面的堆地址进行异或加密。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char...</span></span></span></span></pre></td></tr></table></figure>
+                <h3 id="题目1：bin"><a href="#题目1：bin" class="headerlink" title="题目1：bin"></a>题目1：bin</h3><h4 id="方法介绍：leak-canary"><a href="#方法介绍：leak-canary" class="headerlink" title="方法介绍：leak canary"></a>方法介绍：leak canary</h4><p>利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。</p>
+<h4 id="开始分析："><a href="#开始分析：" class="headerlink" title="开始分析："></a>开始分析：</h4><p>常规操作，先checksec下，再ida静态分析</p>
+<p><a id="more"></a><br><br><br>很明显有格式化字符串漏洞和栈溢出漏洞，但是开了栈溢出保护，程序有2个输入，第一次输入可以先泄露cananry，第二次直接覆盖canary就可以栈溢出了，简单明了，gdb动态调试，可以看到canary在格式化字符串的偏移为7，<br></p>
+<p>在第二个次输入中，我们需要输入到canary进行覆盖工作，这是可以...</p>
             
-            <span class="read-more"><a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -711,6 +661,57 @@
 <p>这堆东西，一开始看不懂，v12是一个数...</p>
             
             <span class="read-more"><a href="/2020/01/03/0CTF%E9%80%86%E5%90%91writeup/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="0CTF复现zero" class="posttitle">0CTF复现zero</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        53k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        48 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/unsorted-bin-attack/" rel="tag">unsorted bin attack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="zerostorage"><a href="#zerostorage" class="headerlink" title="zerostorage"></a>zerostorage</h3><p>前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。</p>
+<p>1、分析保护机制<br></p>
+<p>保护全开，ida搞一波：<a id="more"></a></p>
+<p></p>
+<p>初始化时有个随机数生成的函数，为后面的堆地址进行异或加密。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">main</span><span class="params">(__int64 a1, <span class="keyword">char</span> **a2, <span class="keyword">char...</span></span></span></span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

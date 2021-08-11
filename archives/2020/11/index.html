@@ -1046,26 +1046,6 @@ gets(&amp;b...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/">师傅给的2道pwn题</a>
-                                        <p>
-                                            题目一：read_note：
-一波分析：
-这里开了栈溢出保护，堆栈不可执行，然后还有内存地址随机化，只有got还可以写，适应了就好~
-
-动态链接，库是libc.so.6，可以得到，再去看看ida吧：
-
-这里程序大概的流程也出来了，就是让你输入路径（字符串长度为5其实根本不可能），然后能打开该路径下的文件（就是个幌子，没用的），跳过，输入的字符长度大于5，就false，继续执行程序，要写not...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/%E5%BC%BA%E7%BD%91%E6%9D%AF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/">强网杯二进制部分wp</a>
                                         <p>
                                             一、逆向：1、task_main（强网先锋）
@@ -1105,6 +1085,26 @@ free时，有UAF漏洞
 edit时没有对size检查，随便溢出。
 这里我们可以一步步逆推思路：
 1、UAF可以实现改FD指针为fake_chunk，改malloc_hook...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/">师傅给的2道pwn题</a>
+                                        <p>
+                                            题目一：read_note：
+一波分析：
+这里开了栈溢出保护，堆栈不可执行，然后还有内存地址随机化，只有got还可以写，适应了就好~
+
+动态链接，库是libc.so.6，可以得到，再去看看ida吧：
+
+这里程序大概的流程也出来了，就是让你输入路径（字符串长度为5其实根本不可能），然后能打开该路径下的文件（就是个幌子，没用的），跳过，输入的字符长度大于5，就false，继续执行程序，要写not...
                                         </p>
                                     </div>
                                 </li>
@@ -1156,21 +1156,6 @@ malloc：
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">格式化字符串漏洞学习</a>
-                                        <p>
-                                            前置知识：一些小技巧和知识：
-1234567891011121314151617181920212223242526272829303132333435363738这部分来自icemakr的博客32位读'%&#123;&#125;$x'.format(index)           // 读4个字节'%&#123;&#125;$p'.format(index)           // 同...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A1%82%E6%9E%97CTF%E9%80%86%E5%90%91%E9%A2%98%E8%A7%A3/">桂林CTF逆向题解</a>
                                         <p>
                                             一、逆向1、re第一题，拖进ida发现是打不开的，怀疑题目加壳了，elf文件加壳的话，拖进虚拟机，直接打命令：
@@ -1210,12 +1195,10 @@ UPX的壳直接脱了，upx -d  文件名
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%B9%96%E6%B9%98%E6%9D%AFCTF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/">湖湘杯CTF二进制部分wp</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">格式化字符串漏洞学习</a>
                                         <p>
-                                            一、Pwn1、HackNote | solved这题什么保护也没有开，分析程序发现是常见的菜单题： 
-        ![57371788851](/blog_img/1573717888513.png)
-漏洞点在于edit函数:
-  ![img](/blog_img/1573717896780.png)会计算输入的字符个数作为下一次edit的size，这里只要申请时0xx8形式的大小，这样...
+                                            前置知识：一些小技巧和知识：
+1234567891011121314151617181920212223242526272829303132333435363738这部分来自icemakr的博客32位读'%&#123;&#125;$x'.format(index)           // 读4个字节'%&#123;&#125;$p'.format(index)           // 同...
                                         </p>
                                     </div>
                                 </li>
@@ -1250,12 +1233,12 @@ no_leak...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E7%BA%A2%E5%B8%BD%E6%9D%AFCTF%E7%BA%BF%E4%B8%8A%E8%B5%9B/">红帽杯CTF线上赛二进制部分wp</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E6%B9%96%E6%B9%98%E6%9D%AFCTF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/">湖湘杯CTF二进制部分wp</a>
                                         <p>
-                                            一、Pwn1、three | solved    
-
-  这题看到程序输入3字节后有个call指令，可以执行命令：              所以填入机器码，利用mov指令跳转到ecx寄存器(rcx正好有我们后面的输入的bss的地址)，就可跳到bss地址执行我们的静态ropchain，直接getshell~
-123456789101112131415161718192021222324252...
+                                            一、Pwn1、HackNote | solved这题什么保护也没有开，分析程序发现是常见的菜单题： 
+        ![57371788851](/blog_img/1573717888513.png)
+漏洞点在于edit函数:
+  ![img](/blog_img/1573717896780.png)会计算输入的字符个数作为下一次edit的size，这里只要申请时0xx8形式的大小，这样...
                                         </p>
                                     </div>
                                 </li>
@@ -1286,6 +1269,23 @@ no_leak...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/%E7%BA%A2%E5%B8%BD%E6%9D%AFCTF%E7%BA%BF%E4%B8%8A%E8%B5%9B/">红帽杯CTF线上赛二进制部分wp</a>
+                                        <p>
+                                            一、Pwn1、three | solved    
+
+  这题看到程序输入3字节后有个call指令，可以执行命令：              所以填入机器码，利用mov指令跳转到ecx寄存器(rcx正好有我们后面的输入的bss的地址)，就可跳到bss地址执行我们的静态ropchain，直接getshell~
+123456789101112131415161718192021222324252...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91%E9%83%A8%E5%88%86wp/">西湖论剑部分wp</a>
                                         <p>
                                             Pwn题目：story
@@ -1305,13 +1305,11 @@ no_leak...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/House-of-Lore/">House of Lor</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/House-of-Rabbit/">House of Rabbit</a>
                                         <p>
-                                            一、原理：
-先来看下small bin中的源码：
-
-
-123456789101112131415161718192021222324252627282930313233343536373839if (in_smallbin_range(nb)) &#123;       // 获取 small bin 的索引       idx = smallbin_index(nb);       // ...
+                                            一、原理介绍：
+1、修改size：
+123456789101112#include "stdio.h"#include "string.h"int main()&#123;unsigned long* chunk1=malloc(0x40); //0x602000unsigned long* chunk2=malloc(0x40); //0x602050malloc(0x10);free(c...
                                         </p>
                                     </div>
                                 </li>
@@ -1323,11 +1321,13 @@ no_leak...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/House-of-Rabbit/">House of Rabbit</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/House-of-Lore/">House of Lor</a>
                                         <p>
-                                            一、原理介绍：
-1、修改size：
-123456789101112#include "stdio.h"#include "string.h"int main()&#123;unsigned long* chunk1=malloc(0x40); //0x602000unsigned long* chunk2=malloc(0x40); //0x602050malloc(0x10);free(c...
+                                            一、原理：
+先来看下small bin中的源码：
+
+
+123456789101112131415161718192021222324252627282930313233343536373839if (in_smallbin_range(nb)) &#123;       // 获取 small bin 的索引       idx = smallbin_index(nb);       // ...
                                         </p>
                                     </div>
                                 </li>
@@ -1370,25 +1370,6 @@ no_leak...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/OD%E5%8A%A8%E6%80%81%E6%9F%A5%E7%9C%8B%E6%A0%88%E6%8A%80%E5%B7%A7/">OD动态查看栈技巧</a>
-                                        <p>
-                                            一、准备工作：题目链接：https://pan.baidu.com/s/1p3s_RpW_fO_CUWXriFGuAQ
-提取码：4lvd（提示：给出的这道题是我脱壳后的，因为没有及时保存原题，抱歉，不过是简单的UXP壳，大家直接用工具去脱也是可以的，所以相信大家没毛病）
-二、开始分析：
-
-这题是当时打南宁杯时的题目，拿到题目一起分析下：
-1、首先用PEID查壳，发现是UXP壳，直接用工具脱壳...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/MD5%E5%8A%A0%E5%AF%86%E5%92%8CHash%E5%87%BD%E6%95%B0%E5%88%86%E6%9E%90/">MD5加密和Hash函数分析</a>
                                         <p>
                                             一、MD5加密算法的原理分析​        md5的输入是512位的倍数，输出是128位，首先填充消息，使其长度为与448 mod 512同余，即长度是512的倍数减去64，填充的消息第一位是1，后面全部都是0，即使原来的消息长度刚好与448 mod 512同余(64)，仍然需要填充，即使原来的消息长度刚好是512的整数倍，仍需要填充。
@@ -1406,16 +1387,14 @@ no_leak...
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/Pwnable.tw%E7%9A%84shellcode%E7%B3%BB%E5%88%97/">Pwnable.tw的shellcode系列</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/OD%E5%8A%A8%E6%80%81%E6%9F%A5%E7%9C%8B%E6%A0%88%E6%8A%80%E5%B7%A7/">OD动态查看栈技巧</a>
                                         <p>
-                                            这篇博客专门讲shellcode的系列，也作为一个复习内容吧，主要针对的是，各种情况下的绕过shellcode检测：
-首先是shellcode的生成，一般2种途径：工具+手撕
-这里优先推荐手撕，不然你就是脚本小子，遇到难一点的检测机制，还是会绕不过，从最简单的开始：
-一、一般的getshell或者orw出flag
+                                            一、准备工作：题目链接：https://pan.baidu.com/s/1p3s_RpW_fO_CUWXriFGuAQ
+提取码：4lvd（提示：给出的这道题是我脱壳后的，因为没有及时保存原题，抱歉，不过是简单的UXP壳，大家直接用工具去脱也是可以的，所以相信大家没毛病）
+二、开始分析：
 
-32位下：
-1、找准寄存器，确定系统调用的对应值
-eax、ebx、ecx、e...
+这题是当时打南宁杯时的题目，拿到题目一起分析下：
+1、首先用PEID查壳，发现是UXP壳，直接用工具脱壳...
                                         </p>
                                     </div>
                                 </li>
@@ -1437,25 +1416,6 @@ eax、ebx、ecx、e...
 3个功能，一个malloc、一个free、一个write函数，这里先看下malloc函数：
 
 先申请一个0x10的没用的块用来隔开堆块，再申请不超过0xff的堆块去写内容，然后每一次malloc，num就会加一，这里只能malloc10次，超了就没...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/RSA%E7%AE%97%E6%B3%95%E5%B0%8F%E7%A0%94%E7%A9%B6/">RSA算法体系研究</a>
-                                        <p>
-                                            在打0CTF时看到了RSA的那题，但是不会做，于是先学习一波RSA吧，算做入门，自己也喜欢数学，正好积累下，RSA是非对称加密，相对于DES对称加密而言的，下面进去正题。
-一、欧拉定理：如果两个正整数a和n互质，则n的欧拉函数 φ(n) 可以让下面的等式成立：
-
-
-
-这是个很重要的公式，先来理解下，首先n = pq（q和p互为质数），欧拉函数 φ(p) = p-1（表示与p互质的数的个数为p...
                                         </p>
                                     </div>
                                 </li>
@@ -1489,12 +1449,35 @@ got表不可改，堆栈不可执行，看名字知道是格式化字符串漏�
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/Tea%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%8F%98%E7%A7%8D%E7%A0%94%E7%A9%B6/">tea、xtea、xxtea算法研究</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/Pwnable.tw%E7%9A%84shellcode%E7%B3%BB%E5%88%97/">Pwnable.tw的shellcode系列</a>
                                         <p>
-                                            一、Tea先来看一波C语言实现的代码，通过代码学习更快理解原理：
+                                            这篇博客专门讲shellcode的系列，也作为一个复习内容吧，主要针对的是，各种情况下的绕过shellcode检测：
+首先是shellcode的生成，一般2种途径：工具+手撕
+这里优先推荐手撕，不然你就是脚本小子，遇到难一点的检测机制，还是会绕不过，从最简单的开始：
+一、一般的getshell或者orw出flag
+
+32位下：
+1、找准寄存器，确定系统调用的对应值
+eax、ebx、ecx、e...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/RSA%E7%AE%97%E6%B3%95%E5%B0%8F%E7%A0%94%E7%A9%B6/">RSA算法体系研究</a>
+                                        <p>
+                                            在打0CTF时看到了RSA的那题，但是不会做，于是先学习一波RSA吧，算做入门，自己也喜欢数学，正好积累下，RSA是非对称加密，相对于DES对称加密而言的，下面进去正题。
+一、欧拉定理：如果两个正整数a和n互质，则n的欧拉函数 φ(n) 可以让下面的等式成立：
 
 
-12345678910111213141516171819202122232425262728293031323334353637383940#include &lt;stdio.h&gt;  #include &lt;stdint.h&gt;    //加密函数  void encrypt (uint32_t* v, u...
+
+这是个很重要的公式，先来理解下，首先n = pq（q和p互为质数），欧拉函数 φ(p) = p-1（表示与p互质的数的个数为p...
                                         </p>
                                     </div>
                                 </li>
@@ -1517,6 +1500,23 @@ got表不可改，堆栈不可执行，看名字知道是格式化字符串漏�
 
 逻辑很清晰了，前面的几个strcmp可以直接逆向思维，把正确的答案写到payload中，最后一步直接覆盖那个数v5为目标值即可：于是可以写出payload：
 12345...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/Tea%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%8F%98%E7%A7%8D%E7%A0%94%E7%A9%B6/">tea、xtea、xxtea算法研究</a>
+                                        <p>
+                                            一、Tea先来看一波C语言实现的代码，通过代码学习更快理解原理：
+
+
+12345678910111213141516171819202122232425262728293031323334353637383940#include &lt;stdio.h&gt;  #include &lt;stdint.h&gt;    //加密函数  void encrypt (uint32_t* v, u...
                                         </p>
                                     </div>
                                 </li>
@@ -1744,26 +1744,6 @@ ida清晰地分析一波：
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/DES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8CAES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%8E%A2/">DES加密算法和AES加密算法初探</a>
-                                        <p>
-                                            一、DES加密算法原理分析1、所需要的参数：key：8个字节共64位的工作密钥
-data：8个字节共64位的需要被加密或者被解密的数据
-mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
-
-
-2、初始置换DES算法使用64位的密钥key将64位的明文输入块变成64位的密文输出块，并将输出块分为L0和R0两部分，每部分均为32位。初始置换规则如下：
-注意：这里的数字表示的是原数据...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
                                         <a class="timeline-title" target="_self" href="/2020/01/03/Diffie-Hellman%E7%AE%97%E6%B3%95/">Diffie-Hellman算法</a>
                                         <p>
                                             一、原理分析离散对数问题假定 a, p 均是素数，下面两个集合相等，证明过程请参考 Cryptography and Network Security 第八章：
@@ -1803,10 +1783,15 @@ mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/House-of-Einherjar/">House of Einherjar</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/DES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8CAES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%8E%A2/">DES加密算法和AES加密算法初探</a>
                                         <p>
-                                            一、原理：那个的是unlink中的向前合并：
-1234567/* consolidate backward */       if (!prev_inuse(p)) &#123;           prevsize = prev_size(p);           size += prevsize;           p = chunk_at_offset(p, -((long) pr...
+                                            一、DES加密算法原理分析1、所需要的参数：key：8个字节共64位的工作密钥
+data：8个字节共64位的需要被加密或者被解密的数据
+mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
+
+
+2、初始置换DES算法使用64位的密钥key将64位的明文输入块变成64位的密文输出块，并将输出块分为L0和R0两部分，每部分均为32位。初始置换规则如下：
+注意：这里的数字表示的是原数据...
                                         </p>
                                     </div>
                                 </li>
@@ -1835,11 +1820,10 @@ mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/">canary崩坏技巧</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/House-of-Einherjar/">House of Einherjar</a>
                                         <p>
-                                            题目1：bin方法介绍：leak canary利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。
-开始分析：常规操作，先checksec下，再ida静态分析
-很明显有格式化字符串漏洞和栈溢出漏洞，但是开了栈溢出保护，程序有2个输入，第一次输入可以先泄露cananry，第二次直接覆盖canary就可以栈溢出了，简单明了，gdb动态调试，可以看到...
+                                            一、原理：那个的是unlink中的向前合并：
+1234567/* consolidate backward */       if (!prev_inuse(p)) &#123;           prevsize = prev_size(p);           size += prevsize;           p = chunk_at_offset(p, -((long) pr...
                                         </p>
                                     </div>
                                 </li>
@@ -1889,14 +1873,11 @@ mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
                                     </div>
                                     <div class="timeline-marker"></div>
                                     <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/">0CTF复现zero</a>
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/canary%E5%B4%A9%E5%9D%8F%E6%8A%80%E5%B7%A7/">canary崩坏技巧</a>
                                         <p>
-                                            一、题目zerostorage前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。
-1、分析保护机制
-保护全开，ida搞一波：
-
-初始化时有个随机数生成的函数，为后面的堆地址进行异或加密。
-1234567891011121314151617181920212223242526272829303132333435363738394041...
+                                            题目1：bin方法介绍：leak canary利用格式化字符串漏洞，泄露出canary的值，然后填到canary相应的位置从而绕过保护实现栈溢出。
+开始分析：常规操作，先checksec下，再ida静态分析
+很明显有格式化字符串漏洞和栈溢出漏洞，但是开了栈溢出保护，程序有2个输入，第一次输入可以先泄露cananry，第二次直接覆盖canary就可以栈溢出了，简单明了，gdb动态调试，可以看到...
                                         </p>
                                     </div>
                                 </li>
@@ -1922,6 +1903,25 @@ mode：DES工作方式，加密或者解密(CBC模式和ECB模式)
 这个函数将输入的大写转成小写（上网查），继续
 
 输入44个字节，以-为分隔符号，切割出12个...
+                                        </p>
+                                    </div>
+                                </li>
+                            
+                                
+                                <li class="timeline-item">
+                                    <div class="timeline-info">
+                                        <span class="gradient-text">January 03, 2020</span>
+                                    </div>
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <a class="timeline-title" target="_self" href="/2020/01/03/0CTFpwn%E2%80%94zerostorage/">0CTF复现zero</a>
+                                        <p>
+                                            一、题目zerostorage前言：这道题是2016年的0CTF的一道pwn，带了点内核的考点在里面，主要是unsorted_bin的攻击。
+1、分析保护机制
+保护全开，ida搞一波：
+
+初始化时有个随机数生成的函数，为后面的堆地址进行异或加密。
+1234567891011121314151617181920212223242526272829303132333435363738394041...
                                         </p>
                                     </div>
                                 </li>

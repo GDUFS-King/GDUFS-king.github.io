@@ -412,58 +412,6 @@
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="师傅给的2道pwn题" class="posttitle">师傅给的2道pwn题</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        19k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        17 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="题目一："><a href="#题目一：" class="headerlink" title="题目一："></a>题目一：</h3><p>read_note：</p>
-<h3 id="一波分析："><a href="#一波分析：" class="headerlink" title="一波分析："></a>一波分析：</h3><p></p>
-<a id="more"></a>这里开了栈溢出保护，堆栈不可执行，然后还有内存地址随机化，只有got还可以写，适应了就好~
-
-<p>动态链接，库是libc.so.6，可以得到，再去看看ida吧：</p>
-<p></p>
-<p>这里程序大概的流程也出来了，就是让你输入路径（字符串长度为5其实根本不可能），然后能打开该路径下的文件（就是个幌子，没用的），跳过，输入的字符长度大于5，就false，继续执行程序，要写note的大小note_length，还有note的内容，内容在thinking_note这里，会被输出来，然后如...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
                 <a href="/categories/ctf比赛">
                   <b>「 </b>CTF比赛<b> 」</b>
                 </a>
@@ -586,6 +534,58 @@
             
             January 03, 2020
         </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="师傅给的2道pwn题" class="posttitle">师傅给的2道pwn题</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        19k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        17 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/stack/" rel="tag">stack</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="题目一："><a href="#题目一：" class="headerlink" title="题目一："></a>题目一：</h3><p>read_note：</p>
+<h3 id="一波分析："><a href="#一波分析：" class="headerlink" title="一波分析："></a>一波分析：</h3><p></p>
+<a id="more"></a>这里开了栈溢出保护，堆栈不可执行，然后还有内存地址随机化，只有got还可以写，适应了就好~
+
+<p>动态链接，库是libc.so.6，可以得到，再去看看ida吧：</p>
+<p></p>
+<p>这里程序大概的流程也出来了，就是让你输入路径（字符串长度为5其实根本不可能），然后能打开该路径下的文件（就是个幌子，没用的），跳过，输入的字符长度大于5，就false，继续执行程序，要写note的大小note_length，还有note的内容，内容在thinking_note这里，会被输出来，然后如...</p>
+            
+            <span class="read-more"><a href="/2020/01/03/%E5%B8%88%E5%82%85%E7%BB%99%E7%9A%842%E9%81%93pwn%E9%A2%98/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E8%B6%8A%E7%95%8C%E4%B8%93%E9%A2%98/" title="数组下标越界专题" class="posttitle">数组下标越界专题</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -687,39 +687,48 @@
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
+                <a href="/categories/RE">
+                  <b>「 </b>RE<b> 」</b>
                 </a>
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="格式化字符串漏洞学习" class="posttitle">格式化字符串漏洞学习</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A1%82%E6%9E%97CTF%E9%80%86%E5%90%91%E9%A2%98%E8%A7%A3/" title="桂林CTF逆向题解" class="posttitle">桂林CTF逆向题解</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        37k
+                        58k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        34 mins.
+                        53 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/format/" rel="tag">format</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%AD%BE%E5%88%B0/" rel="tag">签到</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="前置知识："><a href="#前置知识：" class="headerlink" title="前置知识："></a>前置知识：</h3><p>一些小技巧和知识：<br><a id="more"></a><br></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">这部分来自icemakr的博客</span><br><span class="line"></span><br><span class="line"><span class="number">32</span>位</span><br><span class="line"></span><br><span class="line">读</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$x'</span>.format(index)           // 读<span class="number">4</span>个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$p'</span>.format(index)           // 同上面</span><br><span class="line"><span class="string">'$&#123;&#125;$s'</span>.format(index)</span><br><span class="line">写</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$n'</span>.format(index)           // 解引用，...</span></pre></td></tr></table></figure>
+                <h3 id="一、逆向"><a href="#一、逆向" class="headerlink" title="一、逆向"></a>一、逆向</h3><h3 id="1、re"><a href="#1、re" class="headerlink" title="1、re"></a>1、re</h3><p>第一题，拖进ida发现是打不开的，怀疑题目加壳了，elf文件加壳的话，拖进虚拟机，直接打命令：</p>
+<p>strings re</p>
+<p>看到：</p>
+<p></p>
+<a id="more"></a>
+
+<p>UPX的壳直接脱了，upx -d  文件名</p>
+<p></p>
+<p>看到函数名被隐藏了，但是很简单，直接shift +f12查找字符串，input flag，双击定位到那里，查看引用，ctrl + x，就可以定位到主逻辑了，F5，就是上面的界面了，接着分析一波，看到correct，直接进去：</p>
+<p></p>
+<p>可以知道是除法，但是少了a1[6]的检验，出题粗心吧？！直接脚本搞出来，a1[6]...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/%E6%A1%82%E6%9E%97CTF%E9%80%86%E5%90%91%E9%A2%98%E8%A7%A3/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>

@@ -137,46 +137,38 @@
     <div id="post0" class="else">
         <p class="animated fadeInDown">
             
-            <a href="/categories/RE"><b>「
-                </b>RE<b> 」</b></a>
+            <a href="/categories/密码学"><b>「
+                </b>密码学<b> 」</b></a>
             
             January 03, 2020
         </p>
         <h3 class="post-title animated fadeInDown">
-            <a href="/2020/01/03/%E6%A1%82%E6%9E%97CTF%E9%80%86%E5%90%91%E9%A2%98%E8%A7%A3/" title="桂林CTF逆向题解" class="posttitle">桂林CTF逆向题解</a></h3>
+            <a href="/2020/01/03/%E6%B6%88%E6%81%AF%E9%AA%8C%E8%AF%81%E7%A0%81MAC%E5%92%8C%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%A0%94%E7%A9%B6/" title="消息验证码MAC和数字签名研究" class="posttitle">消息验证码MAC和数字签名研究</a></h3>
         
         <p class="post-count animated fadeInDown">
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                58k
+                1.1k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                53 mins.
+                1 mins.
             </span>
             
             
         </p>
         
         
-        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%AD%BE%E5%88%B0/" rel="tag">签到</a></li></ul>
+        <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/" rel="tag">数字签名</a></li></ul>
         
         <div class="md-content animated fadeIn">
             
-            <h3 id="一、逆向"><a href="#一、逆向" class="headerlink" title="一、逆向"></a>一、逆向</h3><h3 id="1、re"><a href="#1、re" class="headerlink" title="1、re"></a>1、re</h3><p>第一题，拖进ida发现是打不开的，怀疑题目加壳了，elf文件加壳的话，拖进虚拟机，直接打命令：</p>
-<p>strings re</p>
-<p>看到：</p>
-<p></p>
-<a id="more"></a>
-
-<p>UPX的壳直接脱了，upx -d  文件名</p>
-<p></p>
-<p>看到函数名...</p>
+            <h4 id="一、MAC的原理和分析"><a href="#一、MAC的原理和分析" class="headerlink" title="一、MAC的原理和分析"></a>一、MAC的原理和分析</h4><p>MAC算法结合了md5和sha算法的优势，并加入密钥的支持，是一种更为安全的消息摘要算法，MAC是含有密钥的散列函数算法，兼容了md5和sha算法的特性，并在此基础上加入了密钥。...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%A1%82%E6%9E%97CTF%E9%80%86%E5%90%91%E9%A2%98%E8%A7%A3/" title="Read article" class="posttitle">Read article</a>
+            <span class="read-more"><a href="/2020/01/03/%E6%B6%88%E6%81%AF%E9%AA%8C%E8%AF%81%E7%A0%81MAC%E5%92%8C%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%A0%94%E7%A9%B6/" title="Read article" class="posttitle">Read article</a>
                 <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
@@ -197,62 +189,6 @@
 
     <div id="primary">
         
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/RE">
-                  <b>「 </b>RE<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A1%82%E6%9E%97CTF%E9%80%86%E5%90%91%E9%A2%98%E8%A7%A3/" title="桂林CTF逆向题解" class="posttitle">桂林CTF逆向题解</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        58k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        53 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E7%AD%BE%E5%88%B0/" rel="tag">签到</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <h3 id="一、逆向"><a href="#一、逆向" class="headerlink" title="一、逆向"></a>一、逆向</h3><h3 id="1、re"><a href="#1、re" class="headerlink" title="1、re"></a>1、re</h3><p>第一题，拖进ida发现是打不开的，怀疑题目加壳了，elf文件加壳的话，拖进虚拟机，直接打命令：</p>
-<p>strings re</p>
-<p>看到：</p>
-<p></p>
-<a id="more"></a>
-
-<p>UPX的壳直接脱了，upx -d  文件名</p>
-<p></p>
-<p>看到函数名被隐藏了，但是很简单，直接shift +f12查找字符串，input flag，双击定位到那里，查看引用，ctrl + x，就可以定位到主逻辑了，F5，就是上面的界面了，接着分析一波，看到correct，直接进去：</p>
-<p></p>
-<p>可以知道是除法，但是少了a1[6]的检验，出题粗心吧？！直接脚本搞出来，a1[6]...</p>
-            
-            <span class="read-more"><a href="/2020/01/03/%E6%A1%82%E6%9E%97CTF%E9%80%86%E5%90%91%E9%A2%98%E8%A7%A3/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
 <div class="post" id="post">
     <div class="post-cover animated fadeIn" style="
             background-image:
@@ -314,41 +250,39 @@
     <div class="else">
         <p class="animated fadeInDown">
             
-                <a href="/categories/ctf比赛">
-                  <b>「 </b>CTF比赛<b> 」</b>
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
                 </a>
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%B9%96%E6%B9%98%E6%9D%AFCTF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="湖湘杯CTF二进制部分wp" class="posttitle">湖湘杯CTF二进制部分wp</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="格式化字符串漏洞学习" class="posttitle">格式化字符串漏洞学习</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        32k
+                        37k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        29 mins.
+                        34 mins.
                     </span>
                 
                 
             </p>
             
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/re/" rel="tag">re</a></li></ul>
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/format/" rel="tag">format</a></li></ul>
             
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="一、Pwn"><a href="#一、Pwn" class="headerlink" title="一、Pwn"></a>一、Pwn</h3><h4 id="1、HackNote-solved"><a href="#1、HackNote-solved" class="headerlink" title="1、HackNote | solved"></a>1、HackNote | solved</h4><p>这题什么保护也没有开，分析程序发现是常见的菜单题： </p>
-<a id="more"></a>        ![57371788851](/blog_img/1573717888513.png)
-<pre><code>漏洞点在于edit函数:
-  ![img](/blog_img/1573717896780.png)</code></pre><p>会计算输入的字符个数作为下一次edit的size，这里只要申请时0xx8形式的大小，这样就会连着下一个chunk的size，因为计算时看0截断的，也就是说size会被算进去，实现offbyone的漏洞，就可以利用...</p>
+                <h3 id="前置知识："><a href="#前置知识：" class="headerlink" title="前置知识："></a>前置知识：</h3><p>一些小技巧和知识：<br><a id="more"></a><br></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">这部分来自icemakr的博客</span><br><span class="line"></span><br><span class="line"><span class="number">32</span>位</span><br><span class="line"></span><br><span class="line">读</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$x'</span>.format(index)           // 读<span class="number">4</span>个字节</span><br><span class="line"><span class="string">'%&#123;&#125;$p'</span>.format(index)           // 同上面</span><br><span class="line"><span class="string">'$&#123;&#125;$s'</span>.format(index)</span><br><span class="line">写</span><br><span class="line"></span><br><span class="line"><span class="string">'%&#123;&#125;$n'</span>.format(index)           // 解引用，...</span></pre></td></tr></table></figure>
             
-            <span class="read-more"><a href="/2020/01/03/%E6%B9%96%E6%B9%98%E6%9D%AFCTF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -427,19 +361,19 @@
             
             January 03, 2020
         </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E7%BA%A2%E5%B8%BD%E6%9D%AFCTF%E7%BA%BF%E4%B8%8A%E8%B5%9B/" title="红帽杯CTF线上赛二进制部分wp" class="posttitle">红帽杯CTF线上赛二进制部分wp</a></h3>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E6%B9%96%E6%B9%98%E6%9D%AFCTF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="湖湘杯CTF二进制部分wp" class="posttitle">湖湘杯CTF二进制部分wp</a></h3>
         
             <p class="post-count animated fadeInDown">
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        64k
+                        32k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        59 mins.
+                        29 mins.
                     </span>
                 
                 
@@ -450,12 +384,12 @@
         
         <div class="md-content animated fadeIn">
             
-                <h3 id="一、Pwn"><a href="#一、Pwn" class="headerlink" title="一、Pwn"></a>一、Pwn</h3><h4 id="1、three-solved"><a href="#1、three-solved" class="headerlink" title="1、three | solved"></a>1、three | solved</h4><a id="more"></a>    
-
-<h4 id><a href="#" class="headerlink" title></a></h4><p>  这题看到程序输入3字节后有个call指令，可以执行命令：<br>        <br>      所以填入机器码，利用mov指令跳转到ecx寄存器(rcx正好有我们后面的输入的bss的地址)，就可跳到bss地址执行我们的静态ropchain，直接getshell~</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61...</span></pre></td></tr></table></figure>
+                <h3 id="一、Pwn"><a href="#一、Pwn" class="headerlink" title="一、Pwn"></a>一、Pwn</h3><h4 id="1、HackNote-solved"><a href="#1、HackNote-solved" class="headerlink" title="1、HackNote | solved"></a>1、HackNote | solved</h4><p>这题什么保护也没有开，分析程序发现是常见的菜单题： </p>
+<a id="more"></a>        ![57371788851](/blog_img/1573717888513.png)
+<pre><code>漏洞点在于edit函数:
+  ![img](/blog_img/1573717896780.png)</code></pre><p>会计算输入的字符个数作为下一次edit的size，这里只要申请时0xx8形式的大小，这样就会连着下一个chunk的size，因为计算时看0截断的，也就是说size会被算进去，实现offbyone的漏洞，就可以利用...</p>
             
-            <span class="read-more"><a href="/2020/01/03/%E7%BA%A2%E5%B8%BD%E6%9D%AFCTF%E7%BA%BF%E4%B8%8A%E8%B5%9B/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+            <span class="read-more"><a href="/2020/01/03/%E6%B9%96%E6%B9%98%E6%9D%AFCTF%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E5%88%86wp/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
@@ -527,6 +461,55 @@
             
             January 03, 2020
         </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E7%BA%A2%E5%B8%BD%E6%9D%AFCTF%E7%BA%BF%E4%B8%8A%E8%B5%9B/" title="红帽杯CTF线上赛二进制部分wp" class="posttitle">红帽杯CTF线上赛二进制部分wp</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        64k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        59 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/re/" rel="tag">re</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <h3 id="一、Pwn"><a href="#一、Pwn" class="headerlink" title="一、Pwn"></a>一、Pwn</h3><h4 id="1、three-solved"><a href="#1、three-solved" class="headerlink" title="1、three | solved"></a>1、three | solved</h4><a id="more"></a>    
+
+<h4 id><a href="#" class="headerlink" title></a></h4><p>  这题看到程序输入3字节后有个call指令，可以执行命令：<br>        <br>      所以填入机器码，利用mov指令跳转到ecx寄存器(rcx正好有我们后面的输入的bss的地址)，就可跳到bss地址执行我们的静态ropchain，直接getshell~</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/%E7%BA%A2%E5%B8%BD%E6%9D%AFCTF%E7%BA%BF%E4%B8%8A%E8%B5%9B/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/ctf比赛">
+                  <b>「 </b>CTF比赛<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91%E9%83%A8%E5%88%86wp/" title="西湖论剑部分wp" class="posttitle">西湖论剑部分wp</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -578,6 +561,54 @@
             
             January 03, 2020
         </p>
+        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Rabbit/" title="House of Rabbit" class="posttitle">House of Rabbit</a></h3>
+        
+            <p class="post-count animated fadeInDown">
+                
+                    <span>
+                        <b class="iconfont icon-text2"></b> <i>Words count</i>
+                        21k
+                    </span>
+                
+                
+                    <span>
+                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                        19 mins.
+                    </span>
+                
+                
+            </p>
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
+            
+        
+        <div class="md-content animated fadeIn">
+            
+                <p>一、原理介绍：</p>
+<p>1、修改size：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"string.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk1=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602000</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk2=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602050</span></span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"><span class="built_in">free</span>(chunk1);</span><br><span class="line"><span class="built_in">free</span>(chunk2);</span><br><span class="line">chunk1[<span class="number">-1</span>]=<span class="number">0xa1</span>; </span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">&...</span></pre></td></tr></table></figure>
+            
+            <span class="read-more"><a href="/2020/01/03/House-of-Rabbit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="post" id="post">
+    <div class="post-cover animated fadeIn" style="
+            background-image:
+            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+            url(/img/welcome-cover.jpg);">
+    </div>
+    <div class="else">
+        <p class="animated fadeInDown">
+            
+                <a href="/categories/PWN">
+                  <b>「 </b>PWN<b> 」</b>
+                </a>
+            
+            January 03, 2020
+        </p>
         <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Lore/" title="House of Lor" class="posttitle">House of Lor</a></h3>
         
             <p class="post-count animated fadeInDown">
@@ -608,54 +639,6 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (in_smallbin_range(nb)) &#123;</span><br><span class="line">       <span class="comment">// 获取 small bin 的索引</span></span><br><span class="line">       idx = smallbin_index(nb);</span><br><span class="line">       <span class="comment">// 获取对应 small bin 中的 chunk 指针</span></span><br><span class="line">       bin = bin_at(av, idx);</span><br><span class="line">       <span class="comment">// 先执行 victim= last(bin...</span></span></pre></td></tr></table></figure>
             
             <span class="read-more"><a href="/2020/01/03/House-of-Lore/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
-        </div>
-    </div>
-</div>
-
-
-<div class="post" id="post">
-    <div class="post-cover animated fadeIn" style="
-            background-image:
-            radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-            url(/img/welcome-cover.jpg);">
-    </div>
-    <div class="else">
-        <p class="animated fadeInDown">
-            
-                <a href="/categories/PWN">
-                  <b>「 </b>PWN<b> 」</b>
-                </a>
-            
-            January 03, 2020
-        </p>
-        <h3 class="post-title animated fadeInDown"><a href="/2020/01/03/House-of-Rabbit/" title="House of Rabbit" class="posttitle">House of Rabbit</a></h3>
-        
-            <p class="post-count animated fadeInDown">
-                
-                    <span>
-                        <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        21k
-                    </span>
-                
-                
-                    <span>
-                        <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        19 mins.
-                    </span>
-                
-                
-            </p>
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/house%E5%AE%B6%E6%97%8F/" rel="tag">house家族</a></li></ul>
-            
-        
-        <div class="md-content animated fadeIn">
-            
-                <p>一、原理介绍：</p>
-<p>1、修改size：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"string.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk1=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602000</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span>* chunk2=<span class="built_in">malloc</span>(<span class="number">0x40</span>); <span class="comment">//0x602050</span></span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"><span class="built_in">free</span>(chunk1);</span><br><span class="line"><span class="built_in">free</span>(chunk2);</span><br><span class="line">chunk1[<span class="number">-1</span>]=<span class="number">0xa1</span>; </span><br><span class="line"><span class="built_in">malloc</span>(<span class="number">0x1000</span>);</span><br><span class="line">&...</span></pre></td></tr></table></figure>
-            
-            <span class="read-more"><a href="/2020/01/03/House-of-Rabbit/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
     </div>
 </div>
